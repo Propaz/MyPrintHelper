@@ -18,22 +18,21 @@ namespace WindowsFormsApp1
 
         private async Task GetPrinterList(SynchronizationContext _sync, ListBox box)
         {
-            
-            ManagementScope scope = new ManagementScope(@"\root\cimv2"); //Определяем точку входа
+            ManagementScope scope = new ManagementScope(@"\root\cimv2");//Entry point
             scope.Connect();
             ManagementObjectSearcher searcher = new
-            ManagementObjectSearcher("SELECT * FROM Win32_Printer");
+            ManagementObjectSearcher("SELECT * FROM Win32_Printer");//Query from WIN32_Printer namespace
             string printerName = "";
             await Task.Factory.StartNew((b) =>
             {
                 foreach (ManagementObject printer in searcher.Get())
                 {
-                    printerName = printer["Name"].ToString().ToLower();
-                    if (printer["WorkOffline"].ToString().ToLower().Equals("false"))//Если МФУ Offline не добавляем
+                    printerName = printer["Name"].ToString().ToLower();//get PrinterName
+                    if (printer["WorkOffline"].ToString().ToLower().Equals("false"))//Only online Printer
                     {
                         _sync.Send((a) =>
                         {
-                            (b as ListBox).Items.Add(a);
+                            (b as ListBox).Items.Add(a);//add all printers in listbox1 via async method
                         }, printerName);
                     }
                 }
@@ -42,18 +41,23 @@ namespace WindowsFormsApp1
 
         private async void button1_Click(object sender, EventArgs e)
         {
+            //disable all buttons while GetPrinterList is working
             button1.Enabled = false;
             button2.Enabled = false;
+            button3.Enabled = false;
             button4.Enabled = false;
             listBox1.Items.Clear();
+            listBox2.Items.Clear();
             try
             {
-                await GetPrinterList(SynchronizationContext.Current, listBox1);
+                await GetPrinterList(SynchronizationContext.Current, listBox1);//Call GetPrinterList via async method
             }
             finally
             {
+                //Enable all buttons
                 button1.Enabled = true;
                 button2.Enabled = true;
+                button3.Enabled = true;
                 button4.Enabled = true;
             }
         }
@@ -65,13 +69,13 @@ namespace WindowsFormsApp1
             if (listBox1.SelectedIndex == -1) { MessageBox.Show("Please select Printer first"); }
             else
             {
-            //Запускаем скрытый cmd с параметрами для вызова свойств указанного МФУ.
+            //Call printer settings via CMD
             string SelectedPrinter = listBox1.SelectedItem.ToString();
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
-            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;//CMD is hidden
             startInfo.FileName = "cmd.exe";
-            startInfo.Arguments = "/C rundll32 printui.dll,PrintUIEntry /p /n \"" + SelectedPrinter + "\"";
+            startInfo.Arguments = "/C rundll32 printui.dll,PrintUIEntry /p /n \"" + SelectedPrinter + "\"";//CMD command
             process.StartInfo = startInfo;
             process.Start();
             process.WaitForExit();
@@ -102,34 +106,74 @@ namespace WindowsFormsApp1
 
         private void printDocument1_PrintPage(object sender, PrintPageEventArgs e)
         {
-            Font myFont = new Font("m_svoboda", 14, FontStyle.Bold, GraphicsUnit.Point);
-            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            // Draw a rectangle around the page margin.
-            Pen blackPen = new Pen(Color.Black, 5);
-            e.Graphics.DrawRectangle(blackPen, e.MarginBounds);
-            // Draw an ellipse inside the page margin.
-            e.Graphics.DrawEllipse(blackPen, e.MarginBounds);
-            SolidBrush blueBrush = new SolidBrush(Color.Gray);
-            e.Graphics.FillEllipse(blueBrush, e.MarginBounds);
-            // Draw text around printed figures.
-            e.Graphics.DrawString("L_TEST", myFont, Brushes.Black, new PointF(5, 50));
-            e.Graphics.DrawString("L_TEST", myFont, Brushes.Black, new PointF(5, 250));
-            e.Graphics.DrawString("L_TEST", myFont, Brushes.Black, new PointF(5, 450));
-            e.Graphics.DrawString("L_TEST", myFont, Brushes.Black, new PointF(5, 650));
-            e.Graphics.DrawString("L_TEST", myFont, Brushes.Black, new PointF(5, 850));
-            e.Graphics.DrawString("L_TEST", myFont, Brushes.Black, new PointF(5, 1050));
-            e.Graphics.DrawString("UP_TEST", myFont, Brushes.Black, new PointF(100, 50));
-            e.Graphics.DrawString("UP_TEST", myFont, Brushes.Black, new PointF(250, 50));
-            e.Graphics.DrawString("UP_TEST", myFont, Brushes.Black, new PointF(400, 50));
-            e.Graphics.DrawString("UP_TEST", myFont, Brushes.Black, new PointF(550, 50));
-            e.Graphics.DrawString("R_TEST", myFont, Brushes.Black, new PointF(735, 50));
-            e.Graphics.DrawString("R_TEST", myFont, Brushes.Black, new PointF(735, 250));
-            e.Graphics.DrawString("R_TEST", myFont, Brushes.Black, new PointF(735, 450));
-            e.Graphics.DrawString("R_TEST", myFont, Brushes.Black, new PointF(735, 650));
-            e.Graphics.DrawString("R_TEST", myFont, Brushes.Black, new PointF(735, 850));
-            e.Graphics.DrawString("R_TEST", myFont, Brushes.Black, new PointF(735, 1050));
-            e.Graphics.DrawString("R_TEST", myFont, Brushes.Black, new PointF(735, 1250));
-            e.HasMorePages = false;
+            //Draw a grid
+            int w = 1654;//A4 size
+            int h = 2339;//A4 size
+            int widthLines = 20;//cell size
+            int heightLines = 20;//cell size
+            for (int i = 0; i < w; i += widthLines)//fill all list A4
+            {
+                //Lines
+                e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(i + widthLines, 0), new Point(i + widthLines, h));
+                //Lines
+                e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(0, i + heightLines), new Point(w, i + heightLines));
+            }
+        }
+
+        private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+        }
+
+        private async void button3_Click(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedIndex == -1) { MessageBox.Show("Please select Printer first"); }
+            else
+            {
+                button3.Enabled = false;//disable button, clear listbox2
+                listBox2.Items.Clear();
+                try
+                {
+                    await GetPrinterProperty(SynchronizationContext.Current, listBox2);//call GetPrinterProperty async method
+                }
+                finally
+                {
+                    button3.Enabled = true;
+                }
+
+            }
+
+        }
+
+        private async Task GetPrinterProperty(SynchronizationContext _sync, ListBox box)
+        {
+            string SelectedPrinter = listBox1.SelectedItem.ToString();
+            string query = string.Format("SELECT * from Win32_Printer WHERE Name LIKE '%{0}'", SelectedPrinter);//Entry point
+            await Task.Factory.StartNew((b) =>
+            {
+                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(query))
+                using (ManagementObjectCollection coll = searcher.Get())
+                {
+                    try
+                    {
+                        foreach (ManagementObject printer in coll)
+                        {
+                            foreach (PropertyData property in printer.Properties)
+                            {
+                                string PrinterPropertyData = property.Name + ":" + property.Value; //give all prop. in one string
+                                _sync.Send((pn) =>
+                                {
+                                    (b as ListBox).Items.Add(pn);//send all prop. in listbox2 with async method
+                                }, PrinterPropertyData);
+                            }
+                        }
+                    }
+                    catch (ManagementException ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+            }, box);
+
         }
 
     }
