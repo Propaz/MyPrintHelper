@@ -3,7 +3,6 @@ using System.Windows.Forms;
 using System.Management;
 using System.Drawing.Printing;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Threading.Tasks;
 using System.Threading;
 
@@ -28,7 +27,7 @@ namespace WindowsFormsApp1
                 foreach (ManagementObject printer in searcher.Get())
                 {
                     printerName = printer["Name"].ToString().ToLower();//get PrinterName
-                    if (printer["WorkOffline"].ToString().ToLower().Equals("false"))//Only online Printer
+                    if (printer["WorkOffline"].ToString().ToLower().Equals("false") && printerName.Contains("fax") == false && printerName.Contains("xps") == false)//Only online Printer, not fax and XPS devices
                     {
                         _sync.Send((a) =>
                         {
@@ -160,10 +159,13 @@ namespace WindowsFormsApp1
                             foreach (PropertyData property in printer.Properties)
                             {
                                 string PrinterPropertyData = property.Name + ":" + property.Value; //give all prop. in one string
-                                _sync.Send((pn) =>
+                                if(property.Value != null)//add only not null Value
                                 {
-                                    (b as ListBox).Items.Add(pn);//send all prop. in listbox2 with async method
-                                }, PrinterPropertyData);
+                                    _sync.Send((pn) =>
+                                    {
+                                        (b as ListBox).Items.Add(pn);//send all prop. in listbox2 with async method
+                                    }, PrinterPropertyData);
+                                }
                             }
                         }
                     }
