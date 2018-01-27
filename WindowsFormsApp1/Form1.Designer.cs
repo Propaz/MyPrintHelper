@@ -82,7 +82,7 @@
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(100, 34);
             this.button4.TabIndex = 7;
-            this.button4.Text = "Print Dialog";
+            this.button4.Text = "Print the Grid";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
@@ -135,7 +135,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 413);
+            this.ClientSize = new System.Drawing.Size(984, 407);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button3);

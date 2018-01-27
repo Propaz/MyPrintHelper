@@ -19,14 +19,12 @@ namespace WindowsFormsApp1
         {
             ManagementScope scope = new ManagementScope(@"\root\cimv2");//Entry point
             scope.Connect();
-            ManagementObjectSearcher searcher = new
-            ManagementObjectSearcher("SELECT * FROM Win32_Printer");//Query from WIN32_Printer namespace
-            string printerName = "";
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Printer");//Query from WIN32_Printer namespace
             await Task.Factory.StartNew((b) =>
             {
                 foreach (ManagementObject printer in searcher.Get())
                 {
-                    printerName = printer["Name"].ToString().ToLower();//get PrinterName
+                    string printerName = printer["Name"].ToString().ToLower();//get PrinterName
                     if (printer["WorkOffline"].ToString().ToLower().Equals("false") && printerName.Contains("fax") == false && printerName.Contains("xps") == false)//Only online Printer, not fax and XPS devices
                     {
                         _sync.Send((a) =>
@@ -36,7 +34,7 @@ namespace WindowsFormsApp1
                     }
                 }
             }, box);
-        }
+        }//Find all online Printers
 
         private async void button1_Click(object sender, EventArgs e)
         {
@@ -59,31 +57,30 @@ namespace WindowsFormsApp1
                 button3.Enabled = true;
                 button4.Enabled = true;
             }
-        }
+        }//Find all printers
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e){}
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e){}//list of all online printers
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (listBox1.SelectedIndex == -1) { MessageBox.Show("Please select Printer first"); }
+            if (listBox1.SelectedIndex == -1) { MessageBox.Show("Please select Printer first", "Error"); }
             else
             {
-            //Call printer settings via CMD
             string SelectedPrinter = listBox1.SelectedItem.ToString();
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
-            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;//CMD is hidden
+            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;//process is hidden
             startInfo.FileName = "cmd.exe";
-            startInfo.Arguments = "/C rundll32 printui.dll,PrintUIEntry /p /n \"" + SelectedPrinter + "\"";//CMD command
+            startInfo.Arguments = "/C rundll32 printui.dll,PrintUIEntry /p /n \"" + SelectedPrinter + "\"";//Call Printer settings via cmd.exe
             process.StartInfo = startInfo;
             process.Start();
             process.WaitForExit();
             }
-        }
+        }//Show System Printer Settings button
 
-        private void button4_Click(object sender, EventArgs e)
+        private void button4_Click(object sender, EventArgs e)//Print the Grid
         {
-            if (listBox1.SelectedIndex == -1) { MessageBox.Show("Please select Printer first"); }
+            if (listBox1.SelectedIndex == -1) { MessageBox.Show("Please select Printer first", "Error"); }
             else
             {
                 string SelectedPrinter = listBox1.SelectedItem.ToString();
@@ -99,7 +96,7 @@ namespace WindowsFormsApp1
                     doc.PrintPage += new PrintPageEventHandler(printDocument1_PrintPage);
                     doc.Print();
                 }
-                else { MessageBox.Show("Print Aborted"); }
+                else { MessageBox.Show("Print Aborted", "Warning!"); }
             }
         }
 
@@ -112,20 +109,20 @@ namespace WindowsFormsApp1
             int heightLines = 20;//cell size
             for (int i = 0; i < w; i += widthLines)//fill all list A4
             {
-                //Lines
+                //Width Lines
                 e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(i + widthLines, 0), new Point(i + widthLines, h));
-                //Lines
+                //Height Lines
                 e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(0, i + heightLines), new Point(w, i + heightLines));
             }
-        }
+        }//Print the Grid
 
         private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-        }
+        }//List of Printer Properties
 
         private async void button3_Click(object sender, EventArgs e)
         {
-            if (listBox1.SelectedIndex == -1) { MessageBox.Show("Please select Printer first"); }
+            if (listBox1.SelectedIndex == -1) { MessageBox.Show("Please select Printer first", "Error"); }
             else
             {
                 button3.Enabled = false;//disable button, clear listbox2
@@ -141,7 +138,7 @@ namespace WindowsFormsApp1
 
             }
 
-        }
+        }//Get Properties of Selected Printer
 
         private async Task GetPrinterProperty(SynchronizationContext _sync, ListBox box)
         {
@@ -176,7 +173,7 @@ namespace WindowsFormsApp1
                 }
             }, box);
 
-        }
+        }//Get printer properties
 
     }
 }
