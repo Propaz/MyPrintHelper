@@ -113,7 +113,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="icons8_print_50_uvQ_icon.ico" />
     <Content Include="icons8_print_50_wiD_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

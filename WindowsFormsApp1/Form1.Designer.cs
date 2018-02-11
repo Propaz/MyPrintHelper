@@ -50,7 +50,7 @@
             this.button1.TabIndex = 0;
             this.button1.Text = "Find Printers";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
             // listBox1
             // 
@@ -63,7 +63,7 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(516, 338);
             this.listBox1.TabIndex = 1;
-            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.ListBox1_SelectedIndexChanged);
             // 
             // button2
             // 
@@ -74,7 +74,7 @@
             this.button2.TabIndex = 2;
             this.button2.Text = "Printer Settings";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button2.Click += new System.EventHandler(this.Button2_Click);
             // 
             // button4
             // 
@@ -84,7 +84,7 @@
             this.button4.TabIndex = 7;
             this.button4.Text = "Print the Grid";
             this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.button4.Click += new System.EventHandler(this.Button4_Click);
             // 
             // printDocument1
             // 

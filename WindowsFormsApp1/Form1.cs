@@ -36,7 +36,7 @@ namespace WindowsFormsApp1
             }, box);
         }
 
-        private async void button1_Click(object sender, EventArgs e)//Find all printers
+        private async void Button1_Click(object sender, EventArgs e)//Find all printers
         {
             //disable all buttons while GetPrinterList is working
             button1.Enabled = false;
@@ -63,13 +63,17 @@ namespace WindowsFormsApp1
             }
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e){}//list of all online printers
+        private void ListBox1_SelectedIndexChanged(object sender, EventArgs e){}//list of all online printers
 
-        private void button2_Click(object sender, EventArgs e)//Show System "Printer Settings"
+        private void Button2_Click(object sender, EventArgs e)//Show System "Printer Settings"
         {
             if (listBox1.SelectedIndex == -1) { MessageBox.Show("Please select Printer first", "Error"); }
             else
             {
+            button1.Enabled = false;//Diasble all buttons untill Settings Window is active
+            button2.Enabled = false;
+            button3.Enabled = false;
+            button4.Enabled = false;
             string SelectedPrinter = listBox1.SelectedItem.ToString();
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
@@ -79,10 +83,14 @@ namespace WindowsFormsApp1
             process.StartInfo = startInfo;
             process.Start();
             process.WaitForExit();
+            button1.Enabled = true;//Enable all buttons When Settings Window is closed
+            button2.Enabled = true;
+            button3.Enabled = true;
+            button4.Enabled = true;
             }
         }
 
-        private void button4_Click(object sender, EventArgs e)//Print the Grid
+        private void Button4_Click(object sender, EventArgs e)//Print the Grid
         {
             if (listBox1.SelectedIndex == -1) { MessageBox.Show("Please select Printer first", "Error"); }
             else
