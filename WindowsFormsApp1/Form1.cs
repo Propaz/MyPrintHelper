@@ -17,23 +17,27 @@ namespace WindowsFormsApp1
 
         private async Task GetPrinterList(SynchronizationContext _sync, ListBox box)//Find all online Printers
         {
-            ManagementScope scope = new ManagementScope(@"\root\cimv2");//Entry point
-            scope.Connect();
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Printer");//Query from WIN32_Printer namespace
-            await Task.Factory.StartNew((b) =>
+            string query = string.Format("SELECT * FROM Win32_Printer");
+            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(query))//Query from WIN32_Printer namespace
+            using (ManagementObjectCollection PrinterList = searcher.Get())
             {
-                foreach (ManagementObject printer in searcher.Get())
+                await Task.Factory.StartNew((b) =>
                 {
-                    string printerName = printer["Name"].ToString().ToLower();//get PrinterName
-                    if (printer["WorkOffline"].ToString().ToLower().Equals("false") && printerName.Contains("fax") == false && printerName.Contains("xps") == false)//Only online Printer, not fax and XPS devices
+                    foreach (ManagementObject printer in PrinterList)
                     {
-                        _sync.Send((a) =>
+                        string printerName = printer["Name"].ToString().ToLower();//get PrinterName
+                        if (printer["WorkOffline"].ToString().ToLower().Equals("false") && printerName.Contains("fax") == false && printerName.Contains("xps") == false)//Only online Printer, not fax and XPS devices
                         {
-                            (b as ListBox).Items.Add(a);//add all printers in listbox1 via async method
-                        }, printerName);
+                            _sync.Send((a) =>
+                            {
+                                (b as ListBox).Items.Add(a);//add all printers in listbox1 via async method
+                            }, printerName);
+                        }
                     }
-                }
-            }, box);
+                }, box);
+
+            }
+   
         }
 
         private async void Button1_Click(object sender, EventArgs e)//Find all printers
@@ -158,36 +162,33 @@ namespace WindowsFormsApp1
         {
             string SelectedPrinter = listBox1.SelectedItem.ToString();
             string query = string.Format("SELECT * from Win32_Printer WHERE Name LIKE '%{0}'", SelectedPrinter);//Entry point
-            await Task.Factory.StartNew((b) =>
+            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(query))
+            using (ManagementObjectCollection coll = searcher.Get())
             {
-                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(query))
-                using (ManagementObjectCollection coll = searcher.Get())
+                await Task.Factory.StartNew((b) =>
                 {
-                    try
+                    foreach (ManagementObject printer in coll)
                     {
-                        foreach (ManagementObject printer in coll)
+                        foreach (PropertyData property in printer.Properties)
                         {
-                            foreach (PropertyData property in printer.Properties)
+                            string PrinterPropertyData = property.Name + ":" + property.Value; //give all prop. in one string
+                            if (property.Value != null)//add only not null Value
                             {
-                                string PrinterPropertyData = property.Name + ":" + property.Value; //give all prop. in one string
-                                if(property.Value != null)//add only not null Value
-                                {
-                                    _sync.Send((pn) =>
+                                _sync.Send((pn) =>
                                     {
                                         (b as ListBox).Items.Add(pn);//send all prop. in listbox2 with async method
                                     }, PrinterPropertyData);
-                                }
                             }
                         }
                     }
-                    catch (ManagementException ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-                }
-            }, box);
+          
+                }, box);
+            }
 
         }
+                
 
     }
+
 }
+
