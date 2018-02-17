@@ -16,5 +16,3 @@ Some Screenshots:
 <p align="center"><img src="https://i.imgur.com/CX9VBiB.png" /></p>
 <p align="center"><img src="https://i.imgur.com/nSmQliq.png" /></p>
 
-Last Version: https://yadi.sk/d/xNa0LdiE3SW6bh 
-
