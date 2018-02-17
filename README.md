@@ -1,16 +1,20 @@
 # MyPrintHelper
-Простой помошник для работы с принтерами.
+A simple program for working with printers. 
+Written for the Service Center for your needs
 
-Написан под свои нужды, для работы в СЦ.
+1. Button "Find Printers" Displays a list of devices in the system (Only devices online, except for FAX and XPS devices.)
+(Some priors of HP even after the shutdown remain in the system with the flags Local = True, WorkOffline = true, so they fall into the list (yet).)
 
-Кнопка "Find Printers" выводит список устройств в системе (Только устройства онлайн. Кроме устройств FAX и XPS.)
-(Некоторые принеры фирмы НР даже после отключения остаются в системе с флагами Local = True, WorkOffline = true, поэтому попадают в список (пока).)
+2. The 'Printer Settings' button calls up the system settings window of the printer.
 
-Кнопка "Printer Settings" вызывает системное окно настроек принтера.
+3. The 'Print the Grid' button allows you to print an A4 page that is completely filled with a grid.
 
-Кнопка "Print the Grid" позволяет отправить на печать страницу А4, полностью заполненную сеткой.
+4. The 'Get Properties' button allows you to get a list of printer properties (Strings without titles do not fall into the list).
 
-Кнопка "Get Properties" позволяет получить список свойств принтера (Строки без начений не попадают в список).
+Some Screenshots: 
+<p align="center"><img src="https://i.imgur.com/4PVfJGp.png" /></p>
+<p align="center"><img src="https://i.imgur.com/CX9VBiB.png" /></p>
+<p align="center"><img src="https://i.imgur.com/nSmQliq.png" /></p>
 
-
+Last Version: https://yadi.sk/d/xNa0LdiE3SW6bh 
 
