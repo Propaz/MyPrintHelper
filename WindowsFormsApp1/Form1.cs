@@ -42,11 +42,8 @@ namespace WindowsFormsApp1
 
         private async void Button1_Click(object sender, EventArgs e)//Find all printers
         {
-            //disable all buttons while GetPrinterList is working
-            button1.Enabled = false;
-            button2.Enabled = false;
-            button3.Enabled = false;
-            button4.Enabled = false;
+            Enabled = false;//disable form while GetPrinterList is working
+            Cursor = Cursors.WaitCursor;//Show Waiting Cursor while working
             listBox1.Items.Clear();
             listBox2.Items.Clear();
             try
@@ -59,11 +56,8 @@ namespace WindowsFormsApp1
             }
             finally
             {
-                //Enable all buttons
-                button1.Enabled = true;
-                button2.Enabled = true;
-                button3.Enabled = true;
-                button4.Enabled = true;
+                Cursor = Cursors.Default;//Turn on Default Cursor, and enable main form
+                Enabled = true;
             }
         }
 
@@ -71,27 +65,43 @@ namespace WindowsFormsApp1
 
         private void Button2_Click(object sender, EventArgs e)//Show System "Printer Settings"
         {
+            
             if (listBox1.SelectedIndex == -1) { MessageBox.Show("Please select Printer first", "Error"); }
             else
             {
-            button1.Enabled = false;//Diasble all buttons untill Settings Window is active
-            button2.Enabled = false;
-            button3.Enabled = false;
-            button4.Enabled = false;
+                Enabled = false;//disable form while GetPrinterList is working
+                Cursor = Cursors.WaitCursor;//Show Waiting Cursor while working
+                try
+                {
+                    PrinterSettingsDialog();//call printer setting window
+                }
+                catch (ManagementException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                finally
+                {
+                    Cursor = Cursors.Default;
+                    Enabled = true;
+                    Activate();//The form window on the first plan
+                }
+            }
+
+        }
+
+        private void PrinterSettingsDialog()
+        {
             string SelectedPrinter = listBox1.SelectedItem.ToString();
             System.Diagnostics.Process process = new System.Diagnostics.Process();
-            System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
-            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;//process is hidden
-            startInfo.FileName = "cmd.exe";
-            startInfo.Arguments = "/C rundll32 printui.dll,PrintUIEntry /p /n \"" + SelectedPrinter + "\"";//Call Printer settings via cmd.exe
+            System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo
+            {
+                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,//process is hidden
+                FileName = "cmd.exe",
+                Arguments = "/C rundll32 printui.dll,PrintUIEntry /p /n \"" + SelectedPrinter + "\""//Call Printer settings via cmd.exe
+            };
             process.StartInfo = startInfo;
             process.Start();
             process.WaitForExit();
-            button1.Enabled = true;//Enable all buttons When Settings Window is closed
-            button2.Enabled = true;
-            button3.Enabled = true;
-            button4.Enabled = true;
-            }
         }
 
         private void Button4_Click(object sender, EventArgs e)//Print the Grid
@@ -112,7 +122,6 @@ namespace WindowsFormsApp1
                     doc.PrintPage += new PrintPageEventHandler(PrintDocument1_PrintPage);
                     doc.Print();
                 }
-                else { MessageBox.Show("Print Aborted", "Warning!"); }
             }
         }
 
@@ -139,11 +148,12 @@ namespace WindowsFormsApp1
             if (listBox1.SelectedIndex == -1) { MessageBox.Show("Please select Printer first", "Error"); }
             else
             {
-                button3.Enabled = false;//disable button, clear listbox2
+                Enabled = false;
+                Cursor = Cursors.WaitCursor;//disable main form, clear listbox2, show waiting cursor
                 listBox2.Items.Clear();
                 try
                 {
-                    await GetPrinterProperty(SynchronizationContext.Current, listBox2);//call GetPrinterProperty async method
+                    await GetPrinterProperty(SynchronizationContext.Current, listBox2);//Get printer property
                 }
                 catch (ManagementException ex)
                 {
@@ -151,7 +161,8 @@ namespace WindowsFormsApp1
                 }
                 finally
                 {
-                    button3.Enabled = true;
+                    Cursor = Cursors.Default;//Turn on main form, back default cursor
+                    Enabled = true;
                 }
 
             }
