@@ -42,10 +42,13 @@ namespace WindowsFormsApp1
 
         private async void Button1_Click(object sender, EventArgs e)//Find all printers
         {
-            Enabled = false;//disable form while GetPrinterList is working
+            button1.Enabled = false;//disable buttons while GetPrinterList is working
+            button2.Enabled = false;
+            button3.Enabled = false;
+            button4.Enabled = false;
             Cursor = Cursors.WaitCursor;//Show Waiting Cursor while working
             listBox1.Items.Clear();
-            listBox2.Items.Clear();
+            listBox2.Items.Clear();//clear all listboxes
             try
             {
                 await GetPrinterList(SynchronizationContext.Current, listBox1);//Call GetPrinterList via async method
@@ -56,8 +59,11 @@ namespace WindowsFormsApp1
             }
             finally
             {
-                Cursor = Cursors.Default;//Turn on Default Cursor, and enable main form
-                Enabled = true;
+                Cursor = Cursors.Default;//Turn on Default Cursor, and enable buttons
+                button1.Enabled = true;
+                button2.Enabled = true;
+                button3.Enabled = true;
+                button4.Enabled = true;
             }
         }
 
@@ -70,7 +76,7 @@ namespace WindowsFormsApp1
             else
             {
                 Enabled = false;//disable form while GetPrinterList is working
-                Cursor = Cursors.WaitCursor;//Show Waiting Cursor while working
+                Cursor = Cursors.No;//Show NO-style Cursor while working
                 try
                 {
                     PrinterSettingsDialog();//call printer setting window
@@ -82,7 +88,7 @@ namespace WindowsFormsApp1
                 finally
                 {
                     Cursor = Cursors.Default;
-                    Enabled = true;
+                    Enabled = true;//turn on main form
                     Activate();//The form window on the first plan
                 }
             }
@@ -148,8 +154,11 @@ namespace WindowsFormsApp1
             if (listBox1.SelectedIndex == -1) { MessageBox.Show("Please select Printer first", "Error"); }
             else
             {
-                Enabled = false;
-                Cursor = Cursors.WaitCursor;//disable main form, clear listbox2, show waiting cursor
+                button1.Enabled = false;
+                button2.Enabled = false;
+                button3.Enabled = false;
+                button4.Enabled = false;
+                Cursor = Cursors.WaitCursor;//disable buttons, clear listbox2, show waiting cursor
                 listBox2.Items.Clear();
                 try
                 {
@@ -161,8 +170,11 @@ namespace WindowsFormsApp1
                 }
                 finally
                 {
-                    Cursor = Cursors.Default;//Turn on main form, back default cursor
-                    Enabled = true;
+                    Cursor = Cursors.Default;//Turn buttons, back default cursor
+                    button1.Enabled = true;
+                    button2.Enabled = true;
+                    button3.Enabled = true;
+                    button4.Enabled = true;
                 }
 
             }
