@@ -72,7 +72,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(100, 34);
             this.button2.TabIndex = 2;
-            this.button2.Text = "Printer Settings";
+            this.button2.Text = "Printer Properties";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.Button2_Click);
             // 

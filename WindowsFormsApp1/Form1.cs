@@ -71,12 +71,9 @@ namespace WindowsFormsApp1
 
         private void Button2_Click(object sender, EventArgs e)//Show System "Printer Settings"
         {
-            
             if (listBox1.SelectedIndex == -1) { MessageBox.Show("Please select Printer first", "Error"); }
             else
             {
-                Enabled = false;//disable form while GetPrinterList is working
-                Cursor = Cursors.No;//Show NO-style Cursor while working
                 try
                 {
                     PrinterSettingsDialog();//call printer setting window
@@ -84,12 +81,6 @@ namespace WindowsFormsApp1
                 catch (ManagementException ex)
                 {
                     MessageBox.Show(ex.Message);
-                }
-                finally
-                {
-                    Cursor = Cursors.Default;
-                    Enabled = true;//turn on main form
-                    Activate();//The form window on the first plan
                 }
             }
 
@@ -107,7 +98,6 @@ namespace WindowsFormsApp1
             };
             process.StartInfo = startInfo;
             process.Start();
-            process.WaitForExit();
         }
 
         private void Button4_Click(object sender, EventArgs e)//Print the Grid
