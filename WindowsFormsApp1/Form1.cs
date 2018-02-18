@@ -46,6 +46,7 @@ namespace WindowsFormsApp1
             button2.Enabled = false;
             button3.Enabled = false;
             button4.Enabled = false;
+            button5.Enabled = false;
             Cursor = Cursors.WaitCursor;//Show Waiting Cursor while working
             listBox1.Items.Clear();
             listBox2.Items.Clear();//clear all listboxes
@@ -64,19 +65,40 @@ namespace WindowsFormsApp1
                 button2.Enabled = true;
                 button3.Enabled = true;
                 button4.Enabled = true;
+                button5.Enabled = true;
             }
         }
 
-        private void ListBox1_SelectedIndexChanged(object sender, EventArgs e){}//list of all online printers
+        private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //list of all online printers
+        }
 
-        private void Button2_Click(object sender, EventArgs e)//Show System "Printer Settings"
+        private void Button2_Click(object sender, EventArgs e)//Displays the properties of a printer. 
         {
             if (listBox1.SelectedIndex == -1) { MessageBox.Show("Please select Printer first", "Error"); }
             else
             {
                 try
                 {
-                    PrinterSettingsDialog();//call printer setting window
+                    PrinterSettingsDialog();//Call Printer settings
+                }
+                catch (ManagementException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+        }
+
+        private void Button5_Click(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedIndex == -1) { MessageBox.Show("Please select Printer first", "Error"); }
+            else
+            {
+                try
+                {
+                    PrinterQueueDialog();//Displays the queue for a printer.
                 }
                 catch (ManagementException ex)
                 {
@@ -94,7 +116,21 @@ namespace WindowsFormsApp1
             {
                 WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,//process is hidden
                 FileName = "cmd.exe",
-                Arguments = "/C rundll32 printui.dll,PrintUIEntry /p /n \"" + SelectedPrinter + "\""//Call Printer settings via cmd.exe
+                Arguments = "/C rundll32 printui.dll,PrintUIEntry /p /n \"" + SelectedPrinter + "\""//Displays the properties of a printer. 
+            };
+            process.StartInfo = startInfo;
+            process.Start();
+        }
+
+        private void PrinterQueueDialog()
+        {
+            string SelectedPrinter = listBox1.SelectedItem.ToString();
+            System.Diagnostics.Process process = new System.Diagnostics.Process();
+            System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo
+            {
+                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,//process is hidden
+                FileName = "cmd.exe",
+                Arguments = "/C rundll32 printui.dll,PrintUIEntry /o /n \"" + SelectedPrinter + "\""//Displays the queue for a printer.
             };
             process.StartInfo = startInfo;
             process.Start();
@@ -137,7 +173,10 @@ namespace WindowsFormsApp1
             }
         }
 
-        private void ListBox2_SelectedIndexChanged(object sender, EventArgs e){}//List of Printer Properties
+        private void ListBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //List of Printer Properties
+        }
 
         private async void Button3_Click(object sender, EventArgs e)//Get Properties of Selected Printer
         {
@@ -148,6 +187,7 @@ namespace WindowsFormsApp1
                 button2.Enabled = false;
                 button3.Enabled = false;
                 button4.Enabled = false;
+                button5.Enabled = false;
                 Cursor = Cursors.WaitCursor;//disable buttons, clear listbox2, show waiting cursor
                 listBox2.Items.Clear();
                 try
@@ -165,6 +205,7 @@ namespace WindowsFormsApp1
                     button2.Enabled = true;
                     button3.Enabled = true;
                     button4.Enabled = true;
+                    button5.Enabled = true;
                 }
 
             }
@@ -199,8 +240,8 @@ namespace WindowsFormsApp1
             }
 
         }
-                
 
+        
     }
 
 }
