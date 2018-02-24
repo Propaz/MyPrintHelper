@@ -1,6 +1,7 @@
 # MyPrintHelper
-A simple program for working with printers. 
-Written for the Service Center for your needs
+A simple program For working with laser monochrome printers. 
+
+For work in the service center.
 
 1. Button "Find Printers" Displays a list of devices in the system (Only devices online, except for FAX and XPS devices.)
 (Some priors of HP even after the shutdown remain in the system with the flags Local = True, WorkOffline = true, so they fall into the list (yet).)
