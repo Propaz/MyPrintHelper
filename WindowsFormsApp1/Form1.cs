@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Windows.Forms;
-using System.Management;
-using System.Drawing.Printing;
+using System.Diagnostics;
 using System.Drawing;
-using System.Threading.Tasks;
+using System.Drawing.Printing;
+using System.Management;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
-namespace WindowsFormsApp1
+namespace PrinterParser
 {
     public partial class Form1 : Form
     {
@@ -15,44 +16,45 @@ namespace WindowsFormsApp1
             InitializeComponent();
         }
 
-        private async Task GetPrinterList(SynchronizationContext _sync, ListBox box)//Find all online Printers
+        private static async Task
+            GetPrinterList(SynchronizationContext sync, IDisposable box) //Find all online Printers
         {
-            string query = string.Format("SELECT * FROM Win32_Printer");
-            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(query))//Query from WIN32_Printer namespace
-            using (ManagementObjectCollection PrinterList = searcher.Get())
+            const string query = "SELECT * FROM Win32_Printer";
+            using (var searcher = new ManagementObjectSearcher(query)) //Query from WIN32_Printer namespace
+            using (var printerList = searcher.Get())
             {
-                await Task.Factory.StartNew((b) =>
+                await Task.Factory.StartNew(b =>
                 {
-                    foreach (ManagementObject printer in PrinterList)
+                    if (printerList == null) return;
+                    foreach (var o in printerList)
                     {
-                        string printerName = printer["Name"].ToString().ToLower();//get PrinterName
-                        if (printer["WorkOffline"].ToString().ToLower().Equals("false") && printerName.Contains("fax") == false && printerName.Contains("xps") == false)//Only online Printer, not fax and XPS devices
-                        {
-                            _sync.Send((a) =>
+                        var printer = (ManagementObject) o;
+                        var printerName = printer["Name"].ToString().ToLower(); //get PrinterName
+                        if (printer["WorkOffline"].ToString().ToLower().Equals("false") &&
+                            printerName.Contains("fax") == false &&
+                            printerName.Contains("xps") == false) //Only online Printer, not fax and XPS devices
+                            sync.Send(a =>
                             {
-                                (b as ListBox).Items.Add(a);//add all printers in listbox1 via async method
+                                (b as ListBox)?.Items.Add(a); //add all printers in listbox1 via async method
                             }, printerName);
-                        }
                     }
                 }, box);
-
             }
-   
         }
 
-        private async void Button1_Click(object sender, EventArgs e)//Find all printers
+        private async void Button1_Click(object sender, EventArgs e) //Find all printers
         {
-            button1.Enabled = false;//disable buttons while GetPrinterList is working
+            button1.Enabled = false; //disable buttons while GetPrinterList is working
             button2.Enabled = false;
             button3.Enabled = false;
             button4.Enabled = false;
             button5.Enabled = false;
-            Cursor = Cursors.WaitCursor;//Show Waiting Cursor while working
+            Cursor = Cursors.WaitCursor; //Show Waiting Cursor while working
             listBox1.Items.Clear();
-            listBox2.Items.Clear();//clear all listboxes
+            listBox2.Items.Clear(); //clear all listboxes
             try
             {
-                await GetPrinterList(SynchronizationContext.Current, listBox1);//Call GetPrinterList via async method
+                await GetPrinterList(SynchronizationContext.Current, listBox1); //Call GetPrinterList via async method
             }
             catch (ManagementException ex)
             {
@@ -60,7 +62,7 @@ namespace WindowsFormsApp1
             }
             finally
             {
-                Cursor = Cursors.Default;//Turn on Default Cursor, and enable buttons
+                Cursor = Cursors.Default; //Turn on Default Cursor, and enable buttons
                 button1.Enabled = true;
                 button2.Enabled = true;
                 button3.Enabled = true;
@@ -74,49 +76,47 @@ namespace WindowsFormsApp1
             //list of all online printers
         }
 
-        private void Button2_Click(object sender, EventArgs e)//Displays the properties of a printer. 
+        private void Button2_Click(object sender, EventArgs e) //Displays the properties of a printer. 
         {
-            if (listBox1.SelectedIndex == -1) { MessageBox.Show("Please select Printer first", "Error"); }
+            if (listBox1.SelectedIndex == -1)
+                MessageBox.Show(@"Please select Printer first", @"Error");
             else
-            {
                 try
                 {
-                    PrinterSettingsDialog();//Call Printer settings
+                    PrinterSettingsDialog(); //Call Printer settings
                 }
                 catch (ManagementException ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
-            }
-
         }
 
         private void Button5_Click(object sender, EventArgs e)
         {
-            if (listBox1.SelectedIndex == -1) { MessageBox.Show("Please select Printer first", "Error"); }
+            if (listBox1.SelectedIndex == -1)
+                MessageBox.Show(@"Please select Printer first", @"Error");
             else
-            {
                 try
                 {
-                    PrinterQueueDialog();//Displays the queue for a printer.
+                    PrinterQueueDialog(); //Displays the queue for a printer.
                 }
                 catch (ManagementException ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
-            }
-
         }
 
         private void PrinterSettingsDialog()
         {
-            string SelectedPrinter = listBox1.SelectedItem.ToString();
-            System.Diagnostics.Process process = new System.Diagnostics.Process();
-            System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo
+            var selectedPrinter = listBox1.SelectedItem.ToString();
+            var process = new Process();
+            var startInfo = new ProcessStartInfo
             {
-                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,//process is hidden
+                WindowStyle = ProcessWindowStyle.Hidden, //process is hidden
                 FileName = "cmd.exe",
-                Arguments = "/C rundll32 printui.dll,PrintUIEntry /p /n \"" + SelectedPrinter + "\""//Displays the properties of a printer. 
+                Arguments =
+                    "/C rundll32 printui.dll,PrintUIEntry /p /n \"" + selectedPrinter +
+                    "\"" //Displays the properties of a printer. 
             };
             process.StartInfo = startInfo;
             process.Start();
@@ -124,52 +124,55 @@ namespace WindowsFormsApp1
 
         private void PrinterQueueDialog()
         {
-            string SelectedPrinter = listBox1.SelectedItem.ToString();
-            System.Diagnostics.Process process = new System.Diagnostics.Process();
-            System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo
+            var selectedPrinter = listBox1.SelectedItem.ToString();
+            var process = new Process();
+            var startInfo = new ProcessStartInfo
             {
-                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,//process is hidden
+                WindowStyle = ProcessWindowStyle.Hidden, //process is hidden
                 FileName = "cmd.exe",
-                Arguments = "/C rundll32 printui.dll,PrintUIEntry /o /n \"" + SelectedPrinter + "\""//Displays the queue for a printer.
+                Arguments =
+                    "/C rundll32 printui.dll,PrintUIEntry /o /n \"" + selectedPrinter +
+                    "\"" //Displays the queue for a printer.
             };
             process.StartInfo = startInfo;
             process.Start();
         }
 
-        private void Button4_Click(object sender, EventArgs e)//Print the Grid
+        private void Button4_Click(object sender, EventArgs e) //Print the Grid
         {
-            if (listBox1.SelectedIndex == -1) { MessageBox.Show("Please select Printer first", "Error"); }
+            if (listBox1.SelectedIndex == -1)
+            {
+                MessageBox.Show(@"Please select Printer first", @"Error");
+            }
             else
             {
-                string SelectedPrinter = listBox1.SelectedItem.ToString();
-                var pd = new PrintDialog();
-                var settings = pd.PrinterSettings;
-                var name = settings.PrinterName;
-                pd.PrinterSettings.PrinterName = SelectedPrinter;
-                pd.AllowSomePages = true;
-                if (pd.ShowDialog() == DialogResult.OK)
+                var selectedPrinter = listBox1.SelectedItem.ToString();
+                var pd = new PrintDialog
                 {
-                    PrintDocument doc = new PrintDocument();
-                    doc.PrinterSettings.PrinterName = SelectedPrinter;
-                    doc.PrintPage += new PrintPageEventHandler(PrintDocument1_PrintPage);
-                    doc.Print();
-                }
+                    PrinterSettings = {PrinterName = selectedPrinter},
+                    AllowSomePages = true
+                };
+                if (pd.ShowDialog() != DialogResult.OK) return;
+                var doc = new PrintDocument {PrinterSettings = {PrinterName = selectedPrinter}};
+                doc.PrintPage += PrintDocument1_PrintPage;
+                doc.Print();
             }
         }
 
         private void PrintDocument1_PrintPage(object sender, PrintPageEventArgs e)
         {
             //Draw a grid
-            int w = 1654;//A4 size
-            int h = 2339;//A4 size
-            int widthLines = 20;//cell size
-            int heightLines = 20;//cell size
-            for (int i = 0; i < w; i += widthLines)//fill all list A4
+            const int w = 1654; //A4 size
+            const int h = 2339; //A4 size
+            const int widthLines = 20; //cell size
+            const int heightLines = 20; //cell size
+            for (var i = 0; i < w; i += widthLines) //fill all list A4
             {
                 //Width Lines
                 e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(i + widthLines, 0), new Point(i + widthLines, h));
                 //Height Lines
-                e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(0, i + heightLines), new Point(w, i + heightLines));
+                e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(0, i + heightLines),
+                    new Point(w, i + heightLines));
             }
         }
 
@@ -178,9 +181,12 @@ namespace WindowsFormsApp1
             //List of Printer Properties
         }
 
-        private async void Button3_Click(object sender, EventArgs e)//Get Properties of Selected Printer
+        private async void Button3_Click(object sender, EventArgs e) //Get Properties of Selected Printer
         {
-            if (listBox1.SelectedIndex == -1) { MessageBox.Show("Please select Printer first", "Error"); }
+            if (listBox1.SelectedIndex == -1)
+            {
+                MessageBox.Show(@"Please select Printer first", @"Error");
+            }
             else
             {
                 button1.Enabled = false;
@@ -188,11 +194,11 @@ namespace WindowsFormsApp1
                 button3.Enabled = false;
                 button4.Enabled = false;
                 button5.Enabled = false;
-                Cursor = Cursors.WaitCursor;//disable buttons, clear listbox2, show waiting cursor
+                Cursor = Cursors.WaitCursor; //disable buttons, clear listbox2, show waiting cursor
                 listBox2.Items.Clear();
                 try
                 {
-                    await GetPrinterProperty(SynchronizationContext.Current, listBox2);//Get printer property
+                    await GetPrinterProperty(SynchronizationContext.Current, listBox2); //Get printer property
                 }
                 catch (ManagementException ex)
                 {
@@ -200,49 +206,42 @@ namespace WindowsFormsApp1
                 }
                 finally
                 {
-                    Cursor = Cursors.Default;//Turn buttons, back default cursor
+                    Cursor = Cursors.Default; //Turn buttons, back default cursor
                     button1.Enabled = true;
                     button2.Enabled = true;
                     button3.Enabled = true;
                     button4.Enabled = true;
                     button5.Enabled = true;
                 }
-
             }
-
         }
 
-        private async Task GetPrinterProperty(SynchronizationContext _sync, ListBox box)//Get printer properties
+        private async Task GetPrinterProperty(SynchronizationContext sync, IDisposable box) //Get printer properties
         {
-            string SelectedPrinter = listBox1.SelectedItem.ToString();
-            string query = string.Format("SELECT * from Win32_Printer WHERE Name LIKE '%{0}'", SelectedPrinter);//Entry point
-            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(query))
-            using (ManagementObjectCollection coll = searcher.Get())
+            var selectedPrinter = listBox1.SelectedItem.ToString();
+            var query = "SELECT * from Win32_Printer WHERE Name LIKE \'" + selectedPrinter + "\'";
+            using (var searcher = new ManagementObjectSearcher(query))
+            using (var coll = searcher.Get())
             {
-                await Task.Factory.StartNew((b) =>
+                await Task.Factory.StartNew(b =>
                 {
-                    foreach (ManagementObject printer in coll)
+                    if (coll == null) return;
+                    foreach (var o in coll)
                     {
-                        foreach (PropertyData property in printer.Properties)
+                        var printer = (ManagementObject) o;
+                        foreach (var property in printer.Properties)
                         {
-                            string PrinterPropertyData = property.Name + ":" + property.Value; //give all prop. in one string
-                            if (property.Value != null)//add only not null Value
-                            {
-                                _sync.Send((pn) =>
-                                    {
-                                        (b as ListBox).Items.Add(pn);//send all prop. in listbox2 with async method
-                                    }, PrinterPropertyData);
-                            }
+                            var printerPropertyData =
+                                property.Name + ":" + property.Value; //give all prop. in one string
+                            if (property.Value != null) //add only not null Value
+                                sync.Send(pn =>
+                                {
+                                    (b as ListBox)?.Items.Add(pn); //send all prop. in listbox2 with async method
+                                }, printerPropertyData);
                         }
                     }
-          
                 }, box);
             }
-
         }
-
-        
     }
-
 }
-

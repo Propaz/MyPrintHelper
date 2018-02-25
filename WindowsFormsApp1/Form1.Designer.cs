@@ -1,4 +1,4 @@
-﻿namespace WindowsFormsApp1
+﻿namespace PrinterParser
 {
     partial class Form1
     {
