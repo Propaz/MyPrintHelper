@@ -13,7 +13,8 @@ For work in the service center.
 4. The 'Get Properties' button allows you to get a list of printer properties (Strings without titles do not fall into the list).
 
 Some Screenshots: 
-<p align="center"><img src="https://i.imgur.com/4PVfJGp.png" /></p>
-<p align="center"><img src="https://i.imgur.com/CX9VBiB.png" /></p>
-<p align="center"><img src="https://i.imgur.com/nSmQliq.png" /></p>
+<p align="center"><img src="https://github.com/Propaz/MyPrintHelper/blob/master/main.PNG" /></p>
+Example of Grid:
+<p align="center"><img src="https://github.com/Propaz/MyPrintHelper/blob/master/exampleofgrid.PNG" /></p>
+
 
