@@ -92,7 +92,7 @@ namespace PrinterParser
         {
             if (listBox1.SelectedIndex == -1)
             {
-                MessageBox.Show(@"Please select Printer first", @"Error");
+                MessageBox.Show(@"Please select Printer first", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
@@ -135,7 +135,7 @@ namespace PrinterParser
         {
             if (listBox1.SelectedIndex == -1)
             {
-                MessageBox.Show(@"Please select Printer first", @"Error");
+                MessageBox.Show(@"Please select Printer first", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
@@ -190,10 +190,7 @@ namespace PrinterParser
             }
         }
 
-        private void ContextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            contextMenuStrip1.Enabled = listBox1.SelectedIndex != -1;
-        }
+        private void ContextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e) => contextMenuStrip1.Enabled = listBox1.SelectedIndex != -1; // If item not selected context menu is disable.
 
         private void QueueOfPrinter_Click(object sender, EventArgs e)
         {
@@ -209,18 +206,40 @@ namespace PrinterParser
 
         private void Deleteprinter_Click(object sender, EventArgs e)
         {
-            try
+            var res = MessageBox.Show(@"Are you sure you want to Delete selected Printer?", @"Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);  
+            switch (res)
             {
-                PrinterTasks("/dl"); //Delete local printer
-            }
-            catch (ManagementException ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                MessageBox.Show(@"Deleted");
-                Button1_Click(null, null);
+                case DialogResult.OK:
+                    try
+                    {
+                        PrinterTasks("/dl"); //Delete local printer
+                    }
+                    catch (ManagementException ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                    finally
+                    {
+                        MessageBox.Show(@"Printer was Deleted", @"Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Button1_Click(null, null); //Renew results
+                    }
+                    break;
+                case DialogResult.Cancel:
+                    break;
+                case DialogResult.None:
+                    break;
+                case DialogResult.Abort:
+                    break;
+                case DialogResult.Retry:
+                    break;
+                case DialogResult.Ignore:
+                    break;
+                case DialogResult.Yes:
+                    break;
+                case DialogResult.No:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
         }
@@ -229,7 +248,7 @@ namespace PrinterParser
         {
             try
             {
-                PrinterTasks("/p");
+                PrinterTasks("/p"); // Properties of printer
             }
             catch (ManagementException ex)
             {
@@ -241,7 +260,7 @@ namespace PrinterParser
         {
             try
             {
-                PrinterTasks("/k");
+                PrinterTasks("/k"); // Send Standart Windows Test page
             }
             catch (ManagementException ex)
             {
