@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Printing;
@@ -11,13 +12,13 @@ namespace PrinterParser
 {
     public partial class Form1 : Form
     {
-
         public Form1()
         {
-            InitializeComponent();  
+            InitializeComponent();
         }
 
-        private static async Task GetPrinterList(SynchronizationContext sync, IDisposable box) //Find all online Printers
+        private static async Task
+            GetPrinterList(SynchronizationContext sync, IDisposable box) //Find all online Printers
         {
             const string query = "SELECT * FROM Win32_Printer";
             using (var searcher = new ManagementObjectSearcher(query)) //Query from WIN32_Printer namespace
@@ -42,11 +43,11 @@ namespace PrinterParser
             }
         }
 
-        private async void Button1_Click(object sender, EventArgs e) //Find all printers
+        private async void FindprinterBtnClick(object sender, EventArgs e) //Find all printers
         {
-            button1.Enabled = false; //disable buttons while GetPrinterList is working
-            button3.Enabled = false;
-            button4.Enabled = false;
+            findprinter_btn.Enabled = false; //disable buttons while GetPrinterList is working
+            get_properties_btn.Enabled = false;
+            print_grid_btn.Enabled = false;
             Cursor = Cursors.WaitCursor; //Show Waiting Cursor while working
             listBox1.Items.Clear();
             listBox2.Items.Clear(); //clear all listboxes
@@ -61,9 +62,9 @@ namespace PrinterParser
             finally
             {
                 Cursor = Cursors.Default; //Turn on Default Cursor, and enable buttons
-                button1.Enabled = true;
-                button3.Enabled = true;
-                button4.Enabled = true;
+                findprinter_btn.Enabled = true;
+                get_properties_btn.Enabled = true;
+                print_grid_btn.Enabled = true;
             }
         }
 
@@ -81,18 +82,19 @@ namespace PrinterParser
                 WindowStyle = ProcessWindowStyle.Hidden, //process is hidden
                 FileName = "cmd.exe",
                 Arguments =
-                    "/C rundll32 printui.dll,PrintUIEntry "+key+" /n \"" + selectedPrinter +
+                    "/C rundll32 printui.dll,PrintUIEntry " + key + " /n \"" + selectedPrinter +
                     "\"" //Send task to printer 
             };
             process.StartInfo = startInfo;
             process.Start();
         }
 
-        private void Button4_Click(object sender, EventArgs e) //Print the Grid
+        private void PrintTheGridBtnClick(object sender, EventArgs e) //Print the Grid
         {
             if (listBox1.SelectedIndex == -1)
             {
-                MessageBox.Show(@"Please select Printer first", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(@"Please select Printer first", @"Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
             }
             else
             {
@@ -131,17 +133,18 @@ namespace PrinterParser
             //List of Printer Properties
         }
 
-        private async void Button3_Click(object sender, EventArgs e) //Get Properties of Selected Printer
+        private async void GetPropertiesBtnClick(object sender, EventArgs e) //Get Properties of Selected Printer
         {
             if (listBox1.SelectedIndex == -1)
             {
-                MessageBox.Show(@"Please select Printer first", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(@"Please select Printer first", @"Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
             }
             else
             {
-                button1.Enabled = false;
-                button3.Enabled = false;
-                button4.Enabled = false;
+                findprinter_btn.Enabled = false;
+                get_properties_btn.Enabled = false;
+                print_grid_btn.Enabled = false;
                 Cursor = Cursors.WaitCursor; //disable buttons, clear listbox2, show waiting cursor
                 listBox2.Items.Clear();
                 try
@@ -155,9 +158,9 @@ namespace PrinterParser
                 finally
                 {
                     Cursor = Cursors.Default; //Turn buttons, back default cursor
-                    button1.Enabled = true;
-                    button3.Enabled = true;
-                    button4.Enabled = true;
+                    findprinter_btn.Enabled = true;
+                    get_properties_btn.Enabled = true;
+                    print_grid_btn.Enabled = true;
                 }
             }
         }
@@ -190,7 +193,10 @@ namespace PrinterParser
             }
         }
 
-        private void ContextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e) => contextMenuStrip1.Enabled = listBox1.SelectedIndex != -1; // If item not selected context menu is disable.
+        private void ContextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        {
+            contextMenuStrip1.Enabled = listBox1.SelectedIndex != -1;
+        }
 
         private void QueueOfPrinter_Click(object sender, EventArgs e)
         {
@@ -206,7 +212,8 @@ namespace PrinterParser
 
         private void Deleteprinter_Click(object sender, EventArgs e)
         {
-            var res = MessageBox.Show(@"Are you sure you want to Delete selected Printer?", @"Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);  
+            var res = MessageBox.Show(@"Are you sure you want to Delete selected Printer?", @"Confirmation",
+                MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
             switch (res)
             {
                 case DialogResult.OK:
@@ -220,9 +227,11 @@ namespace PrinterParser
                     }
                     finally
                     {
-                        MessageBox.Show(@"Printer was Deleted", @"Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        Button1_Click(null, null); //Renew results
+                        MessageBox.Show(@"Printer was Deleted", @"Information", MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+                        FindprinterBtnClick(null, null); //Renew results
                     }
+
                     break;
                 case DialogResult.Cancel:
                     break;
@@ -241,7 +250,6 @@ namespace PrinterParser
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-
         }
 
         private void PropertiesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -266,8 +274,6 @@ namespace PrinterParser
             {
                 MessageBox.Show(ex.Message);
             }
-
         }
     }
-
 }
