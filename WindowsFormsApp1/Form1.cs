@@ -1,5 +1,6 @@
 ﻿// This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -22,25 +23,24 @@ namespace PrinterParser
         private static async Task
             GetPrinterList(SynchronizationContext sync, IDisposable box) //Find all online Printers
         {
-            const string query = "SELECT * FROM Win32_Printer";
-            using (var searcher = new ManagementObjectSearcher(query)) //Query from WIN32_Printer namespace
+            using (var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Printer")
+            ) //Query from WIN32_Printer namespace
             using (var printerList = searcher.Get())
             {
                 await Task.Factory.StartNew(b =>
                 {
                     if (printerList == null) return;
                     foreach (var o in printerList)
-                    {
-                        var printer = (ManagementObject) o;
-                        var printerName = printer["Name"].ToString().ToLower(); //get PrinterName
-                        if (printer["WorkOffline"].ToString().ToLower().Equals("false") &&
-                            printerName.Contains("fax") == false &&
-                            printerName.Contains("xps") == false) //Only online Printer, not fax and XPS devices
-                            sync.Send(a =>
-                            {
-                                (b as ListBox)?.Items.Add(a); //add all printers in listbox1 via async method
-                            }, printerName);
-                    }
+                        using (var printer = (ManagementObject) o)
+                        {
+                            var printerName = printer["Name"].ToString().ToLower(); //get PrinterName
+                            if (printer["WorkOffline"].ToString().ToLower().Equals("false") &&
+                                printerName.Contains("xps") == false) //Only online Printer, not fax and XPS devices
+                                sync.Send(a =>
+                                {
+                                    (b as ListBox)?.Items.Add(a); //add all printers in listbox1 via async method
+                                }, printerName);
+                        }
                 }, box);
             }
         }
@@ -77,17 +77,17 @@ namespace PrinterParser
 
         private void PrinterTasks(string key)
         {
-            var selectedPrinter = listBox1.SelectedItem.ToString();
             var process = new Process();
             var startInfo = new ProcessStartInfo
             {
                 WindowStyle = ProcessWindowStyle.Hidden, //process is hidden
                 FileName = "cmd.exe",
                 Arguments =
-                    "/C rundll32 printui.dll,PrintUIEntry " + key + " /n \"" + selectedPrinter +
+                    "/C rundll32 printui.dll,PrintUIEntry " + key + " /n \"" + listBox1.SelectedItem +
                     "\"" //Send task to printer 
             };
-            process.StartInfo = startInfo;
+            if (key != null) process.StartInfo = startInfo;
+
             process.Start();
         }
 
@@ -100,16 +100,20 @@ namespace PrinterParser
             }
             else
             {
-                var selectedPrinter = listBox1.SelectedItem.ToString();
-                var pd = new PrintDialog
+                using (var pd = new PrintDialog
                 {
-                    PrinterSettings = {PrinterName = selectedPrinter},
+                    PrinterSettings = {PrinterName = listBox1.SelectedItem.ToString()},
                     AllowSomePages = true
-                };
-                if (pd.ShowDialog() != DialogResult.OK) return;
-                var doc = new PrintDocument {PrinterSettings = {PrinterName = selectedPrinter}};
-                doc.PrintPage += PrintDocument1_PrintPage;
-                doc.Print();
+                })
+                {
+                    if (pd.ShowDialog() != DialogResult.OK) return;
+                }
+
+                using (var doc = new PrintDocument {PrinterSettings = {PrinterName = listBox1.SelectedItem.ToString()}})
+                {
+                    doc.PrintPage += PrintDocument1_PrintPage;
+                    doc.Print();
+                }
             }
         }
 
@@ -169,28 +173,28 @@ namespace PrinterParser
 
         private async Task GetPrinterProperty(SynchronizationContext sync, IDisposable box) //Get printer properties
         {
-            var selectedPrinter = listBox1.SelectedItem.ToString();
-            var query = "SELECT * from Win32_Printer WHERE Name LIKE \'" + selectedPrinter + "\'";
-            using (var searcher = new ManagementObjectSearcher(query))
+            using (var searcher =
+                new ManagementObjectSearcher("SELECT * from Win32_Printer WHERE Name LIKE \'" + listBox1.SelectedItem +
+                                             "\'"))
             using (var coll = searcher.Get())
             {
                 await Task.Factory.StartNew(b =>
                 {
                     if (coll == null) return;
                     foreach (var o in coll)
-                    {
-                        var printer = (ManagementObject) o;
-                        foreach (var property in printer.Properties)
+                        using (var printer = (ManagementObject) o)
                         {
-                            var printerPropertyData =
-                                property.Name + ":" + property.Value; //give all prop. in one string
-                            if (property.Value != null) //add only not null Value
-                                sync.Send(pn =>
-                                {
-                                    (b as ListBox)?.Items.Add(pn); //send all prop. in listbox2 with async method
-                                }, printerPropertyData);
+                            foreach (var property in printer.Properties)
+                            {
+                                var printerPropertyData =
+                                    property.Name + ":" + property.Value; //give all prop. in one string
+                                if (property.Value != null) //add only not null Value
+                                    sync.Send(pn =>
+                                    {
+                                        (b as ListBox)?.Items.Add(pn); //send all prop. in listbox2 with async method
+                                    }, printerPropertyData);
+                            }
                         }
-                    }
                 }, box);
             }
         }
@@ -279,4 +283,3 @@ namespace PrinterParser
         }
     }
 }
-
