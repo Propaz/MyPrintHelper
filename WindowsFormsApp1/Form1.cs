@@ -35,7 +35,7 @@ namespace PrinterParser
                         {
                             var printerName = printer["Name"].ToString().ToLower(); //get PrinterName
                             if (printer["WorkOffline"].ToString().ToLower().Equals("false") &&
-                                printerName.Contains("xps") == false) //Only online Printer, not fax and XPS devices
+                                printerName.Contains("xps") == false) //Only online Printer, XPS devices
                                 sync.Send(a =>
                                 {
                                     (b as ListBox)?.Items.Add(a); //add all printers in listbox1 via async method
@@ -77,18 +77,20 @@ namespace PrinterParser
 
         private void PrinterTasks(string key)
         {
-            var process = new Process();
-            var startInfo = new ProcessStartInfo
+            using (var process = new Process())
             {
-                WindowStyle = ProcessWindowStyle.Hidden, //process is hidden
-                FileName = "cmd.exe",
-                Arguments =
-                    "/C rundll32 printui.dll,PrintUIEntry " + key + " /n \"" + listBox1.SelectedItem +
-                    "\"" //Send task to printer 
-            };
-            if (key != null) process.StartInfo = startInfo;
+                var startInfo = new ProcessStartInfo
+                {
+                    WindowStyle = ProcessWindowStyle.Hidden, //process is hidden
+                    FileName = "cmd.exe",
+                    Arguments =
+                        "/C rundll32 printui.dll,PrintUIEntry " + key + " /n \"" + listBox1.SelectedItem +
+                        "\"" //Send task to printer 
+                };
+                if (key != null) process.StartInfo = startInfo;
 
-            process.Start();
+                process.Start();
+            }
         }
 
         private void PrintTheGridBtnClick(object sender, EventArgs e) //Print the Grid
