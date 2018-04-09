@@ -12,7 +12,7 @@ For work in the service center.
 
 Some Screenshots: 
 <p align="center"><img src="https://github.com/Propaz/MyPrintHelper/blob/master/main.PNG" /></p>
+<p align="center"><img src="https://github.com/Propaz/MyPrintHelper/blob/master/Second.PNG" /></p>
+<p align="center"><img src="https://github.com/Propaz/MyPrintHelper/blob/master/menu.png" /></p>
 Example of Grid:
 <p align="center"><img src="https://github.com/Propaz/MyPrintHelper/blob/master/exampleofgrid.PNG" /></p>
-
-
