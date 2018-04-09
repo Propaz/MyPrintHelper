@@ -18,6 +18,12 @@ namespace PrinterParser
         public Form1()
         {
             InitializeComponent();
+            listBox1.MouseDown += ListBox1_MouseDown;
+        }
+
+        private void ListBox1_MouseDown(object sender, MouseEventArgs e)
+        {
+            listBox1.SelectedIndex = listBox1.IndexFromPoint(e.X, e.Y); //Right Click to select items in a ListBox
         }
 
         private static async Task
@@ -48,11 +54,9 @@ namespace PrinterParser
         private async void FindprinterBtnClick(object sender, EventArgs e) //Find all printers
         {
             findprinter_btn.Enabled = false; //disable buttons while GetPrinterList is working
-            get_properties_btn.Enabled = false;
             print_grid_btn.Enabled = false;
             Cursor = Cursors.WaitCursor; //Show Waiting Cursor while working
             listBox1.Items.Clear();
-            listBox2.Items.Clear(); //clear all listboxes
             try
             {
                 await GetPrinterList(SynchronizationContext.Current, listBox1); //Call GetPrinterList via async method
@@ -65,7 +69,6 @@ namespace PrinterParser
             {
                 Cursor = Cursors.Default; //Turn on Default Cursor, and enable buttons
                 findprinter_btn.Enabled = true;
-                get_properties_btn.Enabled = true;
                 print_grid_btn.Enabled = true;
             }
         }
@@ -133,71 +136,6 @@ namespace PrinterParser
                 //Height Lines
                 e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(0, i + heightLines),
                     new Point(w, i + heightLines));
-            }
-        }
-
-        private void ListBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //List of Printer Properties
-        }
-
-        private async void GetPropertiesBtnClick(object sender, EventArgs e) //Get Properties of Selected Printer
-        {
-            if (listBox1.SelectedIndex == -1)
-            {
-                MessageBox.Show(@"Please select Printer first", @"Error", MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-            }
-            else
-            {
-                findprinter_btn.Enabled = false;
-                get_properties_btn.Enabled = false;
-                print_grid_btn.Enabled = false;
-                Cursor = Cursors.WaitCursor; //disable buttons, clear listbox2, show waiting cursor
-                listBox2.Items.Clear();
-                try
-                {
-                    await GetPrinterProperty(SynchronizationContext.Current, listBox2); //Get printer property
-                }
-                catch (ManagementException ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-                finally
-                {
-                    Cursor = Cursors.Default; //Turn buttons, back default cursor
-                    findprinter_btn.Enabled = true;
-                    get_properties_btn.Enabled = true;
-                    print_grid_btn.Enabled = true;
-                }
-            }
-        }
-
-        private async Task GetPrinterProperty(SynchronizationContext sync, IDisposable box) //Get printer properties
-        {
-            using (var searcher =
-                new ManagementObjectSearcher("SELECT * from Win32_Printer WHERE Name LIKE \'" + listBox1.SelectedItem +
-                                             "\'"))
-            using (var coll = searcher.Get())
-            {
-                await Task.Factory.StartNew(b =>
-                {
-                    if (coll == null) return;
-                    foreach (var o in coll)
-                        using (var printer = (ManagementObject) o)
-                        {
-                            foreach (var property in printer.Properties)
-                            {
-                                var printerPropertyData =
-                                    property.Name + ":" + property.Value; //give all prop. in one string
-                                if (property.Value != null) //add only not null Value
-                                    sync.Send(pn =>
-                                    {
-                                        (b as ListBox)?.Items.Add(pn); //send all prop. in listbox2 with async method
-                                    }, printerPropertyData);
-                            }
-                        }
-                }, box);
             }
         }
 
@@ -281,6 +219,14 @@ namespace PrinterParser
             catch (ManagementException ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void AdditionalPropertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var fm2 = new Form2(this) {Text = @"Properties of [" + listBox1.SelectedItem + "]"})
+            {
+                fm2.ShowDialog(); //Show Printer Additional properties in new Form
             }
         }
     }
