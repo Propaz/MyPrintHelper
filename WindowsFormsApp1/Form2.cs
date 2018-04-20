@@ -3,8 +3,6 @@
 
 using System;
 using System.Management;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PrinterParser
@@ -17,6 +15,13 @@ namespace PrinterParser
         {
             _fm1 = fm1;
             InitializeComponent();
+
+            listView1.View = View.Details;
+            listView1.GridLines = true;
+            listView1.FullRowSelect = true;
+
+            listView1.Columns.Add("Property", 250);
+            listView1.Columns.Add("Value", 240);
         }
 
         protected override void OnShown(EventArgs e)
@@ -25,8 +30,7 @@ namespace PrinterParser
             Button1_Click(null, null); //Calling a GetPrinterProperty when a form2 is loaded
         }
 
-        private async Task
-            GetPrinterProperty(SynchronizationContext sync, IDisposable box) //Get printer Additional property
+        private void GetPrinterProperty() //Get printer Additional property
         {
             using (var searcher =
                 new ManagementObjectSearcher("SELECT * from Win32_Printer WHERE Name LIKE \'" +
@@ -34,36 +38,33 @@ namespace PrinterParser
                                              "\'"))
             using (var coll = searcher.Get())
             {
-                await Task.Factory.StartNew(b =>
-                {
-                    if (coll == null) return;
-                    foreach (var o in coll)
-                        using (var printer = (ManagementObject) o)
+                foreach (var o in coll)
+                    using (var printer = (ManagementObject) o)
+                    {
+                        foreach (var property in printer.Properties)
                         {
-                            foreach (var property in printer.Properties)
+                            var arr = new string[2];
+                            if (property != null)
                             {
-                                var printerPropertyData =
-                                    property.Name + ":" + property.Value; //give all prop. in one string
-                                if (property.Value != null) //add only not null Value
-                                    sync.Send(pn =>
-                                    {
-                                        (b as ListBox)?.Items.Add(pn); //send all prop. in listbox2 with async method
-                                    }, printerPropertyData);
+                                arr[0] = property.Name;
+                                if (property.Value != null) arr[1] = property.Value.ToString();
                             }
+
+                            var itm = new ListViewItem(arr);
+                            listView1?.Items.Add(itm);
                         }
-                }, box);
+                    }
             }
         }
 
-        private async void Button1_Click(object sender, EventArgs e) //get Additional property
+        private void Button1_Click(object sender, EventArgs e) //get Additional property
         {
             Cursor = Cursors.WaitCursor;
             button1.Enabled = false;
-            PrinterAdditionalProperty.Items.Clear();
+            listView1.Items.Clear();
             try
             {
-                await GetPrinterProperty(SynchronizationContext.Current,
-                    PrinterAdditionalProperty); //Get Printer Additional property
+                GetPrinterProperty();
             }
             catch (ManagementException ex)
             {
@@ -76,9 +77,8 @@ namespace PrinterParser
             }
         }
 
-        private void PrinterAdvaicedProperties_SelectedIndexChanged(object sender, EventArgs e)
+        private void ListView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //List of Printer Additional properties
         }
     }
 }

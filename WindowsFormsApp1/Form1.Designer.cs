@@ -38,9 +38,9 @@
             this.QueueOfPrinter = new System.Windows.Forms.ToolStripMenuItem();
             this.DeletePrinter = new System.Windows.Forms.ToolStripMenuItem();
             this.AdditionalPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sendFileToPrinterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.print_grid_btn = new System.Windows.Forms.Button();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
-            this.label1 = new System.Windows.Forms.Label();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -48,7 +48,7 @@
             // 
             this.findprinter_btn.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.findprinter_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.findprinter_btn.Location = new System.Drawing.Point(12, 367);
+            this.findprinter_btn.Location = new System.Drawing.Point(12, 413);
             this.findprinter_btn.Name = "findprinter_btn";
             this.findprinter_btn.Size = new System.Drawing.Size(410, 34);
             this.findprinter_btn.TabIndex = 0;
@@ -64,26 +64,28 @@
             this.listBox1.ForeColor = System.Drawing.Color.Black;
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 16;
-            this.listBox1.Location = new System.Drawing.Point(12, 23);
+            this.listBox1.Location = new System.Drawing.Point(12, 7);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(516, 338);
+            this.listBox1.Size = new System.Drawing.Size(516, 402);
             this.listBox1.TabIndex = 1;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.ListBox1_SelectedIndexChanged);
             // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.PropertiesOfPrinter,
             this.SendTestPage,
             this.QueueOfPrinter,
-            this.DeletePrinter,
-            this.AdditionalPropertiesToolStripMenuItem});
+            this.sendFileToPrinterToolStripMenuItem,
+            this.AdditionalPropertiesToolStripMenuItem,
+            this.PropertiesOfPrinter,
+            this.DeletePrinter});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(186, 114);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(186, 136);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuStrip1_Opening);
             // 
             // PropertiesOfPrinter
             // 
+            this.PropertiesOfPrinter.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.PropertiesOfPrinter.Name = "PropertiesOfPrinter";
             this.PropertiesOfPrinter.Size = new System.Drawing.Size(185, 22);
             this.PropertiesOfPrinter.Text = "Properties";
@@ -105,6 +107,7 @@
             // 
             // DeletePrinter
             // 
+            this.DeletePrinter.BackColor = System.Drawing.Color.Tomato;
             this.DeletePrinter.Name = "DeletePrinter";
             this.DeletePrinter.Size = new System.Drawing.Size(185, 22);
             this.DeletePrinter.Text = "Delete the Printer";
@@ -117,9 +120,17 @@
             this.AdditionalPropertiesToolStripMenuItem.Text = "Additional Properties";
             this.AdditionalPropertiesToolStripMenuItem.Click += new System.EventHandler(this.AdditionalPropertiesToolStripMenuItem_Click);
             // 
+            // sendFileToPrinterToolStripMenuItem
+            // 
+            this.sendFileToPrinterToolStripMenuItem.BackColor = System.Drawing.SystemColors.Info;
+            this.sendFileToPrinterToolStripMenuItem.Name = "sendFileToPrinterToolStripMenuItem";
+            this.sendFileToPrinterToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.sendFileToPrinterToolStripMenuItem.Text = "Send File To Printer";
+            this.sendFileToPrinterToolStripMenuItem.Click += new System.EventHandler(this.SendFileToPrinterToolStripMenuItem_Click);
+            // 
             // print_grid_btn
             // 
-            this.print_grid_btn.Location = new System.Drawing.Point(428, 367);
+            this.print_grid_btn.Location = new System.Drawing.Point(428, 413);
             this.print_grid_btn.Name = "print_grid_btn";
             this.print_grid_btn.Size = new System.Drawing.Size(100, 34);
             this.print_grid_btn.TabIndex = 7;
@@ -131,32 +142,21 @@
             // 
             this.printDocument1.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.PrintDocument1_PrintPage);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 7);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(56, 13);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "Printer List";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(538, 407);
-            this.Controls.Add(this.label1);
+            this.ClientSize = new System.Drawing.Size(538, 455);
             this.Controls.Add(this.print_grid_btn);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.findprinter_btn);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "Printer Helper at 09.04.2018";
+            this.Text = "Printer Helper at 18.04.2018";
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -165,7 +165,6 @@
         private System.Windows.Forms.Button findprinter_btn;
         private System.Windows.Forms.Button print_grid_btn;
         private System.Drawing.Printing.PrintDocument printDocument1;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem DeletePrinter;
         private System.Windows.Forms.ToolStripMenuItem QueueOfPrinter;
@@ -173,6 +172,7 @@
         private System.Windows.Forms.ToolStripMenuItem SendTestPage;
         public System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.ToolStripMenuItem AdditionalPropertiesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sendFileToPrinterToolStripMenuItem;
     }
 }
 

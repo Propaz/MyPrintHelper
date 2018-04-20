@@ -158,7 +158,7 @@ namespace PrinterParser
 
         private void Deleteprinter_Click(object sender, EventArgs e)
         {
-            var res = MessageBox.Show(@"Are you sure you want to Delete selected Printer?", @"Confirmation",
+            var res = MessageBox.Show(@"Are you sure you want to Delete ["+listBox1.SelectedItem.ToString().ToUpper()+@"] ?", @"Confirmation",
                 MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
             switch (res)
             {
@@ -173,7 +173,7 @@ namespace PrinterParser
                     }
                     finally
                     {
-                        MessageBox.Show(@"Printer was Deleted", @"Information", MessageBoxButtons.OK,
+                        MessageBox.Show(@"The [" + listBox1.SelectedItem.ToString().ToUpper() + @"] was Deleted", @"Information", MessageBoxButtons.OK,
                             MessageBoxIcon.Information);
                         FindprinterBtnClick(null, null); //Renew results
                     }
@@ -224,10 +224,45 @@ namespace PrinterParser
 
         private void AdditionalPropertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var fm2 = new Form2(this) {Text = @"Properties of [" + listBox1.SelectedItem + "]"})
+            using (var fm2 = new Form2(this) {Text = @"Additional Properties of [" + listBox1.SelectedItem.ToString().ToUpper() + @"]"})
             {
                 fm2.ShowDialog(); //Show Printer Additional properties in new Form
             }
+        }
+
+        private void SendFileToPrinterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (var pd = new PrintDialog
+                {
+                    PrinterSettings = {PrinterName = listBox1.SelectedItem.ToString()},
+                    AllowSomePages = true
+                })
+                {
+                    var dlg = new OpenFileDialog
+                    {
+                        Filter =
+                            @"TXT Files(*.txt)|*.txt|JPG Files(*.jpg)|*.jpg|PNG Files(*.png)|*.png|All Files(*.*)|*.*"
+                    };
+
+                    if (dlg.ShowDialog() != DialogResult.OK) return;
+                    if (dlg.FileName == null) return;
+                    var info = new ProcessStartInfo(dlg.FileName)
+                    {
+                        Verb = "Print",
+                        CreateNoWindow = true,
+                        WindowStyle = ProcessWindowStyle.Hidden
+                    };
+                    if (pd.ShowDialog() != DialogResult.OK) return;
+                    Process.Start(info);
+                }
+            }
+            catch (ManagementException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
     }
 }
