@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.findprinter_btn = new System.Windows.Forms.Button();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.ListOfPrintersListBox = new System.Windows.Forms.ListBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.PropertiesOfPrinter = new System.Windows.Forms.ToolStripMenuItem();
             this.SendTestPage = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,19 +56,19 @@
             this.findprinter_btn.UseVisualStyleBackColor = true;
             this.findprinter_btn.Click += new System.EventHandler(this.FindprinterBtnClick);
             // 
-            // listBox1
+            // ListOfPrintersListBox
             // 
-            this.listBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.listBox1.ContextMenuStrip = this.contextMenuStrip1;
-            this.listBox1.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.listBox1.ForeColor = System.Drawing.Color.Black;
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 16;
-            this.listBox1.Location = new System.Drawing.Point(12, 7);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(516, 402);
-            this.listBox1.TabIndex = 1;
-            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.ListBox1_SelectedIndexChanged);
+            this.ListOfPrintersListBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ListOfPrintersListBox.ContextMenuStrip = this.contextMenuStrip1;
+            this.ListOfPrintersListBox.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ListOfPrintersListBox.ForeColor = System.Drawing.Color.Black;
+            this.ListOfPrintersListBox.FormattingEnabled = true;
+            this.ListOfPrintersListBox.ItemHeight = 16;
+            this.ListOfPrintersListBox.Location = new System.Drawing.Point(12, 7);
+            this.ListOfPrintersListBox.Name = "ListOfPrintersListBox";
+            this.ListOfPrintersListBox.Size = new System.Drawing.Size(516, 402);
+            this.ListOfPrintersListBox.TabIndex = 1;
+            this.ListOfPrintersListBox.SelectedIndexChanged += new System.EventHandler(this.ListOfPrintersChanged);
             // 
             // contextMenuStrip1
             // 
@@ -140,7 +140,7 @@
             // 
             // printDocument1
             // 
-            this.printDocument1.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.PrintDocument1_PrintPage);
+            this.printDocument1.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.PrintTheGridDocument);
             // 
             // Form1
             // 
@@ -148,7 +148,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(538, 455);
             this.Controls.Add(this.print_grid_btn);
-            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.ListOfPrintersListBox);
             this.Controls.Add(this.findprinter_btn);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -170,7 +170,7 @@
         private System.Windows.Forms.ToolStripMenuItem QueueOfPrinter;
         private System.Windows.Forms.ToolStripMenuItem PropertiesOfPrinter;
         private System.Windows.Forms.ToolStripMenuItem SendTestPage;
-        public System.Windows.Forms.ListBox listBox1;
+        public System.Windows.Forms.ListBox ListOfPrintersListBox;
         private System.Windows.Forms.ToolStripMenuItem AdditionalPropertiesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sendFileToPrinterToolStripMenuItem;
     }

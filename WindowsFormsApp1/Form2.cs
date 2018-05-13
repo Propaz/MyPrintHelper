@@ -16,25 +16,25 @@ namespace PrinterParser
             _fm1 = fm1;
             InitializeComponent();
 
-            listView1.View = View.Details;
-            listView1.GridLines = true;
-            listView1.FullRowSelect = true;
+            ListOfAdditionalPrinterProperties.View = View.Details;
+            ListOfAdditionalPrinterProperties.GridLines = true;
+            ListOfAdditionalPrinterProperties.FullRowSelect = true;
 
-            listView1.Columns.Add("Property", 250);
-            listView1.Columns.Add("Value", 240);
+            ListOfAdditionalPrinterProperties.Columns.Add("Property", 250);
+            ListOfAdditionalPrinterProperties.Columns.Add("Value", 240);
         }
 
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
-            Button1_Click(null, null); //Calling a GetPrinterProperty when a form2 is loaded
+            GetAdditionalPrinterPropertiesClick(null, null); //Calling a GetPrinterProperty when a form2 is loaded
         }
 
         private void GetPrinterProperty() //Get printer Additional property
         {
             using (var searcher =
                 new ManagementObjectSearcher("SELECT * from Win32_Printer WHERE Name LIKE \'" +
-                                             _fm1.listBox1.SelectedItem +
+                                             _fm1.ListOfPrintersListBox.SelectedItem +
                                              "\'"))
             using (var coll = searcher.Get())
             {
@@ -51,17 +51,17 @@ namespace PrinterParser
                             }
 
                             var itm = new ListViewItem(arr);
-                            listView1?.Items.Add(itm);
+                            ListOfAdditionalPrinterProperties?.Items.Add(itm);
                         }
                     }
             }
         }
 
-        private void Button1_Click(object sender, EventArgs e) //get Additional property
+        private void GetAdditionalPrinterPropertiesClick(object sender, EventArgs e) //get Additional property
         {
             Cursor = Cursors.WaitCursor;
             button1.Enabled = false;
-            listView1.Items.Clear();
+            ListOfAdditionalPrinterProperties.Items.Clear();
             try
             {
                 GetPrinterProperty();
@@ -77,7 +77,7 @@ namespace PrinterParser
             }
         }
 
-        private void ListView1_SelectedIndexChanged(object sender, EventArgs e)
+        private void ListOfAdditionalPropertiesOfPrinterChanged(object sender, EventArgs e)
         {
         }
     }

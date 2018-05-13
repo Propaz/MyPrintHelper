@@ -18,12 +18,12 @@ namespace PrinterParser
         public Form1()
         {
             InitializeComponent();
-            listBox1.MouseDown += ListBox1_MouseDown;
+            ListOfPrintersListBox.MouseDown += ListOfPrintersListBoxMouseDown;
         }
 
-        private void ListBox1_MouseDown(object sender, MouseEventArgs e)
+        private void ListOfPrintersListBoxMouseDown(object sender, MouseEventArgs e)
         {
-            listBox1.SelectedIndex = listBox1.IndexFromPoint(e.X, e.Y); //Right Click to select items in a ListBox
+            ListOfPrintersListBox.SelectedIndex = ListOfPrintersListBox.IndexFromPoint(e.X, e.Y); //Right Click to select items in a ListBox
         }
 
         private static async Task
@@ -56,10 +56,10 @@ namespace PrinterParser
             findprinter_btn.Enabled = false; //disable buttons while GetPrinterList is working
             print_grid_btn.Enabled = false;
             Cursor = Cursors.WaitCursor; //Show Waiting Cursor while working
-            listBox1.Items.Clear();
+            ListOfPrintersListBox.Items.Clear();
             try
             {
-                await GetPrinterList(SynchronizationContext.Current, listBox1); //Call GetPrinterList via async method
+                await GetPrinterList(SynchronizationContext.Current, ListOfPrintersListBox); //Call GetPrinterList via async method
             }
             catch (ManagementException ex)
             {
@@ -73,7 +73,7 @@ namespace PrinterParser
             }
         }
 
-        private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void ListOfPrintersChanged(object sender, EventArgs e)
         {
             //list of all online printers
         }
@@ -87,7 +87,7 @@ namespace PrinterParser
                     WindowStyle = ProcessWindowStyle.Hidden, //process is hidden
                     FileName = "cmd.exe",
                     Arguments =
-                        "/C rundll32 printui.dll,PrintUIEntry " + key + " /n \"" + listBox1.SelectedItem +
+                        "/C rundll32 printui.dll,PrintUIEntry " + key + " /n \"" + ListOfPrintersListBox.SelectedItem +
                         "\"" //Send task to printer 
                 };
                 if (key != null) process.StartInfo = startInfo;
@@ -98,7 +98,7 @@ namespace PrinterParser
 
         private void PrintTheGridBtnClick(object sender, EventArgs e) //Print the Grid
         {
-            if (listBox1.SelectedIndex == -1)
+            if (ListOfPrintersListBox.SelectedIndex == -1)
             {
                 MessageBox.Show(@"Please select Printer first", @"Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
@@ -107,22 +107,22 @@ namespace PrinterParser
             {
                 using (var pd = new PrintDialog
                 {
-                    PrinterSettings = {PrinterName = listBox1.SelectedItem.ToString()},
+                    PrinterSettings = {PrinterName = ListOfPrintersListBox.SelectedItem.ToString()},
                     AllowSomePages = true
                 })
                 {
                     if (pd.ShowDialog() != DialogResult.OK) return;
                 }
 
-                using (var doc = new PrintDocument {PrinterSettings = {PrinterName = listBox1.SelectedItem.ToString()}})
+                using (var doc = new PrintDocument {PrinterSettings = {PrinterName = ListOfPrintersListBox.SelectedItem.ToString()}})
                 {
-                    doc.PrintPage += PrintDocument1_PrintPage;
+                    doc.PrintPage += PrintTheGridDocument;
                     doc.Print();
                 }
             }
         }
 
-        private void PrintDocument1_PrintPage(object sender, PrintPageEventArgs e)
+        private void PrintTheGridDocument(object sender, PrintPageEventArgs e)
         {
             //Draw a grid
             const int w = 1654; //A4 size
@@ -141,7 +141,7 @@ namespace PrinterParser
 
         private void ContextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
-            contextMenuStrip1.Enabled = listBox1.SelectedIndex != -1;
+            contextMenuStrip1.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
         }
 
         private void QueueOfPrinter_Click(object sender, EventArgs e)
@@ -158,7 +158,7 @@ namespace PrinterParser
 
         private void Deleteprinter_Click(object sender, EventArgs e)
         {
-            var res = MessageBox.Show(@"Are you sure you want to Delete ["+listBox1.SelectedItem.ToString().ToUpper()+@"] ?", @"Confirmation",
+            var res = MessageBox.Show(@"Are you sure you want to Delete ["+ListOfPrintersListBox.SelectedItem.ToString().ToUpper()+@"] ?", @"Confirmation",
                 MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
             switch (res)
             {
@@ -173,7 +173,7 @@ namespace PrinterParser
                     }
                     finally
                     {
-                        MessageBox.Show(@"The [" + listBox1.SelectedItem.ToString().ToUpper() + @"] was Deleted", @"Information", MessageBoxButtons.OK,
+                        MessageBox.Show(@"The [" + ListOfPrintersListBox.SelectedItem.ToString().ToUpper() + @"] was Deleted", @"Information", MessageBoxButtons.OK,
                             MessageBoxIcon.Information);
                         FindprinterBtnClick(null, null); //Renew results
                     }
@@ -224,7 +224,7 @@ namespace PrinterParser
 
         private void AdditionalPropertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var fm2 = new Form2(this) {Text = @"Additional Properties of [" + listBox1.SelectedItem.ToString().ToUpper() + @"]"})
+            using (var fm2 = new Form2(this) {Text = @"Additional Properties of [" + ListOfPrintersListBox.SelectedItem.ToString().ToUpper() + @"]"})
             {
                 fm2.ShowDialog(); //Show Printer Additional properties in new Form
             }
@@ -234,35 +234,42 @@ namespace PrinterParser
         {
             try
             {
-                using (var pd = new PrintDialog
-                {
-                    PrinterSettings = {PrinterName = listBox1.SelectedItem.ToString()},
-                    AllowSomePages = true
-                })
-                {
-                    var dlg = new OpenFileDialog
-                    {
-                        Filter =
-                            @"TXT Files(*.txt)|*.txt|JPG Files(*.jpg)|*.jpg|PNG Files(*.png)|*.png|All Files(*.*)|*.*"
-                    };
-
-                    if (dlg.ShowDialog() != DialogResult.OK) return;
-                    if (dlg.FileName == null) return;
-                    var info = new ProcessStartInfo(dlg.FileName)
-                    {
-                        Verb = "Print",
-                        CreateNoWindow = true,
-                        WindowStyle = ProcessWindowStyle.Hidden
-                    };
-                    if (pd.ShowDialog() != DialogResult.OK) return;
-                    Process.Start(info);
-                }
+                if (SendFileToSelectedPrinter()) return;
             }
             catch (ManagementException ex)
             {
                 MessageBox.Show(ex.Message);
             }
 
+        }
+
+        private bool SendFileToSelectedPrinter()
+        {
+            using (var pd = new PrintDialog
+            {
+                PrinterSettings = {PrinterName = ListOfPrintersListBox.SelectedItem.ToString()},
+                AllowSomePages = true
+            })
+            {
+                var dlg = new OpenFileDialog
+                {
+                    Filter =
+                        @"TXT Files(*.txt)|*.txt|JPG Files(*.jpg)|*.jpg|PNG Files(*.png)|*.png|All Files(*.*)|*.*"
+                };
+
+                if (dlg.ShowDialog() != DialogResult.OK) return true;
+                if (dlg.FileName == null) return true;
+                var info = new ProcessStartInfo(dlg.FileName)
+                {
+                    Verb = "Print",
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
+                if (pd.ShowDialog() != DialogResult.OK) return true;
+                Process.Start(info);
+            }
+
+            return false;
         }
     }
 }
