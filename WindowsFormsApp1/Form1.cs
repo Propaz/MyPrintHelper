@@ -29,8 +29,7 @@ namespace PrinterParser
         private static async Task
             GetPrinterList(SynchronizationContext sync, IDisposable box) //Find all online Printers
         {
-            using (var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Printer")
-            ) //Query from WIN32_Printer namespace
+            using (var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Printer"))
             using (var printerList = searcher.Get())
             {
                 await Task.Factory.StartNew(b =>
@@ -105,19 +104,19 @@ namespace PrinterParser
             }
             else
             {
-                using (var pd = new PrintDialog
+                using (var printDialog = new PrintDialog
                 {
                     PrinterSettings = {PrinterName = ListOfPrintersListBox.SelectedItem.ToString()},
                     AllowSomePages = true
                 })
                 {
-                    if (pd.ShowDialog() != DialogResult.OK) return;
+                    if (printDialog.ShowDialog() != DialogResult.OK) return;
                 }
 
-                using (var doc = new PrintDocument {PrinterSettings = {PrinterName = ListOfPrintersListBox.SelectedItem.ToString()}})
+                using (var document = new PrintDocument {PrinterSettings = {PrinterName = ListOfPrintersListBox.SelectedItem.ToString()}})
                 {
-                    doc.PrintPage += PrintTheGridDocument;
-                    doc.Print();
+                    document.PrintPage += PrintTheGridDocument;
+                    document.Print();
                 }
             }
         }
@@ -158,9 +157,9 @@ namespace PrinterParser
 
         private void Deleteprinter_Click(object sender, EventArgs e)
         {
-            var res = MessageBox.Show(@"Are you sure you want to Delete ["+ListOfPrintersListBox.SelectedItem.ToString().ToUpper()+@"] ?", @"Confirmation",
+            var dialogResult = MessageBox.Show(@"Are you sure you want to Delete ["+ListOfPrintersListBox.SelectedItem.ToString().ToUpper()+@"] ?", @"Confirmation",
                 MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
-            switch (res)
+            switch (dialogResult)
             {
                 case DialogResult.OK:
                     try
@@ -245,28 +244,28 @@ namespace PrinterParser
 
         private bool SendFileToSelectedPrinter()
         {
-            using (var pd = new PrintDialog
+            using (var printDialog = new PrintDialog
             {
                 PrinterSettings = {PrinterName = ListOfPrintersListBox.SelectedItem.ToString()},
                 AllowSomePages = true
             })
             {
-                var dlg = new OpenFileDialog
+                var openFileDialog = new OpenFileDialog
                 {
                     Filter =
                         @"TXT Files(*.txt)|*.txt|JPG Files(*.jpg)|*.jpg|PNG Files(*.png)|*.png|All Files(*.*)|*.*"
                 };
 
-                if (dlg.ShowDialog() != DialogResult.OK) return true;
-                if (dlg.FileName == null) return true;
-                var info = new ProcessStartInfo(dlg.FileName)
+                if (openFileDialog.ShowDialog() != DialogResult.OK) return true;
+                if (openFileDialog.FileName == null) return true;
+                var processStartInfo = new ProcessStartInfo(openFileDialog.FileName)
                 {
                     Verb = "Print",
                     CreateNoWindow = true,
                     WindowStyle = ProcessWindowStyle.Hidden
                 };
-                if (pd.ShowDialog() != DialogResult.OK) return true;
-                Process.Start(info);
+                if (printDialog.ShowDialog() != DialogResult.OK) return true;
+                Process.Start(processStartInfo);
             }
 
             return false;

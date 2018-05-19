@@ -60,7 +60,7 @@ namespace PrinterParser
         private void GetAdditionalPrinterPropertiesClick(object sender, EventArgs e) //get Additional property
         {
             Cursor = Cursors.WaitCursor;
-            button1.Enabled = false;
+            renewButton1.Enabled = false;
             ListOfAdditionalPrinterProperties.Items.Clear();
             try
             {
@@ -72,7 +72,7 @@ namespace PrinterParser
             }
             finally
             {
-                button1.Enabled = true;
+                renewButton1.Enabled = true;
                 Cursor = Cursors.Default;
             }
         }
