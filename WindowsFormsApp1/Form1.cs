@@ -23,7 +23,8 @@ namespace PrinterParser
 
         private void ListOfPrintersListBoxMouseDown(object sender, MouseEventArgs e)
         {
-            ListOfPrintersListBox.SelectedIndex = ListOfPrintersListBox.IndexFromPoint(e.X, e.Y); //Right Click to select items in a ListBox
+            ListOfPrintersListBox.SelectedIndex =
+                ListOfPrintersListBox.IndexFromPoint(e.X, e.Y); //Right Click to select items in a ListBox
         }
 
         private static async Task
@@ -58,7 +59,8 @@ namespace PrinterParser
             ListOfPrintersListBox.Items.Clear();
             try
             {
-                await GetPrinterList(SynchronizationContext.Current, ListOfPrintersListBox); //Call GetPrinterList via async method
+                await GetPrinterList(SynchronizationContext.Current,
+                    ListOfPrintersListBox); //Call GetPrinterList via async method
             }
             catch (ManagementException ex)
             {
@@ -113,7 +115,8 @@ namespace PrinterParser
                     if (printDialog.ShowDialog() != DialogResult.OK) return;
                 }
 
-                using (var document = new PrintDocument {PrinterSettings = {PrinterName = ListOfPrintersListBox.SelectedItem.ToString()}})
+                using (var document = new PrintDocument
+                    {PrinterSettings = {PrinterName = ListOfPrintersListBox.SelectedItem.ToString()}})
                 {
                     document.PrintPage += PrintTheGridDocument;
                     document.Print();
@@ -157,7 +160,9 @@ namespace PrinterParser
 
         private void Deleteprinter_Click(object sender, EventArgs e)
         {
-            var dialogResult = MessageBox.Show(@"Are you sure you want to Delete ["+ListOfPrintersListBox.SelectedItem.ToString().ToUpper()+@"] ?", @"Confirmation",
+            var dialogResult = MessageBox.Show(
+                @"Are you sure you want to Delete [" + ListOfPrintersListBox.SelectedItem.ToString().ToUpper() + @"] ?",
+                @"Confirmation",
                 MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
             switch (dialogResult)
             {
@@ -172,7 +177,9 @@ namespace PrinterParser
                     }
                     finally
                     {
-                        MessageBox.Show(@"The [" + ListOfPrintersListBox.SelectedItem.ToString().ToUpper() + @"] was Deleted", @"Information", MessageBoxButtons.OK,
+                        MessageBox.Show(
+                            @"The [" + ListOfPrintersListBox.SelectedItem.ToString().ToUpper() + @"] was Deleted",
+                            @"Information", MessageBoxButtons.OK,
                             MessageBoxIcon.Information);
                         FindprinterBtnClick(null, null); //Renew results
                     }
@@ -223,7 +230,8 @@ namespace PrinterParser
 
         private void AdditionalPropertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var fm2 = new Form2(this) {Text = @"Additional Properties of [" + ListOfPrintersListBox.SelectedItem.ToString().ToUpper() + @"]"})
+            using (var fm2 = new Form2(this)
+                {Text = @"Additional Properties of [" + ListOfPrintersListBox.SelectedItem.ToString().ToUpper() + @"]"})
             {
                 fm2.ShowDialog(); //Show Printer Additional properties in new Form
             }
@@ -233,16 +241,16 @@ namespace PrinterParser
         {
             try
             {
-                if (SendFileToSelectedPrinter()) return;
+                PrinterTasks("/y");
+                SendFileToSelectedPrinter();
             }
             catch (ManagementException ex)
             {
                 MessageBox.Show(ex.Message);
             }
-
         }
 
-        private bool SendFileToSelectedPrinter()
+        private void SendFileToSelectedPrinter()
         {
             using (var printDialog = new PrintDialog
             {
@@ -256,19 +264,17 @@ namespace PrinterParser
                         @"TXT Files(*.txt)|*.txt|JPG Files(*.jpg)|*.jpg|PNG Files(*.png)|*.png|All Files(*.*)|*.*"
                 };
 
-                if (openFileDialog.ShowDialog() != DialogResult.OK) return true;
-                if (openFileDialog.FileName == null) return true;
+                if (openFileDialog.ShowDialog() != DialogResult.OK) return;
+                if (openFileDialog.FileName == null) return;
                 var processStartInfo = new ProcessStartInfo(openFileDialog.FileName)
                 {
                     Verb = "Print",
                     CreateNoWindow = true,
                     WindowStyle = ProcessWindowStyle.Hidden
                 };
-                if (printDialog.ShowDialog() != DialogResult.OK) return true;
+                if (printDialog.ShowDialog() != DialogResult.OK) return;
                 Process.Start(processStartInfo);
             }
-
-            return false;
         }
     }
 }

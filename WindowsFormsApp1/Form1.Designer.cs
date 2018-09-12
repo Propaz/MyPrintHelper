@@ -154,7 +154,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "Printer Helper at 15.05.2018";
+            this.Text = "Printer Helper at 12.09.2018";
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
