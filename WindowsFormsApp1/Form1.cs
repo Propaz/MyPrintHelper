@@ -51,7 +51,7 @@ namespace PrinterParser
             }
         }
 
-        private async void FindprinterBtnClick(object sender, EventArgs e) //Find all printers
+        private async void FindThePrinterBtnClick(object sender, EventArgs e) //Find all printers
         {
             findprinter_btn.Enabled = false; //disable buttons while GetPrinterList is working
             print_grid_btn.Enabled = false;
@@ -76,7 +76,6 @@ namespace PrinterParser
 
         private void ListOfPrintersChanged(object sender, EventArgs e)
         {
-            //list of all online printers
         }
 
         private void PrinterTasks(string key)
@@ -106,19 +105,12 @@ namespace PrinterParser
             }
             else
             {
-                using (var printDialog = new PrintDialog
-                {
-                    PrinterSettings = {PrinterName = ListOfPrintersListBox.SelectedItem.ToString()},
-                    AllowSomePages = true
-                })
-                {
-                    if (printDialog.ShowDialog() != DialogResult.OK) return;
-                }
-
+                PrinterTasks("/y");
                 using (var document = new PrintDocument
                     {PrinterSettings = {PrinterName = ListOfPrintersListBox.SelectedItem.ToString()}})
                 {
                     document.PrintPage += PrintTheGridDocument;
+                    if (numericUpDown1 != null) document.PrinterSettings.Copies = Convert.ToInt16(numericUpDown1.Value);
                     document.Print();
                 }
             }
@@ -141,6 +133,79 @@ namespace PrinterParser
             }
         }
 
+        // Map a value to a rainbow color.
+        private static Color MapRainbowColor(
+            float value, float redValue, float blueValue)
+        {
+            // Convert into a value between 0 and 1023.
+            var intValue = (int) (1023 * (value - redValue) /
+                                  (blueValue - redValue));
+
+            // Map different color bands.
+            if (intValue < 256) return Color.FromArgb(255, intValue, 0);
+
+            if (intValue < 512)
+            {
+                // Yellow to green. (255, 255, 0) to (0, 255, 0).
+                intValue -= 256;
+                return Color.FromArgb(255 - intValue, 255, 0);
+            }
+
+            if (intValue < 768)
+            {
+                // Green to aqua. (0, 255, 0) to (0, 255, 255).
+                intValue -= 512;
+                return Color.FromArgb(0, 255, intValue);
+            }
+
+            // Aqua to blue. (0, 255, 255) to (0, 0, 255).
+            intValue -= 768;
+            return Color.FromArgb(0, 255 - intValue, 255);
+        }
+
+        private void PrintTheRainbowClick(object sender, EventArgs e)
+        {
+            if (ListOfPrintersListBox.SelectedIndex == -1)
+            {
+                MessageBox.Show(@"Please select Printer first", @"Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            else
+            {
+                PrinterTasks("/y");
+                using (var document = new PrintDocument
+                    { PrinterSettings = { PrinterName = ListOfPrintersListBox.SelectedItem.ToString() } })
+                {
+                    document.PrintPage += PrintTheRainbowPage;
+                    if (numericUpDown1 != null) document.PrinterSettings.Copies = Convert.ToInt16(numericUpDown2.Value);
+                    document.Print();
+                }
+            }
+        }
+
+        private void PrintTheRainbowPage(object sender, PrintPageEventArgs e)
+        {
+            var wid = ClientSize.Width;
+            var hgt = ClientSize.Height;
+            var hgt2 = hgt / 2;
+            for (var x = 0; x < wid; x++)
+            {
+                using (var thePen = new Pen(MapRainbowColor(x, 0, wid)))
+                {
+                    e.Graphics.DrawLine(thePen, x, 0, x, hgt2);
+                }
+
+                using (var thePen = new Pen(MapRainbowColor(x, wid, 0)))
+                {
+                    e.Graphics.DrawLine(thePen, x, hgt2, x, hgt);
+                }
+            }
+        }
+
+        private void NumericUpDown2TheRainbowCopiesChanged(object sender, EventArgs e)
+        {
+        }
+
         private void ContextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
             contextMenuStrip1.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
@@ -158,7 +223,7 @@ namespace PrinterParser
             }
         }
 
-        private void Deleteprinter_Click(object sender, EventArgs e)
+        private void DeleteThePrinterClick(object sender, EventArgs e)
         {
             var dialogResult = MessageBox.Show(
                 @"Are you sure you want to Delete [" + ListOfPrintersListBox.SelectedItem.ToString().ToUpper() + @"] ?",
@@ -181,7 +246,7 @@ namespace PrinterParser
                             @"The [" + ListOfPrintersListBox.SelectedItem.ToString().ToUpper() + @"] was Deleted",
                             @"Information", MessageBoxButtons.OK,
                             MessageBoxIcon.Information);
-                        FindprinterBtnClick(null, null); //Renew results
+                        FindThePrinterBtnClick(null, null); //Renew results
                     }
 
                     break;
@@ -276,5 +341,11 @@ namespace PrinterParser
                 Process.Start(processStartInfo);
             }
         }
+
+        private void NumericUpDownCopiesOfGridChanged(object sender, EventArgs e)
+        {
+        }
+
+        
     }
 }
