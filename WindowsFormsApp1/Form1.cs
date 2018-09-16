@@ -55,6 +55,7 @@ namespace PrinterParser
         {
             findprinter_btn.Enabled = false; //disable buttons while GetPrinterList is working
             print_grid_btn.Enabled = false;
+            PrintTheRainbowBtn.Enabled = false;
             Cursor = Cursors.WaitCursor; //Show Waiting Cursor while working
             ListOfPrintersListBox.Items.Clear();
             try
@@ -71,6 +72,7 @@ namespace PrinterParser
                 Cursor = Cursors.Default; //Turn on Default Cursor, and enable buttons
                 findprinter_btn.Enabled = true;
                 print_grid_btn.Enabled = true;
+                PrintTheRainbowBtn.Enabled = true;
             }
         }
 
@@ -105,7 +107,7 @@ namespace PrinterParser
             }
             else
             {
-                PrinterTasks("/y");
+                PrinterTasks("/y"); //Set Selected Printer as Default
                 using (var document = new PrintDocument
                     {PrinterSettings = {PrinterName = ListOfPrintersListBox.SelectedItem.ToString()}})
                 {
@@ -172,9 +174,9 @@ namespace PrinterParser
             }
             else
             {
-                PrinterTasks("/y");
+                PrinterTasks("/y"); //Set Selected Printer as Default
                 using (var document = new PrintDocument
-                    { PrinterSettings = { PrinterName = ListOfPrintersListBox.SelectedItem.ToString() } })
+                    {PrinterSettings = {PrinterName = ListOfPrintersListBox.SelectedItem.ToString()}})
                 {
                     document.PrintPage += PrintTheRainbowPage;
                     if (numericUpDown1 != null) document.PrinterSettings.Copies = Convert.ToInt16(numericUpDown2.Value);
@@ -202,9 +204,6 @@ namespace PrinterParser
             }
         }
 
-        private void NumericUpDown2TheRainbowCopiesChanged(object sender, EventArgs e)
-        {
-        }
 
         private void ContextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
@@ -285,7 +284,7 @@ namespace PrinterParser
         {
             try
             {
-                PrinterTasks("/k"); // Send Standart Windows Test page
+                PrinterTasks("/k"); // Send Default Windows Test page
             }
             catch (ManagementException ex)
             {
@@ -293,20 +292,11 @@ namespace PrinterParser
             }
         }
 
-        private void AdditionalPropertiesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            using (var fm2 = new Form2(this)
-                {Text = @"Additional Properties of [" + ListOfPrintersListBox.SelectedItem.ToString().ToUpper() + @"]"})
-            {
-                fm2.ShowDialog(); //Show Printer Additional properties in new Form
-            }
-        }
-
         private void SendFileToPrinterToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                PrinterTasks("/y");
+                PrinterTasks("/y"); //Set Selected Printer as Default
                 SendFileToSelectedPrinter();
             }
             catch (ManagementException ex)
@@ -346,6 +336,8 @@ namespace PrinterParser
         {
         }
 
-        
+        private void NumericUpDown2TheRainbowCopiesChanged(object sender, EventArgs e)
+        {
+        }
     }
 }

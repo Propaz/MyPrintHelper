@@ -36,7 +36,6 @@
             this.SendTestPage = new System.Windows.Forms.ToolStripMenuItem();
             this.QueueOfPrinter = new System.Windows.Forms.ToolStripMenuItem();
             this.sendFileToPrinterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.AdditionalPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.PropertiesOfPrinter = new System.Windows.Forms.ToolStripMenuItem();
             this.DeletePrinter = new System.Windows.Forms.ToolStripMenuItem();
             this.print_grid_btn = new System.Windows.Forms.Button();
@@ -47,7 +46,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.button1 = new System.Windows.Forms.Button();
+            this.PrintTheRainbowBtn = new System.Windows.Forms.Button();
             this.printDocument2 = new System.Drawing.Printing.PrintDocument();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -88,25 +87,24 @@
             this.SendTestPage,
             this.QueueOfPrinter,
             this.sendFileToPrinterToolStripMenuItem,
-            this.AdditionalPropertiesToolStripMenuItem,
             this.PropertiesOfPrinter,
             this.DeletePrinter});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(186, 136);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(177, 114);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuStrip1_Opening);
             // 
             // SendTestPage
             // 
             this.SendTestPage.BackColor = System.Drawing.SystemColors.Menu;
             this.SendTestPage.Name = "SendTestPage";
-            this.SendTestPage.Size = new System.Drawing.Size(185, 22);
+            this.SendTestPage.Size = new System.Drawing.Size(176, 22);
             this.SendTestPage.Text = "Windows Test Page";
             this.SendTestPage.Click += new System.EventHandler(this.SendTestPage_Click);
             // 
             // QueueOfPrinter
             // 
             this.QueueOfPrinter.Name = "QueueOfPrinter";
-            this.QueueOfPrinter.Size = new System.Drawing.Size(185, 22);
+            this.QueueOfPrinter.Size = new System.Drawing.Size(176, 22);
             this.QueueOfPrinter.Text = "Queue of Printer";
             this.QueueOfPrinter.Click += new System.EventHandler(this.QueueOfPrinter_Click);
             // 
@@ -114,22 +112,15 @@
             // 
             this.sendFileToPrinterToolStripMenuItem.BackColor = System.Drawing.SystemColors.Menu;
             this.sendFileToPrinterToolStripMenuItem.Name = "sendFileToPrinterToolStripMenuItem";
-            this.sendFileToPrinterToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.sendFileToPrinterToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.sendFileToPrinterToolStripMenuItem.Text = "Send File To Printer";
             this.sendFileToPrinterToolStripMenuItem.Click += new System.EventHandler(this.SendFileToPrinterToolStripMenuItem_Click);
             // 
-            // AdditionalPropertiesToolStripMenuItem
-            // 
-            this.AdditionalPropertiesToolStripMenuItem.Name = "AdditionalPropertiesToolStripMenuItem";
-            this.AdditionalPropertiesToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
-            this.AdditionalPropertiesToolStripMenuItem.Text = "Additional Properties";
-            this.AdditionalPropertiesToolStripMenuItem.Click += new System.EventHandler(this.AdditionalPropertiesToolStripMenuItem_Click);
-            // 
             // PropertiesOfPrinter
             // 
-            this.PropertiesOfPrinter.BackColor = System.Drawing.SystemColors.Menu;
+            this.PropertiesOfPrinter.BackColor = System.Drawing.SystemColors.Window;
             this.PropertiesOfPrinter.Name = "PropertiesOfPrinter";
-            this.PropertiesOfPrinter.Size = new System.Drawing.Size(185, 22);
+            this.PropertiesOfPrinter.Size = new System.Drawing.Size(176, 22);
             this.PropertiesOfPrinter.Text = "Properties";
             this.PropertiesOfPrinter.Click += new System.EventHandler(this.PropertiesToolStripMenuItem_Click);
             // 
@@ -137,7 +128,7 @@
             // 
             this.DeletePrinter.BackColor = System.Drawing.Color.Tomato;
             this.DeletePrinter.Name = "DeletePrinter";
-            this.DeletePrinter.Size = new System.Drawing.Size(185, 22);
+            this.DeletePrinter.Size = new System.Drawing.Size(176, 22);
             this.DeletePrinter.Text = "Delete the Printer";
             this.DeletePrinter.Click += new System.EventHandler(this.DeleteThePrinterClick);
             // 
@@ -200,7 +191,7 @@
             // 
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.numericUpDown2);
-            this.groupBox2.Controls.Add(this.button1);
+            this.groupBox2.Controls.Add(this.PrintTheRainbowBtn);
             this.groupBox2.Location = new System.Drawing.Point(234, 383);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(156, 62);
@@ -236,15 +227,15 @@
             0});
             this.numericUpDown2.ValueChanged += new System.EventHandler(this.NumericUpDown2TheRainbowCopiesChanged);
             // 
-            // button1
+            // PrintTheRainbowBtn
             // 
-            this.button1.Location = new System.Drawing.Point(7, 19);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(100, 34);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Print";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.PrintTheRainbowClick);
+            this.PrintTheRainbowBtn.Location = new System.Drawing.Point(7, 19);
+            this.PrintTheRainbowBtn.Name = "PrintTheRainbowBtn";
+            this.PrintTheRainbowBtn.Size = new System.Drawing.Size(100, 34);
+            this.PrintTheRainbowBtn.TabIndex = 0;
+            this.PrintTheRainbowBtn.Text = "Print";
+            this.PrintTheRainbowBtn.UseVisualStyleBackColor = true;
+            this.PrintTheRainbowBtn.Click += new System.EventHandler(this.PrintTheRainbowClick);
             // 
             // printDocument2
             // 
@@ -263,7 +254,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "Printer Helper at 14.09.2018";
+            this.Text = "Printer Helper at 16.09.2018";
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -286,13 +277,12 @@
         private System.Windows.Forms.ToolStripMenuItem PropertiesOfPrinter;
         private System.Windows.Forms.ToolStripMenuItem SendTestPage;
         public System.Windows.Forms.ListBox ListOfPrintersListBox;
-        private System.Windows.Forms.ToolStripMenuItem AdditionalPropertiesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sendFileToPrinterToolStripMenuItem;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button PrintTheRainbowBtn;
         private System.Drawing.Printing.PrintDocument printDocument2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown numericUpDown2;
