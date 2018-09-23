@@ -98,6 +98,23 @@ namespace PrinterParser
             }
         }
 
+        private void PrintTheGridDocument(object sender, PrintPageEventArgs e)
+        {
+            //Draw a grid
+            const int w = 1654; //A4 size
+            const int h = 2339; //A4 size
+            const int widthLines = 20; //cell size
+            const int heightLines = 20; //cell size
+            for (var i = 0; i < w; i += widthLines) //fill all list A4
+            {
+                //Width Lines
+                e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(i + widthLines, 0), new Point(i + widthLines, h));
+                //Height Lines
+                e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(0, i + heightLines),
+                    new Point(w, i + heightLines));
+            }
+        }
+
         private void PrintTheGridBtnClick(object sender, EventArgs e) //Print the Grid
         {
             if (ListOfPrintersListBox.SelectedIndex == -1)
@@ -118,33 +135,13 @@ namespace PrinterParser
             }
         }
 
-        private void PrintTheGridDocument(object sender, PrintPageEventArgs e)
+        private static Color
+            MapRainbowColor(float value, float redValue, float blueValue) // Map a value to a rainbow color.
         {
-            //Draw a grid
-            const int w = 1654; //A4 size
-            const int h = 2339; //A4 size
-            const int widthLines = 20; //cell size
-            const int heightLines = 20; //cell size
-            for (var i = 0; i < w; i += widthLines) //fill all list A4
-            {
-                //Width Lines
-                e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(i + widthLines, 0), new Point(i + widthLines, h));
-                //Height Lines
-                e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(0, i + heightLines),
-                    new Point(w, i + heightLines));
-            }
-        }
+            var intValue =
+                (int) (1023 * (value - redValue) / (blueValue - redValue)); // Convert into a value between 0 and 1023.
 
-        // Map a value to a rainbow color.
-        private static Color MapRainbowColor(
-            float value, float redValue, float blueValue)
-        {
-            // Convert into a value between 0 and 1023.
-            var intValue = (int) (1023 * (value - redValue) /
-                                  (blueValue - redValue));
-
-            // Map different color bands.
-            if (intValue < 256) return Color.FromArgb(255, intValue, 0);
+            if (intValue < 256) return Color.FromArgb(255, intValue, 0); // Map different color bands.
 
             if (intValue < 512)
             {
@@ -163,26 +160,6 @@ namespace PrinterParser
             // Aqua to blue. (0, 255, 255) to (0, 0, 255).
             intValue -= 768;
             return Color.FromArgb(0, 255 - intValue, 255);
-        }
-
-        private void PrintTheRainbowClick(object sender, EventArgs e)
-        {
-            if (ListOfPrintersListBox.SelectedIndex == -1)
-            {
-                MessageBox.Show(@"Please select Printer first", @"Error", MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-            }
-            else
-            {
-                PrinterTasks("/y"); //Set Selected Printer as Default
-                using (var document = new PrintDocument
-                    {PrinterSettings = {PrinterName = ListOfPrintersListBox.SelectedItem.ToString()}})
-                {
-                    document.PrintPage += PrintTheRainbowPage;
-                    if (numericUpDown1 != null) document.PrinterSettings.Copies = Convert.ToInt16(numericUpDown2.Value);
-                    document.Print();
-                }
-            }
         }
 
         private void PrintTheRainbowPage(object sender, PrintPageEventArgs e)
@@ -204,6 +181,25 @@ namespace PrinterParser
             }
         }
 
+        private void PrintTheRainbowClick(object sender, EventArgs e)
+        {
+            if (ListOfPrintersListBox.SelectedIndex == -1)
+            {
+                MessageBox.Show(@"Please select Printer first", @"Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            else
+            {
+                PrinterTasks("/y"); //Set Selected Printer as Default
+                using (var document = new PrintDocument
+                    {PrinterSettings = {PrinterName = ListOfPrintersListBox.SelectedItem.ToString()}})
+                {
+                    document.PrintPage += PrintTheRainbowPage;
+                    if (numericUpDown1 != null) document.PrinterSettings.Copies = Convert.ToInt16(numericUpDown2.Value);
+                    document.Print();
+                }
+            }
+        }
 
         private void ContextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
