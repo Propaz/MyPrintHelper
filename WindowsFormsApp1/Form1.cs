@@ -44,7 +44,7 @@ namespace PrinterParser
                                 printerName.Contains("xps") == false) //Only online Printer, XPS devices
                                 sync.Send(a =>
                                 {
-                                    (b as ListBox)?.Items.Add(a); //add all printers in listbox1 via async method
+                                    (b as ListBox)?.Items.Add(a);
                                 }, printerName);
                         }
                 }, box);
@@ -312,7 +312,7 @@ namespace PrinterParser
                 var openFileDialog = new OpenFileDialog
                 {
                     Filter =
-                        @"TXT Files(*.txt)|*.txt|JPG Files(*.jpg)|*.jpg|PNG Files(*.png)|*.png|All Files(*.*)|*.*"
+                        @"TXT Files(*.txt)|*.txt|Office Files|*.doc;*.docx;*.xlsx;*.xls;*.ppt;*.pptx|PDF Files(*.pdf)|*.pdf|Image Files|*.png;*.jpg;*.tiff;*.gif|All Files(*.*)|*.*"
                 };
 
                 if (openFileDialog.ShowDialog() != DialogResult.OK) return;
