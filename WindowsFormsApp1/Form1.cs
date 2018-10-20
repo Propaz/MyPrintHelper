@@ -42,26 +42,23 @@ namespace PrinterParser
                             var printerName = printer["Name"].ToString().ToLower(); //get PrinterName
                             if (printer["WorkOffline"].ToString().ToLower().Equals("false") &&
                                 printerName.Contains("xps") == false) //Only online Printer, XPS devices
-                                sync.Send(a =>
-                                {
-                                    (b as ListBox)?.Items.Add(a);
-                                }, printerName);
+                                sync.Send(a => { (b as ListBox)?.Items.Add(a); }, printerName);
                         }
                 }, box);
             }
         }
 
-        private async void FindThePrinterBtnClick(object sender, EventArgs e) //Find all printers
+        private async void FindThePrinterBtnClick(object sender, EventArgs e)
         {
-            findprinter_btn.Enabled = false; //disable buttons while GetPrinterList is working
+            findprinter_btn.Enabled = false;
             print_grid_btn.Enabled = false;
             PrintTheRainbowBtn.Enabled = false;
-            Cursor = Cursors.WaitCursor; //Show Waiting Cursor while working
+            Cursor = Cursors.WaitCursor;
             ListOfPrintersListBox.Items.Clear();
             try
             {
                 await GetPrinterList(SynchronizationContext.Current,
-                    ListOfPrintersListBox); //Call GetPrinterList via async method
+                    ListOfPrintersListBox);
             }
             catch (ManagementException ex)
             {
@@ -69,7 +66,7 @@ namespace PrinterParser
             }
             finally
             {
-                Cursor = Cursors.Default; //Turn on Default Cursor, and enable buttons
+                Cursor = Cursors.Default;
                 findprinter_btn.Enabled = true;
                 print_grid_btn.Enabled = true;
                 PrintTheRainbowBtn.Enabled = true;
@@ -86,11 +83,11 @@ namespace PrinterParser
             {
                 var startInfo = new ProcessStartInfo
                 {
-                    WindowStyle = ProcessWindowStyle.Hidden, //process is hidden
+                    WindowStyle = ProcessWindowStyle.Hidden,
                     FileName = "cmd.exe",
                     Arguments =
                         "/C rundll32 printui.dll,PrintUIEntry " + key + " /n \"" + ListOfPrintersListBox.SelectedItem +
-                        "\"" //Send task to printer 
+                        "\""
                 };
                 if (key != null) process.StartInfo = startInfo;
 
