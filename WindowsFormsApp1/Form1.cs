@@ -37,13 +37,17 @@ namespace PrinterParser
                 {
                     if (printerList == null) return;
                     foreach (var o in printerList)
-                        using (var printer = (ManagementObject) o)
+                    {
+                        using (var printer = (ManagementObject)o)
                         {
                             var printerName = printer["Name"].ToString().ToLower(); //get PrinterName
-                            if (printer["WorkOffline"].ToString().ToLower().Equals("false") &&
-                                printerName.Contains("xps") == false) //Only online Printer, XPS devices
-                                sync.Send(a => { (b as ListBox)?.Items.Add(a); }, printerName);
+                            if (printer["WorkOffline"].ToString().Equals("false", StringComparison.OrdinalIgnoreCase)
+                                && !printerName.Contains("xps")) //Only online Printer, XPS devices
+                            {
+                                sync.Send(a => (b as ListBox)?.Items.Add(a), printerName);
+                            }
                         }
+                    }
                 }, box);
             }
         }
@@ -123,7 +127,7 @@ namespace PrinterParser
             {
                 PrinterTasks("/y"); //Set Selected Printer as Default
                 using (var document = new PrintDocument
-                    {PrinterSettings = {PrinterName = ListOfPrintersListBox.SelectedItem.ToString()}})
+                { PrinterSettings = { PrinterName = ListOfPrintersListBox.SelectedItem.ToString() } })
                 {
                     document.PrintPage += PrintTheGridDocument;
                     if (numericUpDown1 != null) document.PrinterSettings.Copies = Convert.ToInt16(numericUpDown1.Value);
@@ -136,7 +140,7 @@ namespace PrinterParser
             MapRainbowColor(float value, float redValue, float blueValue) // Map a value to a rainbow color.
         {
             var intValue =
-                (int) (1023 * (value - redValue) / (blueValue - redValue)); // Convert into a value between 0 and 1023.
+                (int)(1023 * (value - redValue) / (blueValue - redValue)); // Convert into a value between 0 and 1023.
 
             if (intValue < 256) return Color.FromArgb(255, intValue, 0); // Map different color bands.
 
@@ -189,7 +193,7 @@ namespace PrinterParser
             {
                 PrinterTasks("/y"); //Set Selected Printer as Default
                 using (var document = new PrintDocument
-                    {PrinterSettings = {PrinterName = ListOfPrintersListBox.SelectedItem.ToString()}})
+                { PrinterSettings = { PrinterName = ListOfPrintersListBox.SelectedItem.ToString() } })
                 {
                     document.PrintPage += PrintTheRainbowPage;
                     if (numericUpDown1 != null) document.PrinterSettings.Copies = Convert.ToInt16(numericUpDown2.Value);
@@ -242,20 +246,16 @@ namespace PrinterParser
                     }
 
                     break;
+
                 case DialogResult.Cancel:
-                    break;
                 case DialogResult.None:
-                    break;
                 case DialogResult.Abort:
-                    break;
                 case DialogResult.Retry:
-                    break;
                 case DialogResult.Ignore:
-                    break;
                 case DialogResult.Yes:
-                    break;
                 case DialogResult.No:
                     break;
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -302,7 +302,7 @@ namespace PrinterParser
         {
             using (var printDialog = new PrintDialog
             {
-                PrinterSettings = {PrinterName = ListOfPrintersListBox.SelectedItem.ToString()},
+                PrinterSettings = { PrinterName = ListOfPrintersListBox.SelectedItem.ToString() },
                 AllowSomePages = true
             })
             {
