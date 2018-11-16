@@ -165,9 +165,9 @@ namespace PrinterParser
 
         private void PrintTheRainbowPage(object sender, PrintPageEventArgs e)
         {
-            var wid = ClientSize.Width;
-            var hgt = ClientSize.Height;
-            var hgt2 = hgt / 2;
+            const int wid = 600;
+            const int hgt = 600;
+            const int hgt2 = hgt / 2;
             for (var x = 0; x < wid; x++)
             {
                 using (var thePen = new Pen(MapRainbowColor(x, 0, wid)))
