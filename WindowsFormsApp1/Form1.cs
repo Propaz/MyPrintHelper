@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Management;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -18,6 +19,7 @@ namespace PrinterParser
         public Form1()
         {
             InitializeComponent();
+            Text = "Printer Helper v" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
             ListOfPrintersListBox.MouseDown += ListOfPrintersListBoxMouseDown;
         }
 
@@ -30,15 +32,15 @@ namespace PrinterParser
         private static async Task
             GetPrinterList(SynchronizationContext sync, IDisposable box) //Find all online Printers
         {
-            using (var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Printer"))
-            using (var printerList = searcher.Get())
+            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Printer"))
+            using (ManagementObjectCollection printerList = searcher.Get())
             {
                 await Task.Factory.StartNew(b =>
                 {
                     if (printerList == null) return;
-                    foreach (var o in printerList)
+                    foreach (ManagementBaseObject o in printerList)
                     {
-                        using (var printer = (ManagementObject)o)
+                        using (ManagementObject printer = (ManagementObject)o)
                         {
                             var printerName = printer["Name"].ToString().ToLower(); //get PrinterName
                             if (printer["WorkOffline"].ToString().Equals("false", StringComparison.OrdinalIgnoreCase)
@@ -48,7 +50,7 @@ namespace PrinterParser
                             }
                         }
                     }
-                }, box);
+                }, box).ConfigureAwait(false);
             }
         }
 
@@ -62,7 +64,7 @@ namespace PrinterParser
             try
             {
                 await GetPrinterList(SynchronizationContext.Current,
-                    ListOfPrintersListBox);
+                    ListOfPrintersListBox).ConfigureAwait(true);
             }
             catch (ManagementException ex)
             {
@@ -83,9 +85,9 @@ namespace PrinterParser
 
         private void PrinterTasks(string key)
         {
-            using (var process = new Process())
+            using (Process process = new Process())
             {
-                var startInfo = new ProcessStartInfo
+                ProcessStartInfo startInfo = new ProcessStartInfo
                 {
                     WindowStyle = ProcessWindowStyle.Hidden,
                     FileName = "cmd.exe",
@@ -106,7 +108,7 @@ namespace PrinterParser
             const int h = 2339; //A4 size
             const int widthLines = 20; //cell size
             const int heightLines = 20; //cell size
-            for (var i = 0; i < w; i += widthLines) //fill all list A4
+            for (int i = 0; i < w; i += widthLines) //fill all list A4
             {
                 //Width Lines
                 e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(i + widthLines, 0), new Point(i + widthLines, h));
@@ -126,7 +128,7 @@ namespace PrinterParser
             else
             {
                 PrinterTasks("/y"); //Set Selected Printer as Default
-                using (var document = new PrintDocument
+                using (PrintDocument document = new PrintDocument
                 { PrinterSettings = { PrinterName = ListOfPrintersListBox.SelectedItem.ToString() } })
                 {
                     document.PrintPage += PrintTheGridDocument;
@@ -139,7 +141,7 @@ namespace PrinterParser
         private static Color
             MapRainbowColor(float value, float redValue, float blueValue) // Map a value to a rainbow color.
         {
-            var intValue =
+            int intValue =
                 (int)(1023 * (value - redValue) / (blueValue - redValue)); // Convert into a value between 0 and 1023.
 
             if (intValue < 256) return Color.FromArgb(255, intValue, 0); // Map different color bands.
@@ -168,14 +170,14 @@ namespace PrinterParser
             const int wid = 600;
             const int hgt = 600;
             const int hgt2 = hgt / 2;
-            for (var x = 0; x < wid; x++)
+            for (int x = 0; x < wid; x++)
             {
-                using (var thePen = new Pen(MapRainbowColor(x, 0, wid)))
+                using (Pen thePen = new Pen(MapRainbowColor(x, 0, wid)))
                 {
                     e.Graphics.DrawLine(thePen, x, 0, x, hgt2);
                 }
 
-                using (var thePen = new Pen(MapRainbowColor(x, wid, 0)))
+                using (Pen thePen = new Pen(MapRainbowColor(x, wid, 0)))
                 {
                     e.Graphics.DrawLine(thePen, x, hgt2, x, hgt);
                 }
@@ -192,7 +194,7 @@ namespace PrinterParser
             else
             {
                 PrinterTasks("/y"); //Set Selected Printer as Default
-                using (var document = new PrintDocument
+                using (PrintDocument document = new PrintDocument
                 { PrinterSettings = { PrinterName = ListOfPrintersListBox.SelectedItem.ToString() } })
                 {
                     document.PrintPage += PrintTheRainbowPage;
@@ -300,13 +302,13 @@ namespace PrinterParser
 
         private void SendFileToSelectedPrinter()
         {
-            using (var printDialog = new PrintDialog
+            using (PrintDialog printDialog = new PrintDialog
             {
                 PrinterSettings = { PrinterName = ListOfPrintersListBox.SelectedItem.ToString() },
                 AllowSomePages = true
             })
             {
-                var openFileDialog = new OpenFileDialog
+                OpenFileDialog openFileDialog = new OpenFileDialog
                 {
                     Filter =
                         @"TXT Files(*.txt)|*.txt|Office Files|*.doc;*.docx;*.xlsx;*.xls;*.ppt;*.pptx|PDF Files(*.pdf)|*.pdf|Image Files|*.png;*.jpg;*.tiff;*.gif|All Files(*.*)|*.*"
