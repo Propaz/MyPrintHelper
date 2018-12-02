@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.findprinter_btn = new System.Windows.Forms.Button();
+            this.FindPriners = new System.Windows.Forms.Button();
             this.ListOfPrintersListBox = new System.Windows.Forms.ListBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.SendTestPage = new System.Windows.Forms.ToolStripMenuItem();
@@ -38,7 +38,7 @@
             this.sendFileToPrinterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.PropertiesOfPrinter = new System.Windows.Forms.ToolStripMenuItem();
             this.DeletePrinter = new System.Windows.Forms.ToolStripMenuItem();
-            this.print_grid_btn = new System.Windows.Forms.Button();
+            this.PrintBWGrid = new System.Windows.Forms.Button();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
@@ -48,24 +48,37 @@
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             this.PrintTheRainbowBtn = new System.Windows.Forms.Button();
             this.printDocument2 = new System.Drawing.Printing.PrintDocument();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.AddNewPrinter = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.StopPrintSpool = new System.Windows.Forms.Button();
+            this.RestartPrintSpool = new System.Windows.Forms.Button();
+            this.StartPrintSpool = new System.Windows.Forms.Button();
+            this.ConsoleOutput = new System.Windows.Forms.RichTextBox();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
-            // findprinter_btn
+            // FindPriners
             // 
-            this.findprinter_btn.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.findprinter_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.findprinter_btn.Location = new System.Drawing.Point(11, 387);
-            this.findprinter_btn.Name = "findprinter_btn";
-            this.findprinter_btn.Size = new System.Drawing.Size(217, 58);
-            this.findprinter_btn.TabIndex = 0;
-            this.findprinter_btn.Text = "Find Printers";
-            this.findprinter_btn.UseVisualStyleBackColor = true;
-            this.findprinter_btn.Click += new System.EventHandler(this.FindThePrinterBtnClick);
+            this.FindPriners.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.FindPriners.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.FindPriners.Location = new System.Drawing.Point(6, 386);
+            this.FindPriners.Name = "FindPriners";
+            this.FindPriners.Size = new System.Drawing.Size(217, 62);
+            this.FindPriners.TabIndex = 0;
+            this.FindPriners.Text = "Find Printers";
+            this.FindPriners.UseVisualStyleBackColor = true;
+            this.FindPriners.Click += new System.EventHandler(this.FindThePrinterBtnClick);
             // 
             // ListOfPrintersListBox
             // 
@@ -75,9 +88,9 @@
             this.ListOfPrintersListBox.ForeColor = System.Drawing.Color.Black;
             this.ListOfPrintersListBox.FormattingEnabled = true;
             this.ListOfPrintersListBox.ItemHeight = 16;
-            this.ListOfPrintersListBox.Location = new System.Drawing.Point(11, 7);
+            this.ListOfPrintersListBox.Location = new System.Drawing.Point(6, 6);
             this.ListOfPrintersListBox.Name = "ListOfPrintersListBox";
-            this.ListOfPrintersListBox.Size = new System.Drawing.Size(541, 370);
+            this.ListOfPrintersListBox.Size = new System.Drawing.Size(557, 370);
             this.ListOfPrintersListBox.TabIndex = 1;
             this.ListOfPrintersListBox.SelectedIndexChanged += new System.EventHandler(this.ListOfPrintersChanged);
             // 
@@ -132,15 +145,15 @@
             this.DeletePrinter.Text = "Delete the Printer";
             this.DeletePrinter.Click += new System.EventHandler(this.DeleteThePrinterClick);
             // 
-            // print_grid_btn
+            // PrintBWGrid
             // 
-            this.print_grid_btn.Location = new System.Drawing.Point(6, 19);
-            this.print_grid_btn.Name = "print_grid_btn";
-            this.print_grid_btn.Size = new System.Drawing.Size(100, 34);
-            this.print_grid_btn.TabIndex = 7;
-            this.print_grid_btn.Text = "Print";
-            this.print_grid_btn.UseVisualStyleBackColor = true;
-            this.print_grid_btn.Click += new System.EventHandler(this.PrintTheGridBtnClick);
+            this.PrintBWGrid.Location = new System.Drawing.Point(6, 18);
+            this.PrintBWGrid.Name = "PrintBWGrid";
+            this.PrintBWGrid.Size = new System.Drawing.Size(100, 34);
+            this.PrintBWGrid.TabIndex = 7;
+            this.PrintBWGrid.Text = "Print";
+            this.PrintBWGrid.UseVisualStyleBackColor = true;
+            this.PrintBWGrid.Click += new System.EventHandler(this.PrintTheGridBtnClick);
             // 
             // printDocument1
             // 
@@ -177,10 +190,10 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.print_grid_btn);
+            this.groupBox1.Controls.Add(this.PrintBWGrid);
             this.groupBox1.Controls.Add(this.numericUpDown1);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(396, 383);
+            this.groupBox1.Location = new System.Drawing.Point(407, 386);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(156, 62);
             this.groupBox1.TabIndex = 10;
@@ -192,7 +205,7 @@
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.numericUpDown2);
             this.groupBox2.Controls.Add(this.PrintTheRainbowBtn);
-            this.groupBox2.Location = new System.Drawing.Point(234, 383);
+            this.groupBox2.Location = new System.Drawing.Point(245, 386);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(156, 62);
             this.groupBox2.TabIndex = 11;
@@ -241,15 +254,112 @@
             // 
             this.printDocument2.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.PrintTheRainbowPage);
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Location = new System.Drawing.Point(12, 11);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(577, 483);
+            this.tabControl1.TabIndex = 12;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.FindPriners);
+            this.tabPage1.Controls.Add(this.groupBox2);
+            this.tabPage1.Controls.Add(this.ListOfPrintersListBox);
+            this.tabPage1.Controls.Add(this.groupBox1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(569, 457);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Main";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.AddNewPrinter);
+            this.tabPage2.Controls.Add(this.groupBox3);
+            this.tabPage2.Controls.Add(this.ConsoleOutput);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(569, 457);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Print Spool";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // AddNewPrinter
+            // 
+            this.AddNewPrinter.Location = new System.Drawing.Point(443, 401);
+            this.AddNewPrinter.Name = "AddNewPrinter";
+            this.AddNewPrinter.Size = new System.Drawing.Size(120, 35);
+            this.AddNewPrinter.TabIndex = 5;
+            this.AddNewPrinter.Text = "Add New Printer";
+            this.AddNewPrinter.UseVisualStyleBackColor = true;
+            this.AddNewPrinter.Click += new System.EventHandler(this.AddNewPrinter_Click);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.StopPrintSpool);
+            this.groupBox3.Controls.Add(this.RestartPrintSpool);
+            this.groupBox3.Controls.Add(this.StartPrintSpool);
+            this.groupBox3.Location = new System.Drawing.Point(7, 382);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(385, 69);
+            this.groupBox3.TabIndex = 4;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Print Spool";
+            // 
+            // StopPrintSpool
+            // 
+            this.StopPrintSpool.Location = new System.Drawing.Point(258, 19);
+            this.StopPrintSpool.Name = "StopPrintSpool";
+            this.StopPrintSpool.Size = new System.Drawing.Size(120, 35);
+            this.StopPrintSpool.TabIndex = 4;
+            this.StopPrintSpool.Text = "Stop Print Spool";
+            this.StopPrintSpool.UseVisualStyleBackColor = true;
+            this.StopPrintSpool.Click += new System.EventHandler(this.StopPrintSpool_Click);
+            // 
+            // RestartPrintSpool
+            // 
+            this.RestartPrintSpool.Location = new System.Drawing.Point(6, 19);
+            this.RestartPrintSpool.Name = "RestartPrintSpool";
+            this.RestartPrintSpool.Size = new System.Drawing.Size(120, 35);
+            this.RestartPrintSpool.TabIndex = 0;
+            this.RestartPrintSpool.Text = "Restart Print Spool";
+            this.RestartPrintSpool.UseVisualStyleBackColor = true;
+            this.RestartPrintSpool.Click += new System.EventHandler(this.RestartPrintSpool_Click);
+            // 
+            // StartPrintSpool
+            // 
+            this.StartPrintSpool.Location = new System.Drawing.Point(132, 19);
+            this.StartPrintSpool.Name = "StartPrintSpool";
+            this.StartPrintSpool.Size = new System.Drawing.Size(120, 35);
+            this.StartPrintSpool.TabIndex = 3;
+            this.StartPrintSpool.Text = "Start Print Spool ";
+            this.StartPrintSpool.UseVisualStyleBackColor = true;
+            this.StartPrintSpool.Click += new System.EventHandler(this.StartPrintSpool_Click);
+            // 
+            // ConsoleOutput
+            // 
+            this.ConsoleOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ConsoleOutput.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ConsoleOutput.Location = new System.Drawing.Point(6, 6);
+            this.ConsoleOutput.Name = "ConsoleOutput";
+            this.ConsoleOutput.Size = new System.Drawing.Size(386, 370);
+            this.ConsoleOutput.TabIndex = 2;
+            this.ConsoleOutput.Text = "";
+            this.ConsoleOutput.TextChanged += new System.EventHandler(this.ConsoleOutput_TextChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(562, 455);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.ListOfPrintersListBox);
-            this.Controls.Add(this.findprinter_btn);
+            this.ClientSize = new System.Drawing.Size(601, 501);
+            this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -262,14 +372,18 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button findprinter_btn;
-        private System.Windows.Forms.Button print_grid_btn;
+        private System.Windows.Forms.Button FindPriners;
+        private System.Windows.Forms.Button PrintBWGrid;
         private System.Drawing.Printing.PrintDocument printDocument1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem DeletePrinter;
@@ -286,6 +400,15 @@
         private System.Drawing.Printing.PrintDocument printDocument2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.Button RestartPrintSpool;
+        private System.Windows.Forms.RichTextBox ConsoleOutput;
+        private System.Windows.Forms.Button StartPrintSpool;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Button StopPrintSpool;
+        private System.Windows.Forms.Button AddNewPrinter;
     }
 }
 

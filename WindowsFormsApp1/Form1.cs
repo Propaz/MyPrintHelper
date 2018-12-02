@@ -6,8 +6,10 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Printing;
+using System.IO;
 using System.Management;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -29,8 +31,14 @@ namespace PrinterParser
                 ListOfPrintersListBox.IndexFromPoint(e.X, e.Y); //Right Click to select items in a ListBox
         }
 
+        /// <summary>
+        /// Find all online Printers
+        /// </summary>
+        /// <param name="sync"></param>
+        /// <param name="box"></param>
+        /// <returns></returns>
         private static async Task
-            GetPrinterList(SynchronizationContext sync, IDisposable box) //Find all online Printers
+            GetPrinterList(SynchronizationContext sync, IDisposable box)
         {
             using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Printer"))
             using (ManagementObjectCollection printerList = searcher.Get())
@@ -42,7 +50,7 @@ namespace PrinterParser
                     {
                         using (ManagementObject printer = (ManagementObject)o)
                         {
-                            var printerName = printer["Name"].ToString().ToLower(); //get PrinterName
+                            string printerName = printer["Name"].ToString().ToLower(); //get PrinterName
                             if (printer["WorkOffline"].ToString().Equals("false", StringComparison.OrdinalIgnoreCase)
                                 && !printerName.Contains("xps")) //Only online Printer, XPS devices
                             {
@@ -56,8 +64,8 @@ namespace PrinterParser
 
         private async void FindThePrinterBtnClick(object sender, EventArgs e)
         {
-            findprinter_btn.Enabled = false;
-            print_grid_btn.Enabled = false;
+            FindPriners.Enabled = false;
+            PrintBWGrid.Enabled = false;
             PrintTheRainbowBtn.Enabled = false;
             Cursor = Cursors.WaitCursor;
             ListOfPrintersListBox.Items.Clear();
@@ -73,8 +81,8 @@ namespace PrinterParser
             finally
             {
                 Cursor = Cursors.Default;
-                findprinter_btn.Enabled = true;
-                print_grid_btn.Enabled = true;
+                FindPriners.Enabled = true;
+                PrintBWGrid.Enabled = true;
                 PrintTheRainbowBtn.Enabled = true;
             }
         }
@@ -333,6 +341,130 @@ namespace PrinterParser
 
         private void NumericUpDown2TheRainbowCopiesChanged(object sender, EventArgs e)
         {
+        }
+
+        private void RestartPrintSpool_Click(object sender, EventArgs e)
+        {
+            ConsoleOutput.Clear();
+            Cursor = Cursors.WaitCursor;
+            RestartPrintSpool.Enabled = false;
+            StartPrintSpool.Enabled = false;
+            StopPrintSpool.Enabled = false;
+            AddNewPrinter.Enabled = false;
+            try
+            {
+                PrintSpoolCmd("net stop spooler&&DEL /F /S /Q %systemroot%\\System32\\spool\\PRINTERS\\*&&net start spooler");
+            }
+            catch (ManagementException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+                RestartPrintSpool.Enabled = true;
+                StartPrintSpool.Enabled = true;
+                StopPrintSpool.Enabled = true;
+                AddNewPrinter.Enabled = true;
+            }
+        }
+
+        private void StartPrintSpool_Click(object sender, EventArgs e)
+        {
+            ConsoleOutput.Clear();
+            Cursor = Cursors.WaitCursor;
+            RestartPrintSpool.Enabled = false;
+            StartPrintSpool.Enabled = false;
+            StopPrintSpool.Enabled = false;
+            AddNewPrinter.Enabled = false;
+            try
+            {
+                PrintSpoolCmd("net start spooler");
+            }
+            catch (ManagementException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+                RestartPrintSpool.Enabled = true;
+                StartPrintSpool.Enabled = true;
+                StopPrintSpool.Enabled = true;
+                AddNewPrinter.Enabled = true;
+            }
+        }
+
+        private void StopPrintSpool_Click(object sender, EventArgs e)
+        {
+            ConsoleOutput.Clear();
+            Cursor = Cursors.WaitCursor;
+            RestartPrintSpool.Enabled = false;
+            StartPrintSpool.Enabled = false;
+            StopPrintSpool.Enabled = false;
+            AddNewPrinter.Enabled = false;
+            try
+            {
+                PrintSpoolCmd("net stop spooler");
+            }
+            catch (ManagementException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+                RestartPrintSpool.Enabled = true;
+                StartPrintSpool.Enabled = true;
+                StopPrintSpool.Enabled = true;
+                AddNewPrinter.Enabled = true;
+            }
+        }
+
+        private void ConsoleOutput_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void PrintSpoolCmd(string SpoolCmd)
+        {
+            ProcessStartInfo info = new ProcessStartInfo
+            {
+                Arguments = "/C " + SpoolCmd,
+                WindowStyle = ProcessWindowStyle.Hidden,
+                CreateNoWindow = true,
+                FileName = "cmd.exe",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                StandardOutputEncoding = Encoding.GetEncoding(866),
+                StandardErrorEncoding = Encoding.GetEncoding(866)
+            };
+            using (Process process = Process.Start(info))
+            {
+                using (StreamReader reader = process.StandardOutput)
+                {
+                    string result = reader.ReadToEnd();
+                    ConsoleOutput.Text += result;
+                }
+
+                using (StreamReader reader = process.StandardError)
+                {
+                    string result = reader.ReadToEnd();
+                    ConsoleOutput.Text += result;
+                }
+            }
+        }
+
+        private void AddNewPrinter_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                PrinterTasks("/il");
+            }
+            catch (ManagementException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
