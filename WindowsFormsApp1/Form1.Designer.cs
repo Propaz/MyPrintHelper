@@ -40,12 +40,12 @@
             this.DeletePrinter = new System.Windows.Forms.ToolStripMenuItem();
             this.PrintBWGrid = new System.Windows.Forms.Button();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.BWGirdUpDownNumeric = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.RinbowUpDownNumeric = new System.Windows.Forms.NumericUpDown();
             this.PrintTheRainbowBtn = new System.Windows.Forms.Button();
             this.printDocument2 = new System.Drawing.Printing.PrintDocument();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -56,12 +56,11 @@
             this.StopPrintSpool = new System.Windows.Forms.Button();
             this.RestartPrintSpool = new System.Windows.Forms.Button();
             this.StartPrintSpool = new System.Windows.Forms.Button();
-            this.ConsoleOutput = new System.Windows.Forms.RichTextBox();
             this.contextMenuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BWGirdUpDownNumeric)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RinbowUpDownNumeric)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -159,25 +158,25 @@
             // 
             this.printDocument1.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.PrintTheGridDocument);
             // 
-            // numericUpDown1
+            // BWGirdUpDownNumeric
             // 
-            this.numericUpDown1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numericUpDown1.Location = new System.Drawing.Point(112, 31);
-            this.numericUpDown1.Minimum = new decimal(new int[] {
+            this.BWGirdUpDownNumeric.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.BWGirdUpDownNumeric.Location = new System.Drawing.Point(112, 31);
+            this.BWGirdUpDownNumeric.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(35, 21);
-            this.numericUpDown1.TabIndex = 8;
-            this.numericUpDown1.Tag = "Copies";
-            this.numericUpDown1.Value = new decimal(new int[] {
+            this.BWGirdUpDownNumeric.Name = "BWGirdUpDownNumeric";
+            this.BWGirdUpDownNumeric.Size = new System.Drawing.Size(35, 21);
+            this.BWGirdUpDownNumeric.TabIndex = 8;
+            this.BWGirdUpDownNumeric.Tag = "Copies";
+            this.BWGirdUpDownNumeric.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown1.ValueChanged += new System.EventHandler(this.NumericUpDownCopiesOfGridChanged);
+            this.BWGirdUpDownNumeric.ValueChanged += new System.EventHandler(this.NumericUpDownCopiesOfGridChanged);
             // 
             // label1
             // 
@@ -191,7 +190,7 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.PrintBWGrid);
-            this.groupBox1.Controls.Add(this.numericUpDown1);
+            this.groupBox1.Controls.Add(this.BWGirdUpDownNumeric);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(407, 386);
             this.groupBox1.Name = "groupBox1";
@@ -203,7 +202,7 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Controls.Add(this.numericUpDown2);
+            this.groupBox2.Controls.Add(this.RinbowUpDownNumeric);
             this.groupBox2.Controls.Add(this.PrintTheRainbowBtn);
             this.groupBox2.Location = new System.Drawing.Point(245, 386);
             this.groupBox2.Name = "groupBox2";
@@ -221,24 +220,24 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Copies";
             // 
-            // numericUpDown2
+            // RinbowUpDownNumeric
             // 
-            this.numericUpDown2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numericUpDown2.Location = new System.Drawing.Point(113, 32);
-            this.numericUpDown2.Minimum = new decimal(new int[] {
+            this.RinbowUpDownNumeric.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.RinbowUpDownNumeric.Location = new System.Drawing.Point(113, 32);
+            this.RinbowUpDownNumeric.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(35, 21);
-            this.numericUpDown2.TabIndex = 1;
-            this.numericUpDown2.Value = new decimal(new int[] {
+            this.RinbowUpDownNumeric.Name = "RinbowUpDownNumeric";
+            this.RinbowUpDownNumeric.Size = new System.Drawing.Size(35, 21);
+            this.RinbowUpDownNumeric.TabIndex = 1;
+            this.RinbowUpDownNumeric.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown2.ValueChanged += new System.EventHandler(this.NumericUpDown2TheRainbowCopiesChanged);
+            this.RinbowUpDownNumeric.ValueChanged += new System.EventHandler(this.NumericUpDown2TheRainbowCopiesChanged);
             // 
             // PrintTheRainbowBtn
             // 
@@ -282,7 +281,6 @@
             // 
             this.tabPage2.Controls.Add(this.AddNewPrinter);
             this.tabPage2.Controls.Add(this.groupBox3);
-            this.tabPage2.Controls.Add(this.ConsoleOutput);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -293,7 +291,7 @@
             // 
             // AddNewPrinter
             // 
-            this.AddNewPrinter.Location = new System.Drawing.Point(443, 401);
+            this.AddNewPrinter.Location = new System.Drawing.Point(408, 25);
             this.AddNewPrinter.Name = "AddNewPrinter";
             this.AddNewPrinter.Size = new System.Drawing.Size(120, 35);
             this.AddNewPrinter.TabIndex = 5;
@@ -306,7 +304,7 @@
             this.groupBox3.Controls.Add(this.StopPrintSpool);
             this.groupBox3.Controls.Add(this.RestartPrintSpool);
             this.groupBox3.Controls.Add(this.StartPrintSpool);
-            this.groupBox3.Location = new System.Drawing.Point(7, 382);
+            this.groupBox3.Location = new System.Drawing.Point(6, 6);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(385, 69);
             this.groupBox3.TabIndex = 4;
@@ -343,17 +341,6 @@
             this.StartPrintSpool.UseVisualStyleBackColor = true;
             this.StartPrintSpool.Click += new System.EventHandler(this.StartPrintSpool_Click);
             // 
-            // ConsoleOutput
-            // 
-            this.ConsoleOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ConsoleOutput.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ConsoleOutput.Location = new System.Drawing.Point(6, 6);
-            this.ConsoleOutput.Name = "ConsoleOutput";
-            this.ConsoleOutput.Size = new System.Drawing.Size(386, 370);
-            this.ConsoleOutput.TabIndex = 2;
-            this.ConsoleOutput.Text = "";
-            this.ConsoleOutput.TextChanged += new System.EventHandler(this.ConsoleOutput_TextChanged);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -366,12 +353,12 @@
             this.Name = "Form1";
             this.Text = "Printer Helper";
             this.contextMenuStrip1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BWGirdUpDownNumeric)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RinbowUpDownNumeric)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
@@ -392,19 +379,18 @@
         private System.Windows.Forms.ToolStripMenuItem SendTestPage;
         public System.Windows.Forms.ListBox ListOfPrintersListBox;
         private System.Windows.Forms.ToolStripMenuItem sendFileToPrinterToolStripMenuItem;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown BWGirdUpDownNumeric;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button PrintTheRainbowBtn;
         private System.Drawing.Printing.PrintDocument printDocument2;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.NumericUpDown RinbowUpDownNumeric;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Button RestartPrintSpool;
-        private System.Windows.Forms.RichTextBox ConsoleOutput;
         private System.Windows.Forms.Button StartPrintSpool;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button StopPrintSpool;
