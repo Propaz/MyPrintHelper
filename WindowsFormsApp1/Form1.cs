@@ -19,8 +19,9 @@ namespace PrinterParser
         public Form1()
         {
             InitializeComponent();
-            Text = "Printer Helper v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + " build at 10/12/2018";
+            Text = "Printer Helper v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + " build at 08/03/2019";
             ListOfPrintersListBox.MouseDown += ListOfPrintersListBoxMouseDown;
+            ListOfColorsForPrint.SelectedIndex = 0;
         }
 
         private void ListOfPrintersListBoxMouseDown(object sender, MouseEventArgs e)
@@ -133,7 +134,14 @@ namespace PrinterParser
                 {
                     document.PrintPage += PrintTheGridDocument;
                     if (BWGirdUpDownNumeric != null) document.PrinterSettings.Copies = Convert.ToInt16(BWGirdUpDownNumeric.Value);
-                    document.Print();
+                    try
+                    {
+                        document.Print();
+                    }
+                    catch (Win32Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                 }
             }
         }
@@ -199,14 +207,21 @@ namespace PrinterParser
                 {
                     document.PrintPage += PrintTheRainbowPage;
                     if (BWGirdUpDownNumeric != null) document.PrinterSettings.Copies = Convert.ToInt16(RinbowUpDownNumeric.Value);
-                    document.Print();
+                    try
+                    {
+                        document.Print();
+                    }
+                    catch (Win32Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                 }
             }
         }
 
         private void ContextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
-            contextMenuStrip1.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
+            contextMenuOfCommands.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
         }
 
         private void QueueOfPrinter_Click(object sender, EventArgs e)
@@ -443,6 +458,76 @@ namespace PrinterParser
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void PrintTheColor_Click(object sender, EventArgs e)
+        {
+            if (ListOfPrintersListBox.SelectedIndex == -1)
+            {
+                MessageBox.Show(@"Please select Printer first", @"Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            else
+            {
+                PrinterTasks("/y");
+                using (PrintDocument document = new PrintDocument
+                { PrinterSettings = { PrinterName = ListOfPrintersListBox.SelectedItem.ToString() } })
+                {
+                    document.PrintPage += PrintTheSingleColor;
+                    if (numericUpDownTheSingleColor != null) document.PrinterSettings.Copies = Convert.ToInt16(numericUpDownTheSingleColor.Value);
+                    try
+                    {
+                        document.Print();
+                    }
+                    catch (Win32Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+            }
+        }
+
+        private void PrintTheSingleColor(object sender, PrintPageEventArgs e)
+        {
+            switch (ListOfColorsForPrint.SelectedItem.ToString())
+
+            {
+                case "Black":
+                    e.Graphics.FillRectangle(Brushes.Black, 90, 100, 600, 800);
+                    break;
+
+                case "Cyan":
+                    e.Graphics.FillRectangle(Brushes.Cyan, 90, 100, 600, 800);
+                    break;
+
+                case "Magenta":
+                    e.Graphics.FillRectangle(Brushes.Magenta, 90, 100, 600, 800);
+                    break;
+
+                case "Yellow":
+                    e.Graphics.FillRectangle(Brushes.Yellow, 90, 100, 600, 800);
+                    break;
+
+                case "Red":
+                    e.Graphics.FillRectangle(Brushes.Red, 90, 100, 600, 800);
+                    break;
+
+                case "Green":
+                    e.Graphics.FillRectangle(Brushes.Green, 90, 100, 600, 800);
+                    break;
+
+                case "Blue":
+                    e.Graphics.FillRectangle(Brushes.Blue, 90, 100, 600, 800);
+                    break;
+            }
+        }
+
+        private void NumericUpDownTheSingleColor_ValueChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void ListOfColorsForPrint_SelectedIndexChanged(object sender, EventArgs e)
+        {
         }
     }
 }
