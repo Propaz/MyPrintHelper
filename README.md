@@ -11,7 +11,7 @@ For work in the service center.
 3. The 'Print the Rainbow' button allows you to print a Rainbow gradient on Page.
 
 Some Screenshots:<br/> 
-<img align="left" src="https://github.com/Propaz/MyPrintHelper/blob/master/printhelpermain.png" />
-<img align="left" src="https://github.com/Propaz/MyPrintHelper/blob/master/printerhelper2.png" />
+<img align="left" src="https://github.com/Propaz/MyPrintHelper/blob/master/gui.png" />
+<img align="left" src="https://github.com/Propaz/MyPrintHelper/blob/master/gui2.png" />
 <img align="left" src="https://github.com/Propaz/MyPrintHelper/blob/master/bwgrid.PNG" />
 <img align="left" src="https://github.com/Propaz/MyPrintHelper/blob/master/rainbow_test.PNG" />
