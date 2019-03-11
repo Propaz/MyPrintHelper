@@ -47,7 +47,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.RinbowUpDownNumeric = new System.Windows.Forms.NumericUpDown();
             this.PrintTheRainbowBtn = new System.Windows.Forms.Button();
-            this.printDocument2 = new System.Drawing.Printing.PrintDocument();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -204,7 +203,7 @@
             this.groupBox1.Size = new System.Drawing.Size(156, 62);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Print the B/W Grid";
+            this.groupBox1.Text = "Print the Grid Test";
             // 
             // groupBox2
             // 
@@ -216,7 +215,7 @@
             this.groupBox2.Size = new System.Drawing.Size(156, 62);
             this.groupBox2.TabIndex = 11;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Print the Rainbow";
+            this.groupBox2.Text = "Print the Rainbow Test";
             // 
             // label2
             // 
@@ -256,10 +255,6 @@
             this.PrintTheRainbowBtn.UseVisualStyleBackColor = true;
             this.PrintTheRainbowBtn.Click += new System.EventHandler(this.PrintTheRainbowClick);
             // 
-            // printDocument2
-            // 
-            this.printDocument2.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.PrintTheRainbowPage);
-            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
@@ -293,7 +288,7 @@
             this.groupBox4.Controls.Add(this.PrintTheColor);
             this.groupBox4.Location = new System.Drawing.Point(407, 143);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(156, 100);
+            this.groupBox4.Size = new System.Drawing.Size(156, 91);
             this.groupBox4.TabIndex = 13;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "CMYK or RGB";
@@ -462,7 +457,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button PrintTheRainbowBtn;
-        private System.Drawing.Printing.PrintDocument printDocument2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown RinbowUpDownNumeric;
         private System.Windows.Forms.TabControl tabControl1;

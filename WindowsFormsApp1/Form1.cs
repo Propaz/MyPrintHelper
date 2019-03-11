@@ -19,7 +19,7 @@ namespace PrinterParser
         public Form1()
         {
             InitializeComponent();
-            Text = "Printer Helper v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + " build at 08/03/2019";
+            Text = "Printer Helper v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + " build at 10/03/2019";
             ListOfPrintersListBox.MouseDown += ListOfPrintersListBoxMouseDown;
             ListOfColorsForPrint.SelectedIndex = 0;
         }
@@ -45,7 +45,7 @@ namespace PrinterParser
                         {
                             string printerName = printer["Name"].ToString().ToLower();
                             if (printer["WorkOffline"].ToString().Equals("false", StringComparison.OrdinalIgnoreCase)
-                                && !printerName.Contains("xps")) //Only on-line Printer, XPS devices
+                                && !printerName.Contains("xps")) //Only Printer with flag "online", XPS devices
                             {
                                 sync.Send(a => (b as ListBox)?.Items.Add(a), printerName);
                             }
@@ -60,6 +60,7 @@ namespace PrinterParser
             FindPriners.Enabled = false;
             PrintBWGrid.Enabled = false;
             PrintTheRainbowBtn.Enabled = false;
+            PrintTheColor.Enabled = false;
             Cursor = Cursors.WaitCursor;
             ListOfPrintersListBox.Items.Clear();
             try
@@ -77,6 +78,7 @@ namespace PrinterParser
                 FindPriners.Enabled = true;
                 PrintBWGrid.Enabled = true;
                 PrintTheRainbowBtn.Enabled = true;
+                PrintTheColor.Enabled = true;
             }
         }
 
@@ -86,9 +88,10 @@ namespace PrinterParser
 
         private void PrinterTasks(string key)
         {
+            if (key == null) return;
             using (Process process = new Process())
             {
-                ProcessStartInfo startInfo = new ProcessStartInfo
+                process.StartInfo = new ProcessStartInfo
                 {
                     WindowStyle = ProcessWindowStyle.Hidden,
                     FileName = "cmd.exe",
@@ -96,9 +99,23 @@ namespace PrinterParser
                         "/C rundll32 printui.dll,PrintUIEntry " + key + " /n \"" + ListOfPrintersListBox.SelectedItem +
                         "\""
                 };
-                if (key != null) process.StartInfo = startInfo;
 
-                process.Start();
+                try
+                {
+                    process.Start();
+                }
+                catch (ObjectDisposedException exd)
+                {
+                    MessageBox.Show(exd.Message);
+                }
+                catch (InvalidOperationException exc)
+                {
+                    MessageBox.Show(exc.Message);
+                }
+                catch (Win32Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
 
@@ -109,7 +126,7 @@ namespace PrinterParser
             const int h = 2339;
             const int widthLines = 20; //cell size
             const int heightLines = 20;
-            for (int i = 0; i < w; i += widthLines) //fill all list A4
+            for (int i = 0; i < w; i += widthLines)
             {
                 //Width Lines
                 e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(i + widthLines, 0), new Point(i + widthLines, h));
@@ -138,7 +155,11 @@ namespace PrinterParser
                     {
                         document.Print();
                     }
-                    catch (Win32Exception ex)
+                    catch (InvalidPrinterException exc)
+                    {
+                        MessageBox.Show(exc.Message);
+                    }
+                    catch (Exception ex)
                     {
                         MessageBox.Show(ex.Message);
                     }
@@ -211,7 +232,11 @@ namespace PrinterParser
                     {
                         document.Print();
                     }
-                    catch (Win32Exception ex)
+                    catch (InvalidPrinterException exc)
+                    {
+                        MessageBox.Show(exc.Message);
+                    }
+                    catch (Exception ex)
                     {
                         MessageBox.Show(ex.Message);
                     }
@@ -228,9 +253,9 @@ namespace PrinterParser
         {
             try
             {
-                PrinterTasks("/o"); //Displays the queue for a printer.
+                PrinterTasks("/o"); //Displays the queue
             }
-            catch (Win32Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -249,7 +274,7 @@ namespace PrinterParser
                     {
                         PrinterTasks("/dl"); //Delete local printer
                     }
-                    catch (Win32Exception ex)
+                    catch (Exception ex)
                     {
                         MessageBox.Show(ex.Message);
                     }
@@ -284,7 +309,7 @@ namespace PrinterParser
             {
                 PrinterTasks("/p"); // Properties of printer
             }
-            catch (Win32Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -296,7 +321,7 @@ namespace PrinterParser
             {
                 PrinterTasks("/k"); // Send Default Windows Test page
             }
-            catch (Win32Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -309,7 +334,7 @@ namespace PrinterParser
                 PrinterTasks("/y");
                 SendFileToSelectedPrinter();
             }
-            catch (Win32Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -331,14 +356,33 @@ namespace PrinterParser
 
                 if (openFileDialog.ShowDialog() != DialogResult.OK) return;
                 if (openFileDialog.FileName == null) return;
-                var processStartInfo = new ProcessStartInfo(openFileDialog.FileName)
+                ProcessStartInfo processStartInfo = new ProcessStartInfo(openFileDialog.FileName)
                 {
                     Verb = "Print",
                     CreateNoWindow = true,
                     WindowStyle = ProcessWindowStyle.Hidden
                 };
                 if (printDialog.ShowDialog() != DialogResult.OK) return;
-                Process.Start(processStartInfo);
+                try
+                {
+                    Process.Start(processStartInfo);
+                }
+                catch (System.IO.FileNotFoundException exfilenotfound)
+                {
+                    MessageBox.Show(exfilenotfound.Message);
+                }
+                catch (ObjectDisposedException exdisposed)
+                {
+                    MessageBox.Show(exdisposed.Message);
+                }
+                catch (InvalidOperationException exo)
+                {
+                    MessageBox.Show(exo.Message);
+                }
+                catch (Win32Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
 
@@ -361,7 +405,7 @@ namespace PrinterParser
             {
                 PrintSpoolCmd("net stop spooler&&DEL /F /S /Q %systemroot%\\System32\\spool\\PRINTERS\\*&&net start spooler&&pause");
             }
-            catch (Win32Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -386,7 +430,7 @@ namespace PrinterParser
             {
                 PrintSpoolCmd("net start spooler&&pause");
             }
-            catch (Win32Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -411,7 +455,7 @@ namespace PrinterParser
             {
                 PrintSpoolCmd("net stop spooler&&pause");
             }
-            catch (Win32Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -428,7 +472,7 @@ namespace PrinterParser
         private void PrintSpoolCmd(string SpoolCmd)
         {
             const int ERROR_CANCELLED = 1223; //The operation was canceled by the user.
-
+            if (SpoolCmd == null) return;
             ProcessStartInfo info = new ProcessStartInfo(@"C:\Windows\System32\cmd.exe")
             {
                 UseShellExecute = true,
@@ -439,12 +483,24 @@ namespace PrinterParser
             {
                 Process.Start(info);
             }
+            catch (System.IO.FileNotFoundException exfilenotfound)
+            {
+                MessageBox.Show(exfilenotfound.Message);
+            }
+            catch (ObjectDisposedException exdisposed)
+            {
+                MessageBox.Show(exdisposed.Message);
+            }
+            catch (InvalidOperationException exo)
+            {
+                MessageBox.Show(exo.Message);
+            }
             catch (Win32Exception ex)
             {
                 if (ex.NativeErrorCode == ERROR_CANCELLED)
                     MessageBox.Show("Cancelled!");
                 else
-                    throw;
+                    MessageBox.Show(ex.Message);
             }
         }
 
@@ -452,9 +508,9 @@ namespace PrinterParser
         {
             try
             {
-                PrinterTasks("/il");
+                PrinterTasks("/il");//Call "Add New Printer" Dialog
             }
-            catch (Win32Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -479,7 +535,11 @@ namespace PrinterParser
                     {
                         document.Print();
                     }
-                    catch (Win32Exception ex)
+                    catch (InvalidPrinterException exc)
+                    {
+                        MessageBox.Show(exc.Message);
+                    }
+                    catch (Exception ex)
                     {
                         MessageBox.Show(ex.Message);
                     }
@@ -493,32 +553,35 @@ namespace PrinterParser
 
             {
                 case "Black":
-                    e.Graphics.FillRectangle(Brushes.Black, 90, 100, 600, 800);
+                    e.Graphics.FillRectangle(Brushes.Black, 50, 50, 720, 1000);
                     break;
 
                 case "Cyan":
-                    e.Graphics.FillRectangle(Brushes.Cyan, 90, 100, 600, 800);
+                    e.Graphics.FillRectangle(Brushes.Cyan, 50, 50, 720, 1000);
                     break;
 
                 case "Magenta":
-                    e.Graphics.FillRectangle(Brushes.Magenta, 90, 100, 600, 800);
+                    e.Graphics.FillRectangle(Brushes.Magenta, 50, 50, 720, 1000);
                     break;
 
                 case "Yellow":
-                    e.Graphics.FillRectangle(Brushes.Yellow, 90, 100, 600, 800);
+                    e.Graphics.FillRectangle(Brushes.Yellow, 50, 50, 720, 1000);
                     break;
 
                 case "Red":
-                    e.Graphics.FillRectangle(Brushes.Red, 90, 100, 600, 800);
+                    e.Graphics.FillRectangle(Brushes.Red, 50, 50, 720, 1000);
                     break;
 
                 case "Green":
-                    e.Graphics.FillRectangle(Brushes.Green, 90, 100, 600, 800);
+                    e.Graphics.FillRectangle(Brushes.Green, 50, 50, 720, 1000);
                     break;
 
                 case "Blue":
-                    e.Graphics.FillRectangle(Brushes.Blue, 90, 100, 600, 800);
+                    e.Graphics.FillRectangle(Brushes.Blue, 50, 50, 720, 1000);
                     break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
