@@ -19,16 +19,13 @@ namespace PrinterParser
         public Form1()
         {
             InitializeComponent();
-            Text = "Printer Helper v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + " build at 10/03/2019";
+            Text = "Printer Helper v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + " build at 16/03/2019";
             ListOfPrintersListBox.MouseDown += ListOfPrintersListBoxMouseDown;
             ListOfColorsForPrint.SelectedIndex = 0;
         }
 
-        private void ListOfPrintersListBoxMouseDown(object sender, MouseEventArgs e)
-        {
-            ListOfPrintersListBox.SelectedIndex =
-                ListOfPrintersListBox.IndexFromPoint(e.X, e.Y); //Right Click to select items in a ListBox
-        }
+        private void ListOfPrintersListBoxMouseDown(object sender, MouseEventArgs e) => ListOfPrintersListBox.SelectedIndex =
+                ListOfPrintersListBox.IndexFromPoint(e.X, e.Y);
 
         private static async Task
             GetPrinterList(SynchronizationContext sync, IDisposable box)
@@ -38,7 +35,9 @@ namespace PrinterParser
             {
                 await Task.Factory.StartNew(b =>
                 {
-                    if (printerList == null) return;
+                    if (printerList == null)
+                        throw new ArgumentNullException(nameof(printerList));
+
                     foreach (ManagementBaseObject o in printerList)
                     {
                         using (ManagementObject printer = (ManagementObject)o)
@@ -88,7 +87,9 @@ namespace PrinterParser
 
         private void PrinterTasks(string key)
         {
-            if (key == null) return;
+            if (key == null)
+                throw new ArgumentNullException(nameof(key));
+
             using (Process process = new Process())
             {
                 process.StartInfo = new ProcessStartInfo
@@ -168,7 +169,7 @@ namespace PrinterParser
         }
 
         private static Color
-            MapRainbowColor(float value, float redValue, float blueValue) // Map a value to a rainbow color.
+            MapRainbowColor(float value, float redValue, float blueValue)
         {
             int intValue =
                 (int)(1023 * (value - redValue) / (blueValue - redValue)); // Convert into a value between 0 and 1023.
@@ -355,7 +356,10 @@ namespace PrinterParser
                 };
 
                 if (openFileDialog.ShowDialog() != DialogResult.OK) return;
-                if (openFileDialog.FileName == null) return;
+
+                if (openFileDialog.FileName == null)
+                    throw new ArgumentNullException(nameof(openFileDialog.FileName));
+
                 ProcessStartInfo processStartInfo = new ProcessStartInfo(openFileDialog.FileName)
                 {
                     Verb = "Print",
@@ -471,36 +475,35 @@ namespace PrinterParser
 
         private void PrintSpoolCmd(string SpoolCmd)
         {
-            const int ERROR_CANCELLED = 1223; //The operation was canceled by the user.
-            if (SpoolCmd == null) return;
-            ProcessStartInfo info = new ProcessStartInfo(@"C:\Windows\System32\cmd.exe")
+            if (SpoolCmd == null)
+                throw new ArgumentNullException(nameof(SpoolCmd));
+
+            using (Process process = new Process())
             {
-                UseShellExecute = true,
-                Arguments = "/c " + SpoolCmd,
-                Verb = "runas",
-            };
-            try
-            {
-                Process.Start(info);
-            }
-            catch (System.IO.FileNotFoundException exfilenotfound)
-            {
-                MessageBox.Show(exfilenotfound.Message);
-            }
-            catch (ObjectDisposedException exdisposed)
-            {
-                MessageBox.Show(exdisposed.Message);
-            }
-            catch (InvalidOperationException exo)
-            {
-                MessageBox.Show(exo.Message);
-            }
-            catch (Win32Exception ex)
-            {
-                if (ex.NativeErrorCode == ERROR_CANCELLED)
-                    MessageBox.Show("Cancelled!");
-                else
+                process.StartInfo = new ProcessStartInfo
+                {
+                    UseShellExecute = true,
+                    FileName = "cmd.exe",
+                    Arguments = "/c " + SpoolCmd,
+                    Verb = "runas",
+                };
+
+                try
+                {
+                    process.Start();
+                }
+                catch (ObjectDisposedException exd)
+                {
+                    MessageBox.Show(exd.Message);
+                }
+                catch (InvalidOperationException exc)
+                {
+                    MessageBox.Show(exc.Message);
+                }
+                catch (Win32Exception ex)
+                {
                     MessageBox.Show(ex.Message);
+                }
             }
         }
 

@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("PrinterHelper")]
 [assembly: AssemblyDescription("Simple Printer Helper for Service")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Gigabyte, Kirishi")]
 [assembly: AssemblyProduct("PrinterHelper")]
 [assembly: AssemblyCopyright("Nikita Sverenkov © 2019")]
 [assembly: AssemblyTrademark("")]
