@@ -19,7 +19,7 @@ namespace PrinterParser
         public Form1()
         {
             InitializeComponent();
-            Text = $"Printer Helper v{Assembly.GetExecutingAssembly().GetName().Version} build at 04/04/2019";
+            Text = $"Printer Helper v{Assembly.GetExecutingAssembly().GetName().Version} build at 05/04/2019";
             ListOfPrintersListBox.MouseDown += ListOfPrintersListBoxMouseDown;
             ListOfColorsForPrint.SelectedIndex = 0;
         }
@@ -152,7 +152,7 @@ namespace PrinterParser
             }
             catch (ManagementException ex)
             {
-                _ = MessageBox.Show(text: ex.Message);
+                _ = MessageBox.Show(text: ex.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
             }
             finally
             {
@@ -212,15 +212,15 @@ namespace PrinterParser
                 }
                 catch (ObjectDisposedException exd)
                 {
-                    _ = MessageBox.Show(text: exd.Message);
+                    _ = MessageBox.Show(text: exd.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
                 }
                 catch (InvalidOperationException exc)
                 {
-                    _ = MessageBox.Show(text: exc.Message);
+                    _ = MessageBox.Show(text: exc.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
                 }
                 catch (Win32Exception ex)
                 {
-                    _ = MessageBox.Show(text: ex.Message);
+                    _ = MessageBox.Show(text: ex.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
                 }
             }
         }
@@ -248,15 +248,15 @@ namespace PrinterParser
                 }
                 catch (ObjectDisposedException exd)
                 {
-                    _ = MessageBox.Show(text: exd.Message);
+                    _ = MessageBox.Show(text: exd.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
                 }
                 catch (InvalidOperationException exc)
                 {
-                    _ = MessageBox.Show(text: exc.Message);
+                    _ = MessageBox.Show(text: exc.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
                 }
                 catch (Win32Exception ex)
                 {
-                    _ = MessageBox.Show(text: ex.Message);
+                    _ = MessageBox.Show(text: ex.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
                 }
             }
         }
@@ -286,7 +286,7 @@ namespace PrinterParser
                     }
                     catch (InvalidPrinterException exc)
                     {
-                        _ = MessageBox.Show(text: exc.Message);
+                        _ = MessageBox.Show(text: exc.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
                     }
                 }
             }
@@ -317,7 +317,7 @@ namespace PrinterParser
                     }
                     catch (InvalidPrinterException exc)
                     {
-                        _ = MessageBox.Show(text: exc.Message);
+                        _ = MessageBox.Show(text: exc.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
                     }
                 }
             }
@@ -365,7 +365,7 @@ namespace PrinterParser
                     }
                     catch (InvalidPrinterException exc)
                     {
-                        _ = MessageBox.Show(text: exc.Message);
+                        _ = MessageBox.Show(text: exc.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
                     }
                 }
             }
@@ -481,19 +481,19 @@ namespace PrinterParser
                     }
                     catch (System.IO.FileNotFoundException exfilenotfound)
                     {
-                        _ = MessageBox.Show(text: exfilenotfound.Message);
+                        _ = MessageBox.Show(text: exfilenotfound.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
                     }
                     catch (ObjectDisposedException exdisposed)
                     {
-                        _ = MessageBox.Show(text: exdisposed.Message);
+                        _ = MessageBox.Show(text: exdisposed.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
                     }
                     catch (InvalidOperationException exo)
                     {
-                        _ = MessageBox.Show(text: exo.Message);
+                        _ = MessageBox.Show(text: exo.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
                     }
                     catch (Win32Exception ex)
                     {
-                        _ = MessageBox.Show(text: ex.Message);
+                        _ = MessageBox.Show(text: ex.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
                     }
                 }
             }
