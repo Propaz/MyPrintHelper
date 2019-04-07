@@ -77,11 +77,11 @@
             // 
             this.FindPriners.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.FindPriners.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.FindPriners.Location = new System.Drawing.Point(6, 386);
+            this.FindPriners.Location = new System.Drawing.Point(498, 314);
             this.FindPriners.Name = "FindPriners";
-            this.FindPriners.Size = new System.Drawing.Size(395, 62);
+            this.FindPriners.Size = new System.Drawing.Size(173, 62);
             this.FindPriners.TabIndex = 0;
-            this.FindPriners.Text = "Find Printers";
+            this.FindPriners.Text = "Find Printers (F5)";
             this.FindPriners.UseVisualStyleBackColor = true;
             this.FindPriners.Click += new System.EventHandler(this.FindThePrinterBtnClick);
             // 
@@ -95,9 +95,8 @@
             this.ListOfPrintersListBox.ItemHeight = 16;
             this.ListOfPrintersListBox.Location = new System.Drawing.Point(6, 6);
             this.ListOfPrintersListBox.Name = "ListOfPrintersListBox";
-            this.ListOfPrintersListBox.Size = new System.Drawing.Size(395, 370);
+            this.ListOfPrintersListBox.Size = new System.Drawing.Size(486, 370);
             this.ListOfPrintersListBox.TabIndex = 1;
-            this.ListOfPrintersListBox.SelectedIndexChanged += new System.EventHandler(this.ListOfPrintersChanged);
             // 
             // contextMenuOfCommands
             // 
@@ -182,7 +181,6 @@
             0,
             0,
             0});
-            this.BWGirdUpDownNumeric.ValueChanged += new System.EventHandler(this.NumericUpDownCopiesOfGridChanged);
             // 
             // label1
             // 
@@ -198,9 +196,9 @@
             this.groupBox1.Controls.Add(this.PrintBWGrid);
             this.groupBox1.Controls.Add(this.BWGirdUpDownNumeric);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(407, 6);
+            this.groupBox1.Location = new System.Drawing.Point(498, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(156, 62);
+            this.groupBox1.Size = new System.Drawing.Size(173, 62);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Print the Grid Test";
@@ -210,9 +208,9 @@
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.RinbowUpDownNumeric);
             this.groupBox2.Controls.Add(this.PrintTheRainbowBtn);
-            this.groupBox2.Location = new System.Drawing.Point(407, 74);
+            this.groupBox2.Location = new System.Drawing.Point(498, 74);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(156, 62);
+            this.groupBox2.Size = new System.Drawing.Size(173, 62);
             this.groupBox2.TabIndex = 11;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Print the Rainbow Test";
@@ -243,7 +241,6 @@
             0,
             0,
             0});
-            this.RinbowUpDownNumeric.ValueChanged += new System.EventHandler(this.NumericUpDown2TheRainbowCopiesChanged);
             // 
             // PrintTheRainbowBtn
             // 
@@ -259,10 +256,10 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(12, 11);
+            this.tabControl1.Location = new System.Drawing.Point(4, 11);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(577, 483);
+            this.tabControl1.Size = new System.Drawing.Size(685, 413);
             this.tabControl1.TabIndex = 12;
             // 
             // tabPage1
@@ -275,7 +272,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(569, 457);
+            this.tabPage1.Size = new System.Drawing.Size(677, 387);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Main";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -286,9 +283,9 @@
             this.groupBox4.Controls.Add(this.label3);
             this.groupBox4.Controls.Add(this.numericUpDownTheSingleColor);
             this.groupBox4.Controls.Add(this.PrintTheColor);
-            this.groupBox4.Location = new System.Drawing.Point(407, 143);
+            this.groupBox4.Location = new System.Drawing.Point(498, 142);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(156, 91);
+            this.groupBox4.Size = new System.Drawing.Size(173, 91);
             this.groupBox4.TabIndex = 13;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "CMYK or RGB";
@@ -308,7 +305,6 @@
             this.ListOfColorsForPrint.Name = "ListOfColorsForPrint";
             this.ListOfColorsForPrint.Size = new System.Drawing.Size(139, 21);
             this.ListOfColorsForPrint.TabIndex = 15;
-            this.ListOfColorsForPrint.SelectedIndexChanged += new System.EventHandler(this.ListOfColorsForPrint_SelectedIndexChanged);
             // 
             // label3
             // 
@@ -335,7 +331,6 @@
             0,
             0,
             0});
-            this.numericUpDownTheSingleColor.ValueChanged += new System.EventHandler(this.NumericUpDownTheSingleColor_ValueChanged);
             // 
             // PrintTheColor
             // 
@@ -354,7 +349,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(569, 457);
+            this.tabPage2.Size = new System.Drawing.Size(677, 387);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Print Spool";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -415,7 +410,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(601, 501);
+            this.ClientSize = new System.Drawing.Size(692, 430);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

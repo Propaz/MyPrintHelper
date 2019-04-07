@@ -19,9 +19,18 @@ namespace PrinterParser
         public Form1()
         {
             InitializeComponent();
-            Text = $"Printer Helper v{Assembly.GetExecutingAssembly().GetName().Version} build at 05/04/2019";
+            Text = $"Printer Helper v{Assembly.GetExecutingAssembly().GetName().Version} build at 07/04/2019";
             ListOfPrintersListBox.MouseDown += ListOfPrintersListBoxMouseDown;
             ListOfColorsForPrint.SelectedIndex = 0;
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.F5)
+            {
+                FindThePrinterBtnClick(null, null);
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
         private static async Task
@@ -37,6 +46,36 @@ namespace PrinterParser
                 throw new ArgumentNullException(nameof(sync));
             }
 
+            string[] PrinterStatusArray =
+            {
+                "Idle",
+                "Paused",
+                "Error",
+                "Pending Deletion",
+                "Paper Jam",
+                "Paper Out",
+                "Manual Feed",
+                "Paper Problem",
+                "Offline",
+                "I/O Active",
+                "Busy",
+                "Printing",
+                "Output Bin Full",
+                "Not Available",
+                "Waiting",
+                "Processing",
+                "Initialization",
+                "Warming Up",
+                "Toner Low",
+                "No Toner",
+                "Page Punt",
+                "User Intervention Required",
+                "Out of Memory",
+                "Door Open",
+                "Server_Unknown",
+                "Power Save"
+            };
+
             using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(queryString: "SELECT * FROM Win32_Printer"))
             using (ManagementObjectCollection printerList = searcher.Get())
             {
@@ -48,12 +87,13 @@ namespace PrinterParser
                     {
                         using (ManagementObject printer = (ManagementObject)o)
                         {
+                            string PrinterState = printer.Properties["PrinterState"].Value.ToString();
                             string printerName = printer["Name"].ToString();
                             if (printerName != null)
                             {
                                 if (printer[propertyName: "WorkOffline"].ToString().Equals(value: "false", comparisonType: StringComparison.OrdinalIgnoreCase)) //Only Printer with flag "online"
                                 {
-                                    sync.Send(a => (b as ListBox)?.Items.Add(a), printerName);
+                                    sync.Send(a => (b as ListBox)?.Items.Add(a), "[" + PrinterStatusArray[Convert.ToUInt32(PrinterState)] + "] -" + printerName);
                                 }
                             }
                         }
@@ -94,7 +134,7 @@ namespace PrinterParser
 
         private void AddNewPrinter_Click(object sender, EventArgs e)
         {
-            PrinterTasks(key: "/il");//Call "Add New Printer" Dialog
+            PrinterTasks("/il");//Call "Add New Printer" Dialog
         }
 
         private void ContextMenuStrip1_Opening(object sender, CancelEventArgs e)
@@ -104,36 +144,42 @@ namespace PrinterParser
 
         private void DeleteThePrinterClick(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show(
-                text: $"Are you sure you want to Delete [{ListOfPrintersListBox.SelectedItem}] ?",
-                caption: "Confirmation",
-                buttons: MessageBoxButtons.OKCancel, icon: MessageBoxIcon.Information);
-            switch (dialogResult)
+            string SelectedPrinterFromListBox = ListOfPrintersListBox.SelectedItem.ToString();
+            if (SelectedPrinterFromListBox != null)
             {
-                case DialogResult.OK:
-                    try
-                    {
-                        PrinterTasks(key: "/dl"); //Delete local printer
-                    }
-                    finally
-                    {
-                        _ = MessageBox.Show(
-                            text: $"The [{ListOfPrintersListBox.SelectedItem}] was Deleted",
-                            caption: "Information", buttons: MessageBoxButtons.OK,
-                            icon: MessageBoxIcon.Information);
-                        FindThePrinterBtnClick(null, null); //Renew results
-                    }
+                string[] SelectedPrinter = SelectedPrinterFromListBox.Split('-');
 
-                    break;
+                DialogResult dialogResult = MessageBox.Show(
+                    text: $"Are you sure you want to Delete [{SelectedPrinter[1]}] ?",
+                    caption: "Confirmation",
+                    buttons: MessageBoxButtons.OKCancel, icon: MessageBoxIcon.Information);
+                switch (dialogResult)
+                {
+                    case DialogResult.OK:
+                        try
+                        {
+                            PrinterTasks(key: "/dl"); //Delete local printer
+                        }
+                        finally
+                        {
+                            _ = MessageBox.Show(
+                                text: $"The [{SelectedPrinter[1]}] was Deleted",
+                                caption: "Information", buttons: MessageBoxButtons.OK,
+                                icon: MessageBoxIcon.Information);
+                            FindThePrinterBtnClick(null, null); //Renew results
+                        }
 
-                case DialogResult.Cancel:
-                case DialogResult.None:
-                case DialogResult.Abort:
-                case DialogResult.Retry:
-                case DialogResult.Ignore:
-                case DialogResult.Yes:
-                case DialogResult.No:
-                    break;
+                        break;
+
+                    case DialogResult.Cancel:
+                    case DialogResult.None:
+                    case DialogResult.Abort:
+                    case DialogResult.Retry:
+                    case DialogResult.Ignore:
+                    case DialogResult.Yes:
+                    case DialogResult.No:
+                        break;
+                }
             }
         }
 
@@ -161,32 +207,16 @@ namespace PrinterParser
                 PrintBWGrid.Enabled = true;
                 PrintTheRainbowBtn.Enabled = true;
                 PrintTheColor.Enabled = true;
+                BWGirdUpDownNumeric.Value = 1;
+                numericUpDownTheSingleColor.Value = 1;
+                RinbowUpDownNumeric.Value = 1;
+                ListOfColorsForPrint.SelectedIndex = 0;
             }
-        }
-
-        private void ListOfColorsForPrint_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void ListOfPrintersChanged(object sender, EventArgs e)
-        {
         }
 
         private void ListOfPrintersListBoxMouseDown(object sender, MouseEventArgs e)
         {
             ListOfPrintersListBox.SelectedIndex = ListOfPrintersListBox.IndexFromPoint(e.X, e.Y);
-        }
-
-        private void NumericUpDown2TheRainbowCopiesChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void NumericUpDownCopiesOfGridChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void NumericUpDownTheSingleColor_ValueChanged(object sender, EventArgs e)
-        {
         }
 
         private void PrinterTasks(string key)
@@ -198,13 +228,32 @@ namespace PrinterParser
 
             using (Process process = new Process())
             {
-                process.StartInfo = new ProcessStartInfo
+                if (key == "/il")
                 {
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    FileName = "cmd.exe",
-                    Arguments =
-                        $"/C rundll32 printui.dll,PrintUIEntry {key} /n \"{ListOfPrintersListBox.SelectedItem}\""
-                };
+                    process.StartInfo = new ProcessStartInfo
+                    {
+                        WindowStyle = ProcessWindowStyle.Hidden,
+                        FileName = "cmd.exe",
+                        Arguments =
+                        $"/C rundll32 printui.dll,PrintUIEntry {key}"
+                    };
+                }
+                else
+                {
+                    string SelectedPrinterFromListBox = ListOfPrintersListBox.SelectedItem.ToString();
+                    if (SelectedPrinterFromListBox != null)
+                    {
+                        string[] SelectedPrinter = SelectedPrinterFromListBox.Split('-');
+
+                        process.StartInfo = new ProcessStartInfo
+                        {
+                            WindowStyle = ProcessWindowStyle.Hidden,
+                            FileName = "cmd.exe",
+                            Arguments =
+                                $"/C rundll32 printui.dll,PrintUIEntry {key} /n \"{SelectedPrinter[1]}\""
+                        };
+                    }
+                }
 
                 try
                 {
@@ -271,22 +320,27 @@ namespace PrinterParser
             else
             {
                 PrinterTasks(key: "/y");
-                using (PrintDocument document = new PrintDocument
-                { PrinterSettings = { PrinterName = ListOfPrintersListBox.SelectedItem.ToString() } })
+                string SelectedPrinterFromListBox = ListOfPrintersListBox.SelectedItem.ToString();
+                if (SelectedPrinterFromListBox != null)
                 {
-                    document.PrintPage += PrintTheSingleColor;
-                    if (numericUpDownTheSingleColor != null)
+                    string[] SelectedPrinter = SelectedPrinterFromListBox.Split('-');
+                    using (PrintDocument document = new PrintDocument
+                    { PrinterSettings = { PrinterName = SelectedPrinter[1] } })
                     {
-                        document.PrinterSettings.Copies = Convert.ToInt16(numericUpDownTheSingleColor.Value);
-                    }
+                        document.PrintPage += PrintTheSingleColor;
+                        if (numericUpDownTheSingleColor != null)
+                        {
+                            document.PrinterSettings.Copies = Convert.ToInt16(numericUpDownTheSingleColor.Value);
+                        }
 
-                    try
-                    {
-                        document.Print();
-                    }
-                    catch (InvalidPrinterException exc)
-                    {
-                        _ = MessageBox.Show(text: exc.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
+                        try
+                        {
+                            document.Print();
+                        }
+                        catch (InvalidPrinterException exc)
+                        {
+                            _ = MessageBox.Show(text: exc.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
+                        }
                     }
                 }
             }
@@ -301,23 +355,28 @@ namespace PrinterParser
             }
             else
             {
-                PrinterTasks("/y"); //Set Selected Printer as Default
-                using (PrintDocument document = new PrintDocument
-                { PrinterSettings = { PrinterName = ListOfPrintersListBox.SelectedItem.ToString() } })
+                string SelectedPrinterFromListBox = ListOfPrintersListBox.SelectedItem.ToString();
+                if (SelectedPrinterFromListBox != null)
                 {
-                    document.PrintPage += PrintTheGridDocument;
-                    if (BWGirdUpDownNumeric != null)
+                    string[] SelectedPrinter = SelectedPrinterFromListBox.Split('-');
+                    PrinterTasks("/y"); //Set Selected Printer as Default
+                    using (PrintDocument document = new PrintDocument
+                    { PrinterSettings = { PrinterName = SelectedPrinter[1] } })
                     {
-                        document.PrinterSettings.Copies = Convert.ToInt16(BWGirdUpDownNumeric.Value);
-                    }
+                        document.PrintPage += PrintTheGridDocument;
+                        if (BWGirdUpDownNumeric != null)
+                        {
+                            document.PrinterSettings.Copies = Convert.ToInt16(BWGirdUpDownNumeric.Value);
+                        }
 
-                    try
-                    {
-                        document.Print();
-                    }
-                    catch (InvalidPrinterException exc)
-                    {
-                        _ = MessageBox.Show(text: exc.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
+                        try
+                        {
+                            document.Print();
+                        }
+                        catch (InvalidPrinterException exc)
+                        {
+                            _ = MessageBox.Show(text: exc.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
+                        }
                     }
                 }
             }
@@ -350,22 +409,27 @@ namespace PrinterParser
             else
             {
                 PrinterTasks(key: "/y");
-                using (PrintDocument document = new PrintDocument
-                { PrinterSettings = { PrinterName = ListOfPrintersListBox.SelectedItem.ToString() } })
+                string SelectedPrinterFromListBox = ListOfPrintersListBox.SelectedItem.ToString();
+                if (SelectedPrinterFromListBox != null)
                 {
-                    document.PrintPage += PrintTheRainbowPage;
-                    if (BWGirdUpDownNumeric != null)
+                    string[] SelectedPrinter = SelectedPrinterFromListBox.Split('-');
+                    using (PrintDocument document = new PrintDocument
+                    { PrinterSettings = { PrinterName = SelectedPrinter[1] } })
                     {
-                        document.PrinterSettings.Copies = Convert.ToInt16(RinbowUpDownNumeric.Value);
-                    }
+                        document.PrintPage += PrintTheRainbowPage;
+                        if (BWGirdUpDownNumeric != null)
+                        {
+                            document.PrinterSettings.Copies = Convert.ToInt16(RinbowUpDownNumeric.Value);
+                        }
 
-                    try
-                    {
-                        document.Print();
-                    }
-                    catch (InvalidPrinterException exc)
-                    {
-                        _ = MessageBox.Show(text: exc.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
+                        try
+                        {
+                            document.Print();
+                        }
+                        catch (InvalidPrinterException exc)
+                        {
+                            _ = MessageBox.Show(text: exc.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
+                        }
                     }
                 }
             }
@@ -448,52 +512,58 @@ namespace PrinterParser
 
         private void SendFileToSelectedPrinter()
         {
-            using (PrintDialog printDialog = new PrintDialog
+            string SelectedPrinterFromListBox = ListOfPrintersListBox.SelectedItem.ToString();
+            if (SelectedPrinterFromListBox != null)
             {
-                PrinterSettings = { PrinterName = ListOfPrintersListBox.SelectedItem.ToString() },
-                AllowSomePages = true
-            })
-            {
-                using (OpenFileDialog openFileDialog = new OpenFileDialog
+                string[] SelectedPrinter = SelectedPrinterFromListBox.Split('-');
+
+                using (PrintDialog printDialog = new PrintDialog
                 {
-                    Filter =
-                       "TXT Files(*.txt)|*.txt|Office Files|*.doc;*.docx;*.xlsx;*.xls;*.ppt;*.pptx|PDF Files(*.pdf)|*.pdf|Image Files|*.png;*.jpg;*.tiff;*.gif|All Files(*.*)|*.*"
+                    PrinterSettings = { PrinterName = SelectedPrinter[1] },
+                    AllowSomePages = true
                 })
                 {
-                    if (openFileDialog.ShowDialog() != DialogResult.OK)
+                    using (OpenFileDialog openFileDialog = new OpenFileDialog
                     {
-                        return;
-                    }
-
-                    if (printDialog.ShowDialog() != DialogResult.OK)
+                        Filter =
+                           "TXT Files(*.txt)|*.txt|Office Files|*.doc;*.docx;*.xlsx;*.xls;*.ppt;*.pptx|PDF Files(*.pdf)|*.pdf|Image Files|*.png;*.jpg;*.tiff;*.gif|All Files(*.*)|*.*"
+                    })
                     {
-                        return;
-                    }
-
-                    try
-                    {
-                        _ = Process.Start(startInfo: new ProcessStartInfo(fileName: openFileDialog.FileName)
+                        if (openFileDialog.ShowDialog() != DialogResult.OK)
                         {
-                            Verb = "Print",
-                            CreateNoWindow = true,
-                            WindowStyle = ProcessWindowStyle.Hidden
-                        });
-                    }
-                    catch (System.IO.FileNotFoundException exfilenotfound)
-                    {
-                        _ = MessageBox.Show(text: exfilenotfound.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
-                    }
-                    catch (ObjectDisposedException exdisposed)
-                    {
-                        _ = MessageBox.Show(text: exdisposed.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
-                    }
-                    catch (InvalidOperationException exo)
-                    {
-                        _ = MessageBox.Show(text: exo.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
-                    }
-                    catch (Win32Exception ex)
-                    {
-                        _ = MessageBox.Show(text: ex.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
+                            return;
+                        }
+
+                        if (printDialog.ShowDialog() != DialogResult.OK)
+                        {
+                            return;
+                        }
+
+                        try
+                        {
+                            _ = Process.Start(startInfo: new ProcessStartInfo(fileName: openFileDialog.FileName)
+                            {
+                                Verb = "Print",
+                                CreateNoWindow = true,
+                                WindowStyle = ProcessWindowStyle.Hidden
+                            });
+                        }
+                        catch (System.IO.FileNotFoundException exfilenotfound)
+                        {
+                            _ = MessageBox.Show(text: exfilenotfound.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
+                        }
+                        catch (ObjectDisposedException exdisposed)
+                        {
+                            _ = MessageBox.Show(text: exdisposed.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
+                        }
+                        catch (InvalidOperationException exo)
+                        {
+                            _ = MessageBox.Show(text: exo.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
+                        }
+                        catch (Win32Exception ex)
+                        {
+                            _ = MessageBox.Show(text: ex.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
+                        }
                     }
                 }
             }
