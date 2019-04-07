@@ -12,5 +12,5 @@ For work in the service center.
 
 Some Screenshots:<br/> 
 <img align="left" src="https://github.com/Propaz/MyPrintHelper/blob/master/gui.png" />
-<img align="left" src="https://github.com/Propaz/MyPrintHelper/blob/master/bwgrid.PNG" />
-<img align="left" src="https://github.com/Propaz/MyPrintHelper/blob/master/rainbow_test.PNG" />
+<img align="left" src="https://github.com/Propaz/MyPrintHelper/blob/master/bwgrid.png" />
+<img align="left" src="https://github.com/Propaz/MyPrintHelper/blob/master/rainbow_test.png" />
