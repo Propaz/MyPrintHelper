@@ -19,12 +19,12 @@ namespace PrinterParser
         public Form1()
         {
             InitializeComponent();
-            Text = $"Printer Helper v{Assembly.GetExecutingAssembly().GetName().Version} build at 08/04/2019";
+            Text = $"Printer Helper v{Assembly.GetExecutingAssembly().GetName().Version} build at 13/04/2019";
             ListOfPrintersListBox.MouseDown += ListOfPrintersListBoxMouseDown;
             ListOfColorsForPrint.SelectedIndex = 0;
         }
 
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData = Keys.None)
         {
             if (keyData == Keys.F5)
             {
@@ -184,7 +184,7 @@ namespace PrinterParser
 
         private void PrinterTasks(string key)
         {
-            if (key == null)
+            if (string.IsNullOrEmpty(key))
             {
                 throw new ArgumentNullException(nameof(key));
             }
@@ -233,7 +233,7 @@ namespace PrinterParser
 
         private void PrintSpoolCmd(string spoolCmd)
         {
-            if (spoolCmd == null)
+            if (string.IsNullOrEmpty(spoolCmd))
             {
                 throw new ArgumentNullException(nameof(spoolCmd));
             }

@@ -292,6 +292,8 @@
             // 
             // ListOfColorsForPrint
             // 
+            this.ListOfColorsForPrint.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ListOfColorsForPrint.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.ListOfColorsForPrint.FormattingEnabled = true;
             this.ListOfColorsForPrint.Items.AddRange(new object[] {
             "Black",
