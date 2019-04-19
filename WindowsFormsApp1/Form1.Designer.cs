@@ -1,4 +1,4 @@
-﻿namespace PrinterParser
+﻿namespace PrinterHelper
 {
     partial class Form1
     {
@@ -35,7 +35,7 @@
             this.contextMenuOfCommands = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.SendTestPage = new System.Windows.Forms.ToolStripMenuItem();
             this.QueueOfPrinter = new System.Windows.Forms.ToolStripMenuItem();
-            this.sendFileToPrinterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sendFileToPrinter = new System.Windows.Forms.ToolStripMenuItem();
             this.PropertiesOfPrinter = new System.Windows.Forms.ToolStripMenuItem();
             this.DeletePrinter = new System.Windows.Forms.ToolStripMenuItem();
             this.PrintBWGrid = new System.Windows.Forms.Button();
@@ -103,41 +103,41 @@
             this.contextMenuOfCommands.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.SendTestPage,
             this.QueueOfPrinter,
-            this.sendFileToPrinterToolStripMenuItem,
+            this.sendFileToPrinter,
             this.PropertiesOfPrinter,
             this.DeletePrinter});
             this.contextMenuOfCommands.Name = "contextMenuStrip1";
-            this.contextMenuOfCommands.Size = new System.Drawing.Size(169, 114);
+            this.contextMenuOfCommands.Size = new System.Drawing.Size(181, 136);
             this.contextMenuOfCommands.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuStrip1_Opening);
             // 
             // SendTestPage
             // 
             this.SendTestPage.BackColor = System.Drawing.SystemColors.Menu;
             this.SendTestPage.Name = "SendTestPage";
-            this.SendTestPage.Size = new System.Drawing.Size(168, 22);
+            this.SendTestPage.Size = new System.Drawing.Size(180, 22);
             this.SendTestPage.Text = "Windows Test Page";
             this.SendTestPage.Click += new System.EventHandler(this.SendTestPage_Click);
             // 
             // QueueOfPrinter
             // 
             this.QueueOfPrinter.Name = "QueueOfPrinter";
-            this.QueueOfPrinter.Size = new System.Drawing.Size(168, 22);
+            this.QueueOfPrinter.Size = new System.Drawing.Size(180, 22);
             this.QueueOfPrinter.Text = "Queue of Printer";
             this.QueueOfPrinter.Click += new System.EventHandler(this.QueueOfPrinter_Click);
             // 
-            // sendFileToPrinterToolStripMenuItem
+            // sendFileToPrinter
             // 
-            this.sendFileToPrinterToolStripMenuItem.BackColor = System.Drawing.SystemColors.Menu;
-            this.sendFileToPrinterToolStripMenuItem.Name = "sendFileToPrinterToolStripMenuItem";
-            this.sendFileToPrinterToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.sendFileToPrinterToolStripMenuItem.Text = "Send File To Printer";
-            this.sendFileToPrinterToolStripMenuItem.Click += new System.EventHandler(this.SendFileToPrinterToolStripMenuItem_Click);
+            this.sendFileToPrinter.BackColor = System.Drawing.SystemColors.Menu;
+            this.sendFileToPrinter.Name = "sendFileToPrinter";
+            this.sendFileToPrinter.Size = new System.Drawing.Size(180, 22);
+            this.sendFileToPrinter.Text = "Send File To Printer";
+            this.sendFileToPrinter.Click += new System.EventHandler(this.SendFileToPrinter);
             // 
             // PropertiesOfPrinter
             // 
             this.PropertiesOfPrinter.BackColor = System.Drawing.SystemColors.Window;
             this.PropertiesOfPrinter.Name = "PropertiesOfPrinter";
-            this.PropertiesOfPrinter.Size = new System.Drawing.Size(168, 22);
+            this.PropertiesOfPrinter.Size = new System.Drawing.Size(180, 22);
             this.PropertiesOfPrinter.Text = "Properties";
             this.PropertiesOfPrinter.Click += new System.EventHandler(this.PropertiesToolStripMenuItem_Click);
             // 
@@ -145,7 +145,7 @@
             // 
             this.DeletePrinter.BackColor = System.Drawing.Color.Tomato;
             this.DeletePrinter.Name = "DeletePrinter";
-            this.DeletePrinter.Size = new System.Drawing.Size(168, 22);
+            this.DeletePrinter.Size = new System.Drawing.Size(180, 22);
             this.DeletePrinter.Text = "Delete the Printer";
             this.DeletePrinter.Click += new System.EventHandler(this.DeleteThePrinterClick);
             // 
@@ -448,7 +448,7 @@
         private System.Windows.Forms.ToolStripMenuItem PropertiesOfPrinter;
         private System.Windows.Forms.ToolStripMenuItem SendTestPage;
         public System.Windows.Forms.ListBox ListOfPrintersListBox;
-        private System.Windows.Forms.ToolStripMenuItem sendFileToPrinterToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sendFileToPrinter;
         private System.Windows.Forms.NumericUpDown BWGirdUpDownNumeric;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
