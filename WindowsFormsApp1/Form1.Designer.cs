@@ -55,6 +55,7 @@
             this.numericUpDownTheSingleColor = new System.Windows.Forms.NumericUpDown();
             this.PrintTheColor = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.PrintServerProperties = new System.Windows.Forms.Button();
             this.AddNewPrinter = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.StopPrintSpool = new System.Windows.Forms.Button();
@@ -107,21 +108,21 @@
             this.PropertiesOfPrinter,
             this.DeletePrinter});
             this.contextMenuOfCommands.Name = "contextMenuStrip1";
-            this.contextMenuOfCommands.Size = new System.Drawing.Size(181, 136);
+            this.contextMenuOfCommands.Size = new System.Drawing.Size(169, 114);
             this.contextMenuOfCommands.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuStrip1_Opening);
             // 
             // SendTestPage
             // 
             this.SendTestPage.BackColor = System.Drawing.SystemColors.Menu;
             this.SendTestPage.Name = "SendTestPage";
-            this.SendTestPage.Size = new System.Drawing.Size(180, 22);
+            this.SendTestPage.Size = new System.Drawing.Size(168, 22);
             this.SendTestPage.Text = "Windows Test Page";
             this.SendTestPage.Click += new System.EventHandler(this.SendTestPage_Click);
             // 
             // QueueOfPrinter
             // 
             this.QueueOfPrinter.Name = "QueueOfPrinter";
-            this.QueueOfPrinter.Size = new System.Drawing.Size(180, 22);
+            this.QueueOfPrinter.Size = new System.Drawing.Size(168, 22);
             this.QueueOfPrinter.Text = "Queue of Printer";
             this.QueueOfPrinter.Click += new System.EventHandler(this.QueueOfPrinter_Click);
             // 
@@ -129,7 +130,7 @@
             // 
             this.sendFileToPrinter.BackColor = System.Drawing.SystemColors.Menu;
             this.sendFileToPrinter.Name = "sendFileToPrinter";
-            this.sendFileToPrinter.Size = new System.Drawing.Size(180, 22);
+            this.sendFileToPrinter.Size = new System.Drawing.Size(168, 22);
             this.sendFileToPrinter.Text = "Send File To Printer";
             this.sendFileToPrinter.Click += new System.EventHandler(this.SendFileToPrinter);
             // 
@@ -137,7 +138,7 @@
             // 
             this.PropertiesOfPrinter.BackColor = System.Drawing.SystemColors.Window;
             this.PropertiesOfPrinter.Name = "PropertiesOfPrinter";
-            this.PropertiesOfPrinter.Size = new System.Drawing.Size(180, 22);
+            this.PropertiesOfPrinter.Size = new System.Drawing.Size(168, 22);
             this.PropertiesOfPrinter.Text = "Properties";
             this.PropertiesOfPrinter.Click += new System.EventHandler(this.PropertiesToolStripMenuItem_Click);
             // 
@@ -145,7 +146,7 @@
             // 
             this.DeletePrinter.BackColor = System.Drawing.Color.Tomato;
             this.DeletePrinter.Name = "DeletePrinter";
-            this.DeletePrinter.Size = new System.Drawing.Size(180, 22);
+            this.DeletePrinter.Size = new System.Drawing.Size(168, 22);
             this.DeletePrinter.Text = "Delete the Printer";
             this.DeletePrinter.Click += new System.EventHandler(this.DeleteThePrinterClick);
             // 
@@ -346,6 +347,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.PrintServerProperties);
             this.tabPage2.Controls.Add(this.AddNewPrinter);
             this.tabPage2.Controls.Add(this.groupBox3);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
@@ -356,9 +358,19 @@
             this.tabPage2.Text = "Print Spool";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // PrintServerProperties
+            // 
+            this.PrintServerProperties.Location = new System.Drawing.Point(138, 81);
+            this.PrintServerProperties.Name = "PrintServerProperties";
+            this.PrintServerProperties.Size = new System.Drawing.Size(120, 35);
+            this.PrintServerProperties.TabIndex = 6;
+            this.PrintServerProperties.Text = "PrintServer Properties";
+            this.PrintServerProperties.UseVisualStyleBackColor = true;
+            this.PrintServerProperties.Click += new System.EventHandler(this.GetPrintServerProperties);
+            // 
             // AddNewPrinter
             // 
-            this.AddNewPrinter.Location = new System.Drawing.Point(408, 25);
+            this.AddNewPrinter.Location = new System.Drawing.Point(12, 81);
             this.AddNewPrinter.Name = "AddNewPrinter";
             this.AddNewPrinter.Size = new System.Drawing.Size(120, 35);
             this.AddNewPrinter.TabIndex = 5;
@@ -469,6 +481,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown numericUpDownTheSingleColor;
         private System.Windows.Forms.ComboBox ListOfColorsForPrint;
+        private System.Windows.Forms.Button PrintServerProperties;
     }
 }
 
