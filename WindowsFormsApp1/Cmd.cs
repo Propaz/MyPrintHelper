@@ -17,10 +17,10 @@ namespace PrinterHelper
             private readonly string key;
             private readonly string SelectedPrinter;
 
-            public Cmd(string n, string p)
+            public Cmd(string keyforcmd, string nameofprinter)
             {
-                key = n ?? throw new ArgumentNullException(nameof(n));
-                SelectedPrinter = p ?? throw new ArgumentNullException(nameof(p));
+                key = keyforcmd ?? throw new ArgumentNullException(nameof(keyforcmd));
+                SelectedPrinter = nameofprinter ?? throw new ArgumentNullException(nameof(nameofprinter));
             }
 
             public void PrinterTasks()
