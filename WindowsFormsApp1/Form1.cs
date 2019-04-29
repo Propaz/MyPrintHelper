@@ -5,8 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Printing;
 using System.IO;
 using System.Management;
 using System.Reflection;
@@ -35,12 +33,14 @@ namespace PrinterHelper
         public Form1()
         {
             InitializeComponent();
-            Text = $"Printer Helper{Assembly.GetExecutingAssembly().GetName().Version} build at 28/04/2019";
+            Text = $"Printer Helper{Assembly.GetExecutingAssembly().GetName().Version} build at 29/04/2019";
             ListOfPrintersListBox.MouseDown += ListOfPrintersListBoxMouseDown;
             ListOfColorsForPrint.SelectedIndex = 0;
         }
 
-        public string GetSelectedPrinterName() => ListOfPrintersListBox.SelectedIndex != -1 ? ListOfPrintersListBox.SelectedItem.ToString() : string.Empty;
+        public string SelectedPrinterName => ListOfPrintersListBox.SelectedItem.ToString();
+
+        public string ColorToPrint => ListOfColorsForPrint.SelectedItem.ToString();
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData = Keys.None)
         {
@@ -89,60 +89,14 @@ namespace PrinterHelper
             }
         }
 
-        private static Color
-            MapRainbowColor(float value, float redValue, float blueValue)
-        {
-            int intValue =
-                (int)(1023 * (value - redValue) / (blueValue - redValue)); // Convert into a value between 0 and 1023.
-
-            if (intValue < 256) return Color.FromArgb(255, intValue, 0); // Map different color bands.
-
-            if (intValue < 512)
-            {
-                // Yellow to green. (255, 255, 0) to (0, 255, 0).
-                intValue -= 256;
-                return Color.FromArgb(255 - intValue, 255, 0);
-            }
-
-            if (intValue < 768)
-            {
-                // Green to aqua. (0, 255, 0) to (0, 255, 255).
-                intValue -= 512;
-                return Color.FromArgb(0, 255, intValue);
-            }
-
-            // Aqua to blue. (0, 255, 255) to (0, 0, 255).
-            intValue -= 768;
-            return Color.FromArgb(0, 255 - intValue, 255);
-        }
-
-        private static void PrintTheRainbowPage(object sender, PrintPageEventArgs e)
-        {
-            const int wid = 600;
-            const int hgt = 600;
-            const int hgt2 = hgt / 2;
-            for (int x = 0; x < wid; x++)
-            {
-                using (Pen thePen = new Pen(MapRainbowColor(x, 0, wid)))
-                {
-                    e.Graphics.DrawLine(thePen, x, 0, x, hgt2);
-                }
-
-                using (Pen thePen = new Pen(MapRainbowColor(x, wid, 0)))
-                {
-                    e.Graphics.DrawLine(thePen, x, hgt2, x, hgt);
-                }
-            }
-        }
-
-        private void AddNewPrinter_Click(object sender, EventArgs e) => new Cmd(CommandList["AddNewPrinterKey"], GetSelectedPrinterName()).PrinterTasks();
+        private void AddNewPrinter_Click(object sender, EventArgs e) => new Cmd(CommandList["AddNewPrinterKey"]).PrinterTasks();
 
         private void ContextMenuStrip1_Opening(object sender, CancelEventArgs e) => contextMenuOfCommands.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
 
         private void DeleteThePrinterClick(object sender, EventArgs e)
         {
             DialogResult dialogResult = MessageBox.Show(
-                text: $"Are you sure you want to Delete [{GetSelectedPrinterName()}] ?",
+                text: $"Are you sure you want to Delete [{SelectedPrinterName}] ?",
                 caption: "Confirmation",
                 buttons: MessageBoxButtons.OKCancel, icon: MessageBoxIcon.Information);
             switch (dialogResult)
@@ -150,12 +104,12 @@ namespace PrinterHelper
                 case DialogResult.OK:
                     try
                     {
-                        new Cmd(CommandList["DeleteSelectedPrinterKey"], GetSelectedPrinterName()).PrinterTasks();
+                        new Cmd(CommandList["DeleteSelectedPrinterKey"], SelectedPrinterName).PrinterTasks();
                     }
                     finally
                     {
                         _ = MessageBox.Show(
-                            text: $"The [{GetSelectedPrinterName()}] was Deleted",
+                            text: $"The [{SelectedPrinterName}] was Deleted",
                             caption: "Information", buttons: MessageBoxButtons.OK,
                             icon: MessageBoxIcon.Information);
                         FindThePrinterBtnClick(null, null);
@@ -205,12 +159,14 @@ namespace PrinterHelper
             }
         }
 
-        private void GetPrintServerProperties(object sender, EventArgs e) => new Cmd(CommandList["GetPrintServerProperties"], GetSelectedPrinterName()).PrinterTasks();
+        private void GetPrintServerProperties(object sender, EventArgs e) => new Cmd(CommandList["GetPrintServerProperties"]).PrinterTasks();
 
         private void ListOfPrintersListBoxMouseDown(object sender, MouseEventArgs e) => ListOfPrintersListBox.SelectedIndex = ListOfPrintersListBox.IndexFromPoint(e.X, e.Y);
 
         private void PrintTheColor_Click(object sender, EventArgs e)
         {
+            int CopiesOfSingleColor = Convert.ToInt16(numericUpDownTheSingleColor.Value);
+
             if (ListOfPrintersListBox.SelectedIndex == -1)
             {
                 _ = MessageBox.Show(text: "Please select Printer first", caption: "Error", buttons: MessageBoxButtons.OK,
@@ -218,14 +174,15 @@ namespace PrinterHelper
             }
             else
             {
-                new Cmd(CommandList["SetPrinterAsDefaultKey"], GetSelectedPrinterName()).PrinterTasks();
-
-                SendDocumentToPrinter(GetSelectedPrinterName(), "SingleColorTestPage", Convert.ToInt16(numericUpDownTheSingleColor.Value));
+                new Cmd(CommandList["SetPrinterAsDefaultKey"], SelectedPrinterName).PrinterTasks();
+                new PrintTestPage(SelectedPrinterName, "SingleColorTestPage", ColorToPrint, CopiesOfSingleColor).SendDocumentToPrinter();
             }
         }
 
         private void PrintTheGridBtnClick(object sender, EventArgs e)
         {
+            int CopiesOfBWGrid = Convert.ToInt16(BWGirdUpDownNumeric.Value);
+
             if (ListOfPrintersListBox.SelectedIndex == -1)
             {
                 _ = MessageBox.Show(text: "Please select Printer first", caption: "Error", buttons: MessageBoxButtons.OK,
@@ -233,31 +190,15 @@ namespace PrinterHelper
             }
             else
             {
-                new Cmd(CommandList["SetPrinterAsDefaultKey"], GetSelectedPrinterName()).PrinterTasks();
-
-                SendDocumentToPrinter(GetSelectedPrinterName(), "BWGridTestPage", Convert.ToInt16(BWGirdUpDownNumeric.Value));
-            }
-        }
-
-        private void PrintTheGridDocument(object sender, PrintPageEventArgs e)
-        {
-            //Draw a grid
-            const int w = 1654; //A4 size
-            const int h = 2339;
-            const int widthLines = 20; //cell size
-            const int heightLines = 20;
-            for (int i = 0; i < w; i += widthLines)
-            {
-                //Width Lines
-                e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(i + widthLines, 0), new Point(i + widthLines, h));
-                //Height Lines
-                e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(0, i + heightLines),
-                    new Point(w, i + heightLines));
+                new Cmd(CommandList["SetPrinterAsDefaultKey"], SelectedPrinterName).PrinterTasks();
+                new PrintTestPage(SelectedPrinterName, "BWGridTestPage", CopiesOfBWGrid).SendDocumentToPrinter();
             }
         }
 
         private void PrintTheRainbowClick(object sender, EventArgs e)
         {
+            int CopiesOfRainbow = Convert.ToInt16(RinbowUpDownNumeric.Value);
+
             if (ListOfPrintersListBox.SelectedIndex == -1)
             {
                 _ = MessageBox.Show(text: "Please select Printer first", caption: "Error", buttons: MessageBoxButtons.OK,
@@ -265,162 +206,27 @@ namespace PrinterHelper
             }
             else
             {
-                new Cmd(CommandList["SetPrinterAsDefaultKey"], GetSelectedPrinterName()).PrinterTasks();
-
-                SendDocumentToPrinter(GetSelectedPrinterName(), "RainbowTestPage", Convert.ToInt16(RinbowUpDownNumeric.Value));
+                new Cmd(CommandList["SetPrinterAsDefaultKey"], SelectedPrinterName).PrinterTasks();
+                new PrintTestPage(SelectedPrinterName, "RainbowTestPage", CopiesOfRainbow).SendDocumentToPrinter();
             }
         }
 
-        private void PrintTheSingleColor(object sender, PrintPageEventArgs e)
-        {
-            switch (ListOfColorsForPrint.SelectedItem.ToString())
-            {
-                case "Black":
-                    e.Graphics.FillRectangle(Brushes.Black, 50, 50, 720, 1000);
-                    break;
+        private void PropertiesToolStripMenuItem_Click(object sender, EventArgs e) => new Cmd(CommandList["GetPropertiesOfSelectedPrinter"], SelectedPrinterName).PrinterTasks();
 
-                case "Cyan":
-                    e.Graphics.FillRectangle(Brushes.Cyan, 50, 50, 720, 1000);
-                    break;
+        private void QueueOfPrinter_Click(object sender, EventArgs e) => new Cmd(CommandList["QueueOfSelectedPrinter"], SelectedPrinterName).PrinterTasks();
 
-                case "Magenta":
-                    e.Graphics.FillRectangle(Brushes.Magenta, 50, 50, 720, 1000);
-                    break;
-
-                case "Yellow":
-                    e.Graphics.FillRectangle(Brushes.Yellow, 50, 50, 720, 1000);
-                    break;
-
-                case "Red":
-                    e.Graphics.FillRectangle(Brushes.Red, 50, 50, 720, 1000);
-                    break;
-
-                case "Green":
-                    e.Graphics.FillRectangle(Brushes.Green, 50, 50, 720, 1000);
-                    break;
-
-                case "Blue":
-                    e.Graphics.FillRectangle(Brushes.Blue, 50, 50, 720, 1000);
-                    break;
-            }
-        }
-
-        private void PropertiesToolStripMenuItem_Click(object sender, EventArgs e) => new Cmd(CommandList["GetPropertiesOfSelectedPrinter"], GetSelectedPrinterName()).PrinterTasks();
-
-        private void QueueOfPrinter_Click(object sender, EventArgs e) => new Cmd(CommandList["QueueOfSelectedPrinter"], GetSelectedPrinterName()).PrinterTasks();
-
-        private void RestartPrintSpool_Click(object sender, EventArgs e) => new Cmd(CommandList["RestartSpooler"], GetSelectedPrinterName()).PrinterTasks();
-
-        private void SendDocumentToPrinter(string PrinterName, string DocumentToPrint, int CopiesOfDocument = 1)
-        {
-            if (PrinterName == null)
-                throw new ArgumentNullException(nameof(PrinterName));
-
-            if (DocumentToPrint == null)
-                throw new ArgumentNullException(nameof(DocumentToPrint));
-
-            using (PrintDocument document = new PrintDocument
-            { PrinterSettings = { PrinterName = PrinterName } })
-            {
-                switch (DocumentToPrint)
-                {
-                    case ("BWGridTestPage"):
-                        document.PrintPage += PrintTheGridDocument;
-                        break;
-
-                    case ("RainbowTestPage"):
-                        document.PrintPage += PrintTheRainbowPage;
-                        break;
-
-                    case ("SingleColorTestPage"):
-                        document.PrintPage += PrintTheSingleColor;
-                        break;
-                }
-
-                document.PrinterSettings.Copies = Convert.ToInt16(CopiesOfDocument);
-
-                try
-                {
-                    document.Print();
-                }
-                catch (InvalidPrinterException exc)
-                {
-                    _ = MessageBox.Show(text: exc.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
-                }
-            }
-        }
+        private void RestartPrintSpool_Click(object sender, EventArgs e) => new Cmd(CommandList["RestartSpooler"]).PrinterTasks();
 
         private void SendFileToPrinter(object sender, EventArgs e)
         {
-            new Cmd(CommandList["SetPrinterAsDefaultKey"], GetSelectedPrinterName()).PrinterTasks();
-            SendFileToSelectedPrinter(GetSelectedPrinterName());
+            new Cmd(CommandList["SetPrinterAsDefaultKey"], SelectedPrinterName).PrinterTasks();
+            new SendFileToPrint(SelectedPrinterName).SendFileToSelectedPrinter();
         }
 
-        private void SendFileToSelectedPrinter(string PrinterName)
-        {
-            if (string.IsNullOrEmpty(PrinterName))
-            {
-                throw new ArgumentException("Selected PrinterName is empty.", nameof(PrinterName));
-            }
+        private void SendTestPage_Click(object sender, EventArgs e) => new Cmd(CommandList["SendDefaultTestPage"], SelectedPrinterName).PrinterTasks();
 
-            const string FilterOfFileTypes =
-            "TXT Files(*.txt)|*.txt|Office Files|*.doc;*.docx;*.xlsx;*.xls;*.ppt;*.pptx|PDF Files(*.pdf)|*.pdf|Image Files|*.png;*.jpg;*.tiff;*.gif|All Files(*.*)|*.*";
+        private void StartPrintSpool_Click(object sender, EventArgs e) => new Cmd(CommandList["StartSpooler"]).PrinterTasks();
 
-            using (PrintDialog printDialog = new PrintDialog
-            {
-                PrinterSettings = { PrinterName = PrinterName },
-                AllowSomePages = true
-            })
-            {
-                using (OpenFileDialog openFileDialog = new OpenFileDialog
-                {
-                    Filter =
-                        FilterOfFileTypes
-                })
-                {
-                    if (openFileDialog.ShowDialog() != DialogResult.OK) return;
-
-                    if (printDialog.ShowDialog() != DialogResult.OK) return;
-
-                    try
-                    {
-                        _ = Process.Start(new ProcessStartInfo(fileName: openFileDialog.FileName)
-                        {
-                            Verb = "Print",
-                            CreateNoWindow = true,
-                            WindowStyle = ProcessWindowStyle.Hidden
-                        });
-                    }
-                    catch (ArgumentNullException nullex)
-                    {
-                        _ = MessageBox.Show(text: nullex.Message, caption: "Error", buttons: MessageBoxButtons.OK,
-                            icon: MessageBoxIcon.Error);
-                    }
-                    catch (FileNotFoundException exfilenotfound)
-                    {
-                        _ = MessageBox.Show(text: exfilenotfound.Message, caption: "Error", buttons: MessageBoxButtons.OK,
-                            icon: MessageBoxIcon.Error);
-                    }
-                    catch (ObjectDisposedException exdisposed)
-                    {
-                        _ = MessageBox.Show(text: exdisposed.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
-                    }
-                    catch (InvalidOperationException exo)
-                    {
-                        _ = MessageBox.Show(text: exo.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
-                    }
-                    catch (Win32Exception ex)
-                    {
-                        _ = MessageBox.Show(text: ex.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
-                    }
-                }
-            }
-        }
-
-        private void SendTestPage_Click(object sender, EventArgs e) => new Cmd(CommandList["SendDefaultTestPage"], GetSelectedPrinterName()).PrinterTasks();
-
-        private void StartPrintSpool_Click(object sender, EventArgs e) => new Cmd(CommandList["StartSpooler"], GetSelectedPrinterName()).PrinterTasks();
-
-        private void StopPrintSpool_Click(object sender, EventArgs e) => new Cmd(CommandList["StopSpooler"], GetSelectedPrinterName()).PrinterTasks();
+        private void StopPrintSpool_Click(object sender, EventArgs e) => new Cmd(CommandList["StopSpooler"]).PrinterTasks();
     }
 }

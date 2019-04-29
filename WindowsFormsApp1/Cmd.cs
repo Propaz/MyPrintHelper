@@ -23,6 +23,12 @@ namespace PrinterHelper
                 SelectedPrinter = nameofprinter ?? throw new ArgumentNullException(nameof(nameofprinter));
             }
 
+            public Cmd(string keyforcmd)
+            {
+                key = keyforcmd ?? throw new ArgumentNullException(nameof(keyforcmd));
+                SelectedPrinter = string.Empty;
+            }
+
             public void PrinterTasks()
             {
                 using (Process process = new Process())
