@@ -12,10 +12,10 @@ namespace PrinterHelper
     {
         internal class PrintTestPage
         {
-            private readonly string SelectedPrinter;
-            private readonly string TestPageName;
             private readonly int CopiesOfTestPage;
+            private readonly string SelectedPrinter;
             private readonly string SingleColorToPrint;
+            private readonly string TestPageName;
 
             public PrintTestPage(string NameOfPrinter, string nameoftestpage, string colortoprint, int copies)
             {
@@ -33,8 +33,41 @@ namespace PrinterHelper
                 SingleColorToPrint = string.Empty;
             }
 
+            public void SendDocumentToPrinter()
+            {
+                using (PrintDocument document = new PrintDocument
+                { PrinterSettings = { PrinterName = SelectedPrinter } })
+                {
+                    switch (TestPageName)
+                    {
+                        case ("BWGridTestPage"):
+                            document.PrintPage += PrintTheGridDocument;
+                            break;
+
+                        case ("RainbowTestPage"):
+                            document.PrintPage += PrintTheRainbowPage;
+                            break;
+
+                        case ("SingleColorTestPage"):
+                            document.PrintPage += PrintTheSingleColor;
+                            break;
+                    }
+
+                    document.PrinterSettings.Copies = Convert.ToInt16(CopiesOfTestPage);
+
+                    try
+                    {
+                        document.Print();
+                    }
+                    catch (InvalidPrinterException exc)
+                    {
+                        _ = MessageBox.Show(text: exc.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
+                    }
+                }
+            }
+
             private static Color
-           MapRainbowColor(float value, float redValue, float blueValue)
+                       MapRainbowColor(float value, float redValue, float blueValue)
             {
                 int intValue =
                     (int)(1023 * (value - redValue) / (blueValue - redValue)); // Convert into a value between 0 and 1023.
@@ -127,39 +160,6 @@ namespace PrinterHelper
                     case "Blue":
                         e.Graphics.FillRectangle(Brushes.Blue, 50, 50, 720, 1000);
                         break;
-                }
-            }
-
-            public void SendDocumentToPrinter()
-            {
-                using (PrintDocument document = new PrintDocument
-                { PrinterSettings = { PrinterName = SelectedPrinter } })
-                {
-                    switch (TestPageName)
-                    {
-                        case ("BWGridTestPage"):
-                            document.PrintPage += PrintTheGridDocument;
-                            break;
-
-                        case ("RainbowTestPage"):
-                            document.PrintPage += PrintTheRainbowPage;
-                            break;
-
-                        case ("SingleColorTestPage"):
-                            document.PrintPage += PrintTheSingleColor;
-                            break;
-                    }
-
-                    document.PrinterSettings.Copies = Convert.ToInt16(CopiesOfTestPage);
-
-                    try
-                    {
-                        document.Print();
-                    }
-                    catch (InvalidPrinterException exc)
-                    {
-                        _ = MessageBox.Show(text: exc.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
-                    }
                 }
             }
         }

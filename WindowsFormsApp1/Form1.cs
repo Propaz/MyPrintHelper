@@ -4,8 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
 using System.Management;
 using System.Reflection;
 using System.Threading;
@@ -38,9 +36,8 @@ namespace PrinterHelper
             ListOfColorsForPrint.SelectedIndex = 0;
         }
 
-        public string SelectedPrinterName => ListOfPrintersListBox.SelectedItem.ToString();
-
         public string ColorToPrint => ListOfColorsForPrint.SelectedItem.ToString();
+        public string SelectedPrinterName => ListOfPrintersListBox.SelectedItem.ToString();
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData = Keys.None)
         {
