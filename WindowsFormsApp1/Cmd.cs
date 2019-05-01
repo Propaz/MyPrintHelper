@@ -33,26 +33,22 @@ namespace PrinterHelper
             {
                 using (Process process = new Process())
                 {
-                    if (key == "/il" && key == "/s")
-                    {
-                        process.StartInfo = new ProcessStartInfo
+                    process.StartInfo = string.IsNullOrEmpty(SelectedPrinter)
+                        ? new ProcessStartInfo
                         {
                             WindowStyle = ProcessWindowStyle.Hidden,
                             FileName = FileNameToExec,
                             Arguments =
                                 $"{CmdArgumentForPrinterTasks} {key}"
-                        };
-                    }
-                    else
-                    {
-                        process.StartInfo = new ProcessStartInfo
+                        }
+                        : new ProcessStartInfo
                         {
                             WindowStyle = ProcessWindowStyle.Hidden,
                             FileName = FileNameToExec,
                             Arguments =
                                $"{CmdArgumentForPrinterTasks} {key} /n \"{SelectedPrinter}\""
                         };
-                    }
+
                     if (key.IndexOf("spooler", StringComparison.OrdinalIgnoreCase) != -1)
                     {
                         process.StartInfo = new ProcessStartInfo
