@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing.Printing;
 using System.Management;
 using System.Reflection;
 using System.Threading;
@@ -185,7 +186,7 @@ namespace PrinterHelper
 
             if (ListOfPrintersListBox.SelectedIndex == -1)
             {
-                _ = MessageBox.Show(text: "Please select Printer first", caption: "Error", buttons: MessageBoxButtons.OK,
+               _ = MessageBox.Show(text: "Please select Printer first", caption: "Error", buttons: MessageBoxButtons.OK,
                     icon: MessageBoxIcon.Information);
             }
             else
@@ -228,5 +229,11 @@ namespace PrinterHelper
         private void StartPrintSpool_Click(object sender, EventArgs e) => new Cmd(_commandList["StartSpooler"]).PrinterTasks();
 
         private void StopPrintSpool_Click(object sender, EventArgs e) => new Cmd(_commandList["StopSpooler"]).PrinterTasks();
+
+        private void FRPOToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var frpogui = new Frpogui(ListOfPrintersListBox);
+            frpogui.Show();
+        }
     }
 }
