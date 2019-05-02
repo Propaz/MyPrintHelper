@@ -21,7 +21,8 @@ namespace PrinterHelper
         public Frpogui(ListBox listOfPrintersListBox)
         {
             InitializeComponent();
-            this._listOfPrintersListBox = listOfPrintersListBox;
+            Icon = Properties.Resources.mainicon;
+            _listOfPrintersListBox = listOfPrintersListBox;
             Text = "FRPO For Kyocera";
             NameOfSelectedprinter.Text = SelectedPrinterName;
             ComboBoxOfCommands.SelectedIndex = 0;

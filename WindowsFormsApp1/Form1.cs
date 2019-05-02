@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing.Printing;
 using System.Management;
 using System.Reflection;
 using System.Threading;
@@ -32,6 +31,7 @@ namespace PrinterHelper
         public Form1()
         {
             InitializeComponent();
+            Icon = Properties.Resources.mainicon;
             Text = $"Printer Helper{Assembly.GetExecutingAssembly().GetName().Version} build at 02/05/2019";
             ListOfPrintersListBox.MouseDown += ListOfPrintersListBoxMouseDown;
             ListOfColorsForPrint.SelectedIndex = 0;
@@ -167,6 +167,12 @@ namespace PrinterHelper
             }
         }
 
+        private void FRPOToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var frpogui = new Frpogui(ListOfPrintersListBox);
+            frpogui.Show();
+        }
+
         private void GetPrintServerProperties(object sender, EventArgs e) => new Cmd(_commandList["GetPrintServerProperties"]).PrinterTasks();
 
         private void ListOfPrintersListBoxMouseDown(object sender, MouseEventArgs e) => ListOfPrintersListBox.SelectedIndex = ListOfPrintersListBox.IndexFromPoint(e.X, e.Y);
@@ -193,8 +199,8 @@ namespace PrinterHelper
 
             if (ListOfPrintersListBox.SelectedIndex == -1)
             {
-               _ = MessageBox.Show(text: "Please select Printer first", caption: "Error", buttons: MessageBoxButtons.OK,
-                    icon: MessageBoxIcon.Information);
+                _ = MessageBox.Show(text: "Please select Printer first", caption: "Error", buttons: MessageBoxButtons.OK,
+                     icon: MessageBoxIcon.Information);
             }
             else
             {
@@ -236,11 +242,5 @@ namespace PrinterHelper
         private void StartPrintSpool_Click(object sender, EventArgs e) => new Cmd(_commandList["StartSpooler"]).PrinterTasks();
 
         private void StopPrintSpool_Click(object sender, EventArgs e) => new Cmd(_commandList["StopSpooler"]).PrinterTasks();
-
-        private void FRPOToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var frpogui = new Frpogui(ListOfPrintersListBox);
-            frpogui.Show();
-        }
     }
 }
