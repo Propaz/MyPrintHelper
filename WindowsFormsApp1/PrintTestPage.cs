@@ -10,35 +10,35 @@ namespace PrinterHelper
 {
     public partial class Form1
     {
-        internal class PrintTestPage
+        private class PrintTestPage
         {
-            private readonly int CopiesOfTestPage;
-            private readonly string SelectedPrinter;
-            private readonly string SingleColorToPrint;
-            private readonly string TestPageName;
+            private readonly int _copiesOfTestPage;
+            private readonly string _selectedPrinter;
+            private readonly string _singleColorToPrint;
+            private readonly string _testPageName;
 
-            public PrintTestPage(string NameOfPrinter, string nameoftestpage, string colortoprint, int copies)
+            public PrintTestPage(string nameOfPrinter, string nameoftestpage, string colortoprint, int copies)
             {
-                SelectedPrinter = NameOfPrinter ?? throw new ArgumentNullException(nameof(NameOfPrinter));
-                TestPageName = nameoftestpage ?? throw new ArgumentNullException(nameof(nameoftestpage));
-                CopiesOfTestPage = copies;
-                SingleColorToPrint = colortoprint ?? throw new ArgumentNullException(nameof(colortoprint));
+                _selectedPrinter = nameOfPrinter ?? throw new ArgumentNullException(nameof(nameOfPrinter));
+                _testPageName = nameoftestpage ?? throw new ArgumentNullException(nameof(nameoftestpage));
+                _copiesOfTestPage = copies;
+                _singleColorToPrint = colortoprint ?? throw new ArgumentNullException(nameof(colortoprint));
             }
 
-            public PrintTestPage(string NameOfPrinter, string nameoftestpage, int copies)
+            public PrintTestPage(string nameOfPrinter, string nameoftestpage, int copies)
             {
-                SelectedPrinter = NameOfPrinter ?? throw new ArgumentNullException(nameof(NameOfPrinter));
-                TestPageName = nameoftestpage ?? throw new ArgumentNullException(nameof(nameoftestpage));
-                CopiesOfTestPage = copies;
-                SingleColorToPrint = string.Empty;
+                _selectedPrinter = nameOfPrinter ?? throw new ArgumentNullException(nameof(nameOfPrinter));
+                _testPageName = nameoftestpage ?? throw new ArgumentNullException(nameof(nameoftestpage));
+                _copiesOfTestPage = copies;
+                _singleColorToPrint = string.Empty;
             }
 
             public void SendDocumentToPrinter()
             {
                 using (PrintDocument document = new PrintDocument
-                { PrinterSettings = { PrinterName = SelectedPrinter } })
+                { PrinterSettings = { PrinterName = _selectedPrinter } })
                 {
-                    switch (TestPageName)
+                    switch (_testPageName)
                     {
                         case ("BWGridTestPage"):
                             document.PrintPage += PrintTheGridDocument;
@@ -53,7 +53,7 @@ namespace PrinterHelper
                             break;
                     }
 
-                    document.PrinterSettings.Copies = Convert.ToInt16(CopiesOfTestPage);
+                    document.PrinterSettings.Copies = Convert.ToInt16(_copiesOfTestPage);
 
                     try
                     {
@@ -131,7 +131,7 @@ namespace PrinterHelper
 
             private void PrintTheSingleColor(object sender, PrintPageEventArgs e)
             {
-                switch (SingleColorToPrint)
+                switch (_singleColorToPrint)
                 {
                     case "Black":
                         e.Graphics.FillRectangle(Brushes.Black, 50, 50, 720, 1000);

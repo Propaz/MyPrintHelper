@@ -11,30 +11,30 @@ namespace PrinterHelper
 {
     public partial class Form1
     {
-        internal class SendFileToPrint
+        private class SendFileToPrint
         {
-            private readonly string PrinterName;
+            private readonly string _printerName;
 
             public SendFileToPrint(string nameofprinter)
             {
-                PrinterName = nameofprinter ?? throw new ArgumentNullException(nameof(nameofprinter));
+                _printerName = nameofprinter ?? throw new ArgumentNullException(nameof(nameofprinter));
             }
 
             public void SendFileToSelectedPrinter()
             {
-                const string FilterOfFileTypes =
+                const string filterOfFileTypes =
                 "TXT Files(*.txt)|*.txt|Office Files|*.doc;*.docx;*.xlsx;*.xls;*.ppt;*.pptx|PDF Files(*.pdf)|*.pdf|Image Files|*.png;*.jpg;*.tiff;*.gif|All Files(*.*)|*.*";
 
                 using (PrintDialog printDialog = new PrintDialog
                 {
-                    PrinterSettings = { PrinterName = PrinterName },
+                    PrinterSettings = { PrinterName = _printerName },
                     AllowSomePages = true
                 })
                 {
                     using (OpenFileDialog openFileDialog = new OpenFileDialog
                     {
                         Filter =
-                            FilterOfFileTypes
+                            filterOfFileTypes
                     })
                     {
                         if (openFileDialog.ShowDialog() != DialogResult.OK) return;

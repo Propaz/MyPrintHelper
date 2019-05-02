@@ -10,52 +10,52 @@ namespace PrinterHelper
 {
     public partial class Form1 : Form
     {
-        internal class Cmd
+        private class Cmd
         {
-            private readonly string CmdArgumentForPrinterTasks = "/C rundll32 printui.dll,PrintUIEntry";
-            private readonly string FileNameToExec = "cmd.exe";
-            private readonly string key;
-            private readonly string SelectedPrinter;
+            private const string CmdArgumentForPrinterTasks = "/C rundll32 printui.dll,PrintUIEntry";
+            private const string FileNameToExec = "cmd.exe";
+            private readonly string _key;
+            private readonly string _selectedPrinter;
 
             public Cmd(string keyforcmd, string nameofprinter)
             {
-                key = keyforcmd ?? throw new ArgumentNullException(nameof(keyforcmd));
-                SelectedPrinter = nameofprinter ?? throw new ArgumentNullException(nameof(nameofprinter));
+                _key = keyforcmd ?? throw new ArgumentNullException(nameof(keyforcmd));
+                _selectedPrinter = nameofprinter ?? throw new ArgumentNullException(nameof(nameofprinter));
             }
 
             public Cmd(string keyforcmd)
             {
-                key = keyforcmd ?? throw new ArgumentNullException(nameof(keyforcmd));
-                SelectedPrinter = string.Empty;
+                _key = keyforcmd ?? throw new ArgumentNullException(nameof(keyforcmd));
+                _selectedPrinter = string.Empty;
             }
 
             public void PrinterTasks()
             {
                 using (Process process = new Process())
                 {
-                    process.StartInfo = string.IsNullOrEmpty(SelectedPrinter)
+                    process.StartInfo = string.IsNullOrEmpty(_selectedPrinter)
                         ? new ProcessStartInfo
                         {
                             WindowStyle = ProcessWindowStyle.Hidden,
                             FileName = FileNameToExec,
                             Arguments =
-                                $"{CmdArgumentForPrinterTasks} {key}"
+                                $"{CmdArgumentForPrinterTasks} {_key}"
                         }
                         : new ProcessStartInfo
                         {
                             WindowStyle = ProcessWindowStyle.Hidden,
                             FileName = FileNameToExec,
                             Arguments =
-                               $"{CmdArgumentForPrinterTasks} {key} /n \"{SelectedPrinter}\""
+                               $"{CmdArgumentForPrinterTasks} {_key} /n \"{_selectedPrinter}\""
                         };
 
-                    if (key.IndexOf("spooler", StringComparison.OrdinalIgnoreCase) != -1)
+                    if (_key.IndexOf("spooler", StringComparison.OrdinalIgnoreCase) != -1)
                     {
                         process.StartInfo = new ProcessStartInfo
                         {
                             UseShellExecute = true,
                             FileName = FileNameToExec,
-                            Arguments = key,
+                            Arguments = _key,
                             Verb = "runas"
                         };
                     }
