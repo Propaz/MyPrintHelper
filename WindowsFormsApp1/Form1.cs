@@ -31,7 +31,7 @@ namespace PrinterHelper
         public Form1()
         {
             InitializeComponent();
-            Text = $"Printer Helper{Assembly.GetExecutingAssembly().GetName().Version} build at 01/05/2019";
+            Text = $"Printer Helper{Assembly.GetExecutingAssembly().GetName().Version} build at 02/05/2019";
             ListOfPrintersListBox.MouseDown += ListOfPrintersListBoxMouseDown;
             ListOfColorsForPrint.SelectedIndex = 0;
         }
