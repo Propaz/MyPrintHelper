@@ -37,10 +37,16 @@ namespace PrinterHelper
             ListOfColorsForPrint.SelectedIndex = 0;
         }
 
+        public sealed override string Text
+        {
+            get => base.Text;
+            set => base.Text = value;
+        }
+
         private string ColorToPrint => ListOfColorsForPrint.SelectedItem.ToString();
         private string SelectedPrinterName => ListOfPrintersListBox.SelectedItem.ToString();
 
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData = Keys.None)
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == Keys.F5)
             {
@@ -59,7 +65,8 @@ namespace PrinterHelper
 
             const string queryString = "SELECT * FROM Win32_Printer";
 
-            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(queryString: queryString))
+            ManagementObjectSearcher searcher;
+            using (searcher = new ManagementObjectSearcher(queryString: queryString))
             {
                 using (ManagementObjectCollection managementObjects = searcher.Get())
                 {

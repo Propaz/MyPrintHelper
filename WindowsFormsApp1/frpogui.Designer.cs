@@ -39,7 +39,7 @@
             // 
             // SendFRPOcommand
             // 
-            this.SendFRPOcommand.Location = new System.Drawing.Point(260, 126);
+            this.SendFRPOcommand.Location = new System.Drawing.Point(274, 127);
             this.SendFRPOcommand.Name = "SendFRPOcommand";
             this.SendFRPOcommand.Size = new System.Drawing.Size(110, 45);
             this.SendFRPOcommand.TabIndex = 0;
@@ -53,9 +53,9 @@
             this.NameOfSelectedprinter.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.NameOfSelectedprinter.Location = new System.Drawing.Point(12, 9);
             this.NameOfSelectedprinter.Name = "NameOfSelectedprinter";
-            this.NameOfSelectedprinter.Size = new System.Drawing.Size(45, 16);
+            this.NameOfSelectedprinter.Size = new System.Drawing.Size(100, 16);
             this.NameOfSelectedprinter.TabIndex = 1;
-            this.NameOfSelectedprinter.Text = "label1";
+            this.NameOfSelectedprinter.Text = "SelectedPrinter";
             // 
             // ComboBoxOfCommands
             // 
@@ -75,7 +75,7 @@
             this.TextBoxCustomFRPOCommand.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.TextBoxCustomFRPOCommand.Location = new System.Drawing.Point(6, 29);
             this.TextBoxCustomFRPOCommand.Name = "TextBoxCustomFRPOCommand";
-            this.TextBoxCustomFRPOCommand.Size = new System.Drawing.Size(352, 26);
+            this.TextBoxCustomFRPOCommand.Size = new System.Drawing.Size(360, 26);
             this.TextBoxCustomFRPOCommand.TabIndex = 3;
             // 
             // groupBox1
@@ -83,14 +83,14 @@
             this.groupBox1.Controls.Add(this.TextBoxCustomFRPOCommand);
             this.groupBox1.Location = new System.Drawing.Point(12, 49);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(364, 71);
+            this.groupBox1.Size = new System.Drawing.Size(372, 71);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Custom FRPO Command";
             // 
             // SendScriptToPrinter
             // 
-            this.SendScriptToPrinter.Location = new System.Drawing.Point(260, 178);
+            this.SendScriptToPrinter.Location = new System.Drawing.Point(274, 189);
             this.SendScriptToPrinter.Name = "SendScriptToPrinter";
             this.SendScriptToPrinter.Size = new System.Drawing.Size(110, 42);
             this.SendScriptToPrinter.TabIndex = 5;

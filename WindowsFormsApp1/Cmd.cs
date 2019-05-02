@@ -31,7 +31,8 @@ namespace PrinterHelper
 
             public void PrinterTasks()
             {
-                using (Process process = new Process())
+                Process process;
+                using (process = new Process())
                 {
                     process.StartInfo = string.IsNullOrEmpty(_selectedPrinter)
                         ? new ProcessStartInfo

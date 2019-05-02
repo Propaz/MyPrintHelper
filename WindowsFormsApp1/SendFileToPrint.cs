@@ -25,13 +25,15 @@ namespace PrinterHelper
                 const string filterOfFileTypes =
                 "TXT Files(*.txt)|*.txt|Office Files|*.doc;*.docx;*.xlsx;*.xls;*.ppt;*.pptx|PDF Files(*.pdf)|*.pdf|Image Files|*.png;*.jpg;*.tiff;*.gif|All Files(*.*)|*.*";
 
-                using (PrintDialog printDialog = new PrintDialog
+                PrintDialog printDialog;
+                using (printDialog = new PrintDialog
                 {
                     PrinterSettings = { PrinterName = _printerName },
                     AllowSomePages = true
                 })
                 {
-                    using (OpenFileDialog openFileDialog = new OpenFileDialog
+                    OpenFileDialog openFileDialog;
+                    using (openFileDialog = new OpenFileDialog
                     {
                         Filter =
                             filterOfFileTypes

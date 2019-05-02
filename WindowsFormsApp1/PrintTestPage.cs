@@ -100,12 +100,13 @@ namespace PrinterHelper
                 const int hgt2 = hgt / 2;
                 for (int x = 20; x < wid; x++)
                 {
-                    using (Pen thePen = new Pen(MapRainbowColor(x, 0, wid)))
+                    Pen thePen;
+                    using (thePen = new Pen(MapRainbowColor(x, 0, wid)))
                     {
                         e.Graphics.DrawLine(thePen, x, 20, x, hgt2);
                     }
 
-                    using (Pen thePen = new Pen(MapRainbowColor(x, wid, 0)))
+                    using (thePen = new Pen(MapRainbowColor(x, wid, 0)))
                     {
                         e.Graphics.DrawLine(thePen, x, hgt2, x, hgt);
                     }
