@@ -64,7 +64,10 @@
             this.ComboBoxOfCommands.FormattingEnabled = true;
             this.ComboBoxOfCommands.Items.AddRange(new object[] {
             "Event Log",
-            "Status Page"});
+            "Status Page",
+            "Draw Arc",
+            "Fill Pattern",
+            "Margin Test"});
             this.ComboBoxOfCommands.Location = new System.Drawing.Point(12, 126);
             this.ComboBoxOfCommands.Name = "ComboBoxOfCommands";
             this.ComboBoxOfCommands.Size = new System.Drawing.Size(210, 21);
