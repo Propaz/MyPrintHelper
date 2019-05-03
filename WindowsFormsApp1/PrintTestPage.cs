@@ -113,7 +113,7 @@ namespace PrinterHelper
                 }
             }
 
-            private void PrintTheGridDocument(object sender, PrintPageEventArgs e)
+            private static void PrintTheGridDocument(object sender, PrintPageEventArgs e)
             {
                 //Draw a grid
                 const int w = 1654; //A4 size

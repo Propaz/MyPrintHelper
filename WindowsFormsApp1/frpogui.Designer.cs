@@ -39,9 +39,9 @@
             // 
             // SendFRPOcommand
             // 
-            this.SendFRPOcommand.Location = new System.Drawing.Point(274, 127);
+            this.SendFRPOcommand.Location = new System.Drawing.Point(228, 126);
             this.SendFRPOcommand.Name = "SendFRPOcommand";
-            this.SendFRPOcommand.Size = new System.Drawing.Size(110, 45);
+            this.SendFRPOcommand.Size = new System.Drawing.Size(156, 45);
             this.SendFRPOcommand.TabIndex = 0;
             this.SendFRPOcommand.Text = "Send FRPO Command";
             this.SendFRPOcommand.UseVisualStyleBackColor = true;
@@ -90,9 +90,9 @@
             // 
             // SendScriptToPrinter
             // 
-            this.SendScriptToPrinter.Location = new System.Drawing.Point(274, 189);
+            this.SendScriptToPrinter.Location = new System.Drawing.Point(228, 178);
             this.SendScriptToPrinter.Name = "SendScriptToPrinter";
-            this.SendScriptToPrinter.Size = new System.Drawing.Size(110, 42);
+            this.SendScriptToPrinter.Size = new System.Drawing.Size(156, 42);
             this.SendScriptToPrinter.TabIndex = 5;
             this.SendScriptToPrinter.Text = "Send script File";
             this.SendScriptToPrinter.UseVisualStyleBackColor = true;

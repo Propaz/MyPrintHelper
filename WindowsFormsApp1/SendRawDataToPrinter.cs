@@ -2,15 +2,16 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
 using System;
+using System.ComponentModel;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace PrinterHelper
 {
-    public partial class Form1
+    public partial class Frpogui
     {
-        internal static class SendRawDataToPrinter
+        private static class SendRawDataToPrinter
         {
             [DllImport("winspool.Drv", EntryPoint = "ClosePrinter", SetLastError = true, ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern bool ClosePrinter(IntPtr hPrinter);
@@ -23,44 +24,6 @@ namespace PrinterHelper
 
             [DllImport("winspool.Drv", EntryPoint = "OpenPrinterA", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern bool OpenPrinter([MarshalAs(UnmanagedType.LPStr)] string szPrinter, out IntPtr hPrinter, IntPtr pd);
-
-            // SendBytesToPrinter()
-            // When the function is given a printer name and an unmanaged array
-            // of bytes, the function sends those bytes to the print queue.
-            // Returns true on success, false on failure.
-            public static bool SendBytesToPrinter(string szPrinterName, IntPtr pBytes, Int32 dwCount)
-            {
-                DOCINFOA di = new DOCINFOA();
-                bool bSuccess = false; // Assume failure unless you specifically succeed.
-
-                di.pDocName = "FRPO RAW Document";
-                di.pDataType = "RAW";
-
-                // Open the printer.
-                if (OpenPrinter(szPrinterName.Normalize(), out var hPrinter, IntPtr.Zero))
-                {
-                    // Start a document.
-                    if (StartDocPrinter(hPrinter, 1, di))
-                    {
-                        // Start a page.
-                        if (StartPagePrinter(hPrinter))
-                        {
-                            // Write your bytes.
-                            bSuccess = WritePrinter(hPrinter, pBytes, dwCount, out _);
-                            EndPagePrinter(hPrinter);
-                        }
-                        EndDocPrinter(hPrinter);
-                    }
-                    ClosePrinter(hPrinter);
-                }
-                // If you did not succeed, GetLastError may give more information
-                // about why not.
-                if (!bSuccess)
-                {
-                    _ = MessageBox.Show(Marshal.GetLastWin32Error().ToString());
-                }
-                return bSuccess;
-            }
 
             public static bool SendFileToPrinter(string szPrinterName, string szFileName)
             {
@@ -98,18 +61,57 @@ namespace PrinterHelper
                 return true;
             }
 
+            // SendBytesToPrinter()
+            // When the function is given a printer name and an unmanaged array
+            // of bytes, the function sends those bytes to the print queue.
+            // Returns true on success, false on failure.
+            private static bool SendBytesToPrinter(string szPrinterName, IntPtr pBytes, Int32 dwCount)
+            {
+                DOCINFOA di = new DOCINFOA();
+                bool bSuccess = false; // Assume failure unless you specifically succeed.
+
+                di.pDocName = "FRPO RAW Document";
+                di.pDataType = "RAW";
+
+                // Open the printer.
+                if (OpenPrinter(szPrinterName.Normalize(), out var hPrinter, IntPtr.Zero))
+                {
+                    // Start a document.
+                    if (StartDocPrinter(hPrinter, 1, di))
+                    {
+                        // Start a page.
+                        if (StartPagePrinter(hPrinter))
+                        {
+                            // Write your bytes.
+                            bSuccess = WritePrinter(hPrinter, pBytes, dwCount, out _);
+                            EndPagePrinter(hPrinter);
+                        }
+                        EndDocPrinter(hPrinter);
+                    }
+                    ClosePrinter(hPrinter);
+                }
+                // If you did not succeed, GetLastError may give more information
+                // about why not.
+                if (!bSuccess)
+                {
+                    _ = MessageBox.Show(text: new Win32Exception(Marshal.GetLastWin32Error()).Message, caption: "Error", buttons: MessageBoxButtons.OK,
+                    icon: MessageBoxIcon.Error);
+                }
+                return bSuccess;
+            }
+
             [DllImport("winspool.Drv", EntryPoint = "StartDocPrinterA", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
-            public static extern bool StartDocPrinter(IntPtr hPrinter, Int32 level, [In, MarshalAs(UnmanagedType.LPStruct)] DOCINFOA di);
+            private static extern bool StartDocPrinter(IntPtr hPrinter, Int32 level, [In, MarshalAs(UnmanagedType.LPStruct)] DOCINFOA di);
 
             [DllImport("winspool.Drv", EntryPoint = "StartPagePrinter", SetLastError = true, ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
-            public static extern bool StartPagePrinter(IntPtr hPrinter);
+            private static extern bool StartPagePrinter(IntPtr hPrinter);
 
             [DllImport("winspool.Drv", EntryPoint = "WritePrinter", SetLastError = true, ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
-            public static extern bool WritePrinter(IntPtr hPrinter, IntPtr pBytes, Int32 dwCount, out Int32 dwWritten);
+            private static extern bool WritePrinter(IntPtr hPrinter, IntPtr pBytes, Int32 dwCount, out Int32 dwWritten);
 
             // Structure and API declarions:
             [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-            public class DOCINFOA
+            private class DOCINFOA
             {
                 [MarshalAs(UnmanagedType.LPStr)] public string pDocName;
                 [MarshalAs(UnmanagedType.LPStr)] public string pOutputFile;

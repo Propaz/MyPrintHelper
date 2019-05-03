@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using static PrinterHelper.Form1;
 
 namespace PrinterHelper
 {
@@ -23,8 +22,8 @@ namespace PrinterHelper
             InitializeComponent();
             Icon = Properties.Resources.mainicon;
             _listOfPrintersListBox = listOfPrintersListBox;
-            Text = "FRPO For Kyocera";
-            NameOfSelectedprinter.Text = SelectedPrinterName;
+            Text = "FRPO For Kyocera build at 03/05/2019";
+            NameOfSelectedprinter.Text = $"Send To: [{SelectedPrinterName}]";
             ComboBoxOfCommands.SelectedIndex = 0;
         }
 
@@ -64,9 +63,11 @@ namespace PrinterHelper
 
         private void SendScriptToPrinter_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (DialogResult.OK != openFileDialog.ShowDialog(this)) return;
-            _ = SendRawDataToPrinter.SendFileToPrinter(SelectedPrinterName, openFileDialog.FileName);
+            using (OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "TXT Files(*.txt)|*.txt|All Files(*.*)|*.*" })
+            {
+                if (DialogResult.OK != openFileDialog.ShowDialog(this)) return;
+                _ = SendRawDataToPrinter.SendFileToPrinter(SelectedPrinterName, openFileDialog.FileName);
+            }
         }
     }
 }

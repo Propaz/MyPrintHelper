@@ -32,7 +32,7 @@ namespace PrinterHelper
         {
             InitializeComponent();
             Icon = Properties.Resources.mainicon;
-            Text = $"Printer Helper{Assembly.GetExecutingAssembly().GetName().Version} build at 02/05/2019";
+            Text = $"Printer Helper{Assembly.GetExecutingAssembly().GetName().Version} build at 03/05/2019";
             ListOfPrintersListBox.MouseDown += ListOfPrintersListBoxMouseDown;
             ListOfColorsForPrint.SelectedIndex = 0;
         }
