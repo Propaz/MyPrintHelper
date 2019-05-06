@@ -78,7 +78,8 @@ namespace PrinterHelper
 
         private void SendScriptToPrinter_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "TXT Files(*.txt)|*.txt|All Files(*.*)|*.*" })
+            OpenFileDialog openFileDialog;
+            using (openFileDialog = new OpenFileDialog() { Filter = "TXT Files(*.txt)|*.txt|All Files(*.*)|*.*" })
             {
                 if (DialogResult.OK != openFileDialog.ShowDialog(this)) return;
                 _ = SendRawDataToPrinter.SendFileToPrinter(SelectedPrinterName, openFileDialog.FileName);

@@ -36,9 +36,9 @@ namespace PrinterHelper
 
                 int nLength = Convert.ToInt32(fs.Length);
                 // Read the contents of the file into the array.
-                var bytes = br.ReadBytes(nLength);
+                byte[] bytes = br.ReadBytes(nLength);
                 // Allocate some unmanaged memory for those bytes.
-                var pUnmanagedBytes = Marshal.AllocCoTaskMem(nLength);
+                IntPtr pUnmanagedBytes = Marshal.AllocCoTaskMem(nLength);
                 // Copy the managed byte array into the unmanaged array.
                 Marshal.Copy(bytes, 0, pUnmanagedBytes, nLength);
                 // Send the unmanaged bytes to the printer.
@@ -51,10 +51,10 @@ namespace PrinterHelper
             public static bool SendStringToPrinter(string szPrinterName, string szString)
             {
                 // How many characters are in the string?
-                var dwCount = szString.Length;
+                int dwCount = szString.Length;
                 // Assume that the printer is expecting ANSI text, and then convert
                 // the string to ANSI text.
-                var pBytes = Marshal.StringToCoTaskMemAnsi(szString);
+                IntPtr pBytes = Marshal.StringToCoTaskMemAnsi(szString);
                 // Send the converted ANSI string to the printer.
                 SendBytesToPrinter(szPrinterName, pBytes, dwCount);
                 Marshal.FreeCoTaskMem(pBytes);
@@ -65,7 +65,7 @@ namespace PrinterHelper
             // When the function is given a printer name and an unmanaged array
             // of bytes, the function sends those bytes to the print queue.
             // Returns true on success, false on failure.
-            private static bool SendBytesToPrinter(string szPrinterName, IntPtr pBytes, Int32 dwCount)
+            private static bool SendBytesToPrinter(string szPrinterName, IntPtr pBytes, int dwCount)
             {
                 DOCINFOA di = new DOCINFOA();
                 bool bSuccess = false; // Assume failure unless you specifically succeed.
@@ -74,7 +74,7 @@ namespace PrinterHelper
                 di.pDataType = "RAW";
 
                 // Open the printer.
-                if (OpenPrinter(szPrinterName.Normalize(), out var hPrinter, IntPtr.Zero))
+                if (OpenPrinter(szPrinterName.Normalize(), out IntPtr hPrinter, IntPtr.Zero))
                 {
                     // Start a document.
                     if (StartDocPrinter(hPrinter, 1, di))
@@ -101,13 +101,13 @@ namespace PrinterHelper
             }
 
             [DllImport("winspool.Drv", EntryPoint = "StartDocPrinterA", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
-            private static extern bool StartDocPrinter(IntPtr hPrinter, Int32 level, [In, MarshalAs(UnmanagedType.LPStruct)] DOCINFOA di);
+            private static extern bool StartDocPrinter(IntPtr hPrinter, int level, [In, MarshalAs(UnmanagedType.LPStruct)] DOCINFOA di);
 
             [DllImport("winspool.Drv", EntryPoint = "StartPagePrinter", SetLastError = true, ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             private static extern bool StartPagePrinter(IntPtr hPrinter);
 
             [DllImport("winspool.Drv", EntryPoint = "WritePrinter", SetLastError = true, ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
-            private static extern bool WritePrinter(IntPtr hPrinter, IntPtr pBytes, Int32 dwCount, out Int32 dwWritten);
+            private static extern bool WritePrinter(IntPtr hPrinter, IntPtr pBytes, int dwCount, out int dwWritten);
 
             // Structure and API declarions:
             [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
