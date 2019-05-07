@@ -45,7 +45,7 @@
             this.SendFRPOcommand.TabIndex = 0;
             this.SendFRPOcommand.Text = "Send FRPO Command";
             this.SendFRPOcommand.UseVisualStyleBackColor = true;
-            this.SendFRPOcommand.Click += new System.EventHandler(this.SendFRPOcommand_Click);
+            this.SendFRPOcommand.Click += new System.EventHandler(this.SendFRPO_Command_Click);
             // 
             // NameOfSelectedprinter
             // 

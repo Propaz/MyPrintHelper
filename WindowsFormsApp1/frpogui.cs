@@ -42,29 +42,29 @@ namespace PrinterHelper
         {
             switch (ComboBoxOfCommands.SelectedItem.ToString())
             {
-                case ("Event Log"):
+                case "Event Log":
                     _ = SendRawDataToPrinter.SendStringToPrinter(SelectedPrinterName, _frpocommand["PrintEventLog"]);
                     break;
 
-                case ("Status Page"):
+                case "Status Page":
                     _ = SendRawDataToPrinter.SendStringToPrinter(SelectedPrinterName, _frpocommand["PrintStatusPage"]);
                     break;
 
-                case ("Draw Arc"):
+                case "Draw Arc":
                     _ = SendRawDataToPrinter.SendStringToPrinter(SelectedPrinterName, _frpocommand["DrawArc"]);
                     break;
 
-                case ("Fill Pattern"):
+                case "Fill Pattern":
                     _ = SendRawDataToPrinter.SendStringToPrinter(SelectedPrinterName, _frpocommand["FillPattern"]);
                     break;
 
-                case ("Margin Test"):
+                case "Margin Test":
                     _ = SendRawDataToPrinter.SendStringToPrinter(SelectedPrinterName, _frpocommand["MarginTest"]);
                     break;
             }
         }
 
-        private void SendFRPOcommand_Click(object sender, EventArgs e)
+        private void SendFRPO_Command_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(TextBoxCustomFRPOCommand.Text))
             {
