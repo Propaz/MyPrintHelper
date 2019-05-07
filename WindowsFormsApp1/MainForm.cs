@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace PrinterHelper
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private readonly Dictionary<string, string> _commandList = new Dictionary<string, string>()
         {
@@ -28,7 +28,7 @@ namespace PrinterHelper
             {"StopSpooler", "/c net stop spooler&&pause"}
         };
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
             Icon = Properties.Resources.mainicon;
