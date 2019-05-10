@@ -17,7 +17,7 @@ namespace PrinterHelper
             Icon = Resources.mainicon;
             _listOfPrintersListBox = listOfPrintersListBox;
             Text = "FRPO For Kyocera build at 10/05/2019";
-            NameOfSelectedprinter.Text = $"Send To: [{SelectedPrinterName}]";
+            Label_SelectedPrinterName.Text = $"Send To: [{SelectedPrinterName}]";
             ComboBoxOfCommands.SelectedIndex = 0;
         }
 

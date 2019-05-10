@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.SendFRPOcommand = new System.Windows.Forms.Button();
-            this.NameOfSelectedprinter = new System.Windows.Forms.Label();
+            this.Label_SelectedPrinterName = new System.Windows.Forms.Label();
             this.ComboBoxOfCommands = new System.Windows.Forms.ComboBox();
             this.TextBoxCustomFRPOCommand = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -47,15 +47,15 @@
             this.SendFRPOcommand.UseVisualStyleBackColor = true;
             this.SendFRPOcommand.Click += new System.EventHandler(this.SendFRPO_Command_Click);
             // 
-            // NameOfSelectedprinter
+            // Label_SelectedPrinterName
             // 
-            this.NameOfSelectedprinter.AutoSize = true;
-            this.NameOfSelectedprinter.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.NameOfSelectedprinter.Location = new System.Drawing.Point(12, 9);
-            this.NameOfSelectedprinter.Name = "NameOfSelectedprinter";
-            this.NameOfSelectedprinter.Size = new System.Drawing.Size(100, 16);
-            this.NameOfSelectedprinter.TabIndex = 1;
-            this.NameOfSelectedprinter.Text = "SelectedPrinter";
+            this.Label_SelectedPrinterName.AutoSize = true;
+            this.Label_SelectedPrinterName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Label_SelectedPrinterName.Location = new System.Drawing.Point(12, 9);
+            this.Label_SelectedPrinterName.Name = "Label_SelectedPrinterName";
+            this.Label_SelectedPrinterName.Size = new System.Drawing.Size(100, 16);
+            this.Label_SelectedPrinterName.TabIndex = 1;
+            this.Label_SelectedPrinterName.Text = "SelectedPrinter";
             // 
             // ComboBoxOfCommands
             // 
@@ -109,7 +109,7 @@
             this.Controls.Add(this.SendScriptToPrinter);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.ComboBoxOfCommands);
-            this.Controls.Add(this.NameOfSelectedprinter);
+            this.Controls.Add(this.Label_SelectedPrinterName);
             this.Controls.Add(this.SendFRPOcommand);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
@@ -125,7 +125,7 @@
         #endregion
 
         private System.Windows.Forms.Button SendFRPOcommand;
-        private System.Windows.Forms.Label NameOfSelectedprinter;
+        private System.Windows.Forms.Label Label_SelectedPrinterName;
         private System.Windows.Forms.ComboBox ComboBoxOfCommands;
         private System.Windows.Forms.TextBox TextBoxCustomFRPOCommand;
         private System.Windows.Forms.GroupBox groupBox1;

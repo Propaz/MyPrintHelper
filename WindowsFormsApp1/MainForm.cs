@@ -42,11 +42,8 @@ namespace PrinterHelper
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        private static void ErrorSelectedPrinterMessage()
-        {
-            _ = MessageBox.Show(text: "Please select Printer first", caption: "Error", buttons: MessageBoxButtons.OK,
+        private static void ErrorSelectedPrinterMessage() => _ = MessageBox.Show(text: "Please select Printer first", caption: "Error", buttons: MessageBoxButtons.OK,
                 icon: MessageBoxIcon.Information);
-        }
 
         private static async Task
                     GetPrinterList(SynchronizationContext sync, IDisposable box)
@@ -218,10 +215,7 @@ namespace PrinterHelper
 
         private void SendTestPage_Click(object sender, EventArgs e) => new Cmd(Resources.SendDefaultTestPage, SelectedPrinterName).PrinterTasks();
 
-        private void SetSelectedPrinterAsDefault()
-        {
-            new Cmd(Resources.SetPrinterAsDefaultKey, SelectedPrinterName).PrinterTasks();
-        }
+        private void SetSelectedPrinterAsDefault() => new Cmd(Resources.SetPrinterAsDefaultKey, SelectedPrinterName).PrinterTasks();
 
         private void StartPrintSpool_Click(object sender, EventArgs e) => new Cmd(Resources.StartSpooler).PrinterTasks();
 
