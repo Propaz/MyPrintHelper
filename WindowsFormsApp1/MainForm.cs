@@ -18,9 +18,16 @@ namespace PrinterHelper
         {
             InitializeComponent();
             Icon = Resources.mainicon;
-            Text = $"Printer Helper{Assembly.GetExecutingAssembly().GetName().Version} build at 10/05/2019";
+            Text = $"Printer Helper {Assembly.GetExecutingAssembly().GetName().Version} build at 10/05/2019";
             ListOfPrintersListBox.MouseDown += ListOfPrintersListBoxMouseDown;
             ListOfColorsForPrint.SelectedIndex = 0;
+            ListOfColorsForPrint.Enabled = false;
+            PrintBWGrid.Enabled = false;
+            PrintTheRainbowBtn.Enabled = false;
+            PrintTheColor.Enabled = false;
+            GridTestCopies.Enabled = false;
+            RainbowTestPageCopies.Enabled = false;
+            SingleColorTestPageCopies.Enabled = false;
         }
 
         public sealed override string Text
@@ -41,9 +48,6 @@ namespace PrinterHelper
 
             return base.ProcessCmdKey(ref msg, keyData);
         }
-
-        private static void ErrorSelectedPrinterMessage() => _ = MessageBox.Show(text: "Please select Printer first", caption: "Error", buttons: MessageBoxButtons.OK,
-                icon: MessageBoxIcon.Information);
 
         private static async Task
                     GetPrinterList(SynchronizationContext sync, IDisposable box)
@@ -117,7 +121,7 @@ namespace PrinterHelper
 
         private async void FindThePrinterBtnClick(object sender, EventArgs e)
         {
-            FindPriners.Enabled = false;
+            FindPrinters.Enabled = false;
             PrintBWGrid.Enabled = false;
             PrintTheRainbowBtn.Enabled = false;
             PrintTheColor.Enabled = false;
@@ -135,20 +139,17 @@ namespace PrinterHelper
             finally
             {
                 Cursor = Cursors.Default;
-                FindPriners.Enabled = true;
-                PrintBWGrid.Enabled = true;
-                PrintTheRainbowBtn.Enabled = true;
-                PrintTheColor.Enabled = true;
-                BWGirdUpDownNumeric.Value = 1;
-                numericUpDownTheSingleColor.Value = 1;
-                RinbowUpDownNumeric.Value = 1;
+                FindPrinters.Enabled = true;
+                GridTestCopies.Value = 1;
+                SingleColorTestPageCopies.Value = 1;
+                RainbowTestPageCopies.Value = 1;
                 ListOfColorsForPrint.SelectedIndex = 0;
             }
         }
 
         private void FRPOToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var frpogui = new Frpogui(ListOfPrintersListBox);
+            var frpogui = new Frpogui(SelectedPrinterName);
             frpogui.Show();
         }
 
@@ -158,47 +159,26 @@ namespace PrinterHelper
 
         private void PrintTheColor_Click(object sender, EventArgs e)
         {
-            int copiesOfSingleColor = Convert.ToInt16(numericUpDownTheSingleColor.Value);
+            int copiesOfSingleColor = Convert.ToInt16(SingleColorTestPageCopies.Value);
 
-            if (ListOfPrintersListBox.SelectedIndex == -1)
-            {
-                ErrorSelectedPrinterMessage();
-            }
-            else
-            {
-                SetSelectedPrinterAsDefault();
-                new PrintTestPage(SelectedPrinterName, "SingleColorTestPage", ColorToPrint, copiesOfSingleColor).SendDocumentToPrinter();
-            }
+            SetSelectedPrinterAsDefault();
+            new PrintTestPage(SelectedPrinterName, "SingleColorTestPage", ColorToPrint, copiesOfSingleColor).SendDocumentToPrinter();
         }
 
         private void PrintTheGridBtnClick(object sender, EventArgs e)
         {
-            int copiesOfBwGrid = Convert.ToInt16(BWGirdUpDownNumeric.Value);
+            int copiesOfBwGrid = Convert.ToInt16(GridTestCopies.Value);
 
-            if (ListOfPrintersListBox.SelectedIndex == -1)
-            {
-                ErrorSelectedPrinterMessage();
-            }
-            else
-            {
-                SetSelectedPrinterAsDefault();
-                new PrintTestPage(SelectedPrinterName, "BWGridTestPage", copiesOfBwGrid).SendDocumentToPrinter();
-            }
+            SetSelectedPrinterAsDefault();
+            new PrintTestPage(SelectedPrinterName, "BWGridTestPage", copiesOfBwGrid).SendDocumentToPrinter();
         }
 
         private void PrintTheRainbowClick(object sender, EventArgs e)
         {
-            int copiesOfRainbow = Convert.ToInt16(RinbowUpDownNumeric.Value);
+            int copiesOfRainbow = Convert.ToInt16(RainbowTestPageCopies.Value);
 
-            if (ListOfPrintersListBox.SelectedIndex == -1)
-            {
-                ErrorSelectedPrinterMessage();
-            }
-            else
-            {
-                SetSelectedPrinterAsDefault();
-                new PrintTestPage(SelectedPrinterName, "RainbowTestPage", copiesOfRainbow).SendDocumentToPrinter();
-            }
+            SetSelectedPrinterAsDefault();
+            new PrintTestPage(SelectedPrinterName, "RainbowTestPage", copiesOfRainbow).SendDocumentToPrinter();
         }
 
         private void PropertiesToolStripMenuItem_Click(object sender, EventArgs e) => new Cmd(Resources.GetPropertiesOfSelectedPrinter, SelectedPrinterName).PrinterTasks();
@@ -220,5 +200,16 @@ namespace PrinterHelper
         private void StartPrintSpool_Click(object sender, EventArgs e) => new Cmd(Resources.StartSpooler).PrinterTasks();
 
         private void StopPrintSpool_Click(object sender, EventArgs e) => new Cmd(Resources.StopSpooler).PrinterTasks();
+
+        private void ListOfPrintersListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            PrintBWGrid.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
+            PrintTheRainbowBtn.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
+            PrintTheColor.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
+            ListOfColorsForPrint.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
+            GridTestCopies.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
+            RainbowTestPageCopies.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
+            SingleColorTestPageCopies.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
+        }
     }
 }

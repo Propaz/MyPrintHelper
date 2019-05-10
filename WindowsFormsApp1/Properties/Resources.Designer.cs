@@ -88,6 +88,48 @@ namespace PrinterHelper.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на !R! CDSK; EXIT;.
+        /// </summary>
+        internal static string FRPOCheckDisk {
+            get {
+                return ResourceManager.GetString("FRPOCheckDisk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на !R! RES; UNIT C;
+        ///MCRO DPAT;
+        ///NEWP;
+        ///SPD .2;
+        ///SCP;
+        ///SFNT &quot;Helvetica-Nr&quot;, 10;
+        ///TEXT &quot;DPAT %1&quot;;
+        ///PMRP 1.4, -.1; DPAT %1; PDRP 9, 0;
+        ///RPP; PMRP 0, .7;
+        ///STRK;
+        ///ENDM;
+        ///MZP 5, 5;
+        ///FONT 13;
+        ///CALL DPAT,1;
+        ///CALL DPAT,2;
+        ///CALL DPAT,3;
+        ///CALL DPAT,4;
+        ///CALL DPAT,5;
+        ///CALL DPAT,6;
+        ///CALL DPAT,7;
+        ///CALL DPAT,8;
+        ///CALL DPAT,9;
+        ///CALL DPAT,10;
+        ///PAGE;
+        ///EXIT;.
+        /// </summary>
+        internal static string FRPODashedPattern {
+            get {
+                return ResourceManager.GetString("FRPODashedPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на !R! RES; UNIT C;MAP 5, 8;PAT 52;ARC 1, 2, -45, 45;MAP 5, 10;PIE 2, 0, 10, 20, 30;ARC 0, 2, 0, 60;PAT 20;ARC 0, 2, 60, 180;PAT 10;ARC 0, 2, 180, 360;PAT 1;NEWP;PMZP 4, 2;PARC 4, 3, 1, 90, 270;PARC 5, 4, 1, 180, 360;PARC 6, 3, 1, 270, 90;PARC 5, 2, 1, 0, 180;STRK;MRP 0.6, 1.1;SFNT &quot;Univers-Md&quot;;TEXT &quot;ARC&quot;;PAGE; EXIT;.
         /// </summary>
         internal static string FRPODrawArc {
@@ -97,11 +139,115 @@ namespace PrinterHelper.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на !R! RES; UNIT C; SLS .5;
+        ///SPD .01; MAP 10, 1;
+        ///CIR .1; MRP 0, .1;
+        ///CIR .2; MRP 0, .2;
+        ///CIR .4; MRP 0, .4;
+        ///CIR .8; MRP 0, .8;
+        ///SPD .02;
+        ///CIR 1.6; MRP 0, 1.6;
+        ///CIR 3.2; MRP 0, 3.2;
+        ///SPD .2;
+        ///CIR .1; MRP .2, .4;
+        ///SFNT &quot;Helvetica-Nr&quot;; TEXT &quot;Cursor now here&quot;;
+        ///PAGE;
+        ///EXIT;.
+        /// </summary>
+        internal static string FRPODrawCircle {
+            get {
+                return ResourceManager.GetString("FRPODrawCircle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на !R! RES;
+        ///UNIT C; SPD .3;
+        ///CMNT Cube;
+        ///MZP 5, 10;
+        ///DRP 4, 0, 2, -2, 0, -4, -4, 0, -2, 2, 0, 4;
+        ///MRP 4, 0;
+        ///DRP 0, -4, -4, 0, 4, 0, 2, -2;
+        ///PAGE;
+        ///EXIT;.
+        /// </summary>
+        internal static string FRPODrawCube {
+            get {
+                return ResourceManager.GetString("FRPODrawCube", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на !R! RES; UNIT C;
+        ///MAP 5, 5;
+        ///PAT 20;
+        ///BOX 4, 1; BLK 4, 1;
+        ///MRP 0, 1.5;
+        ///BOX 4, 1; BLK 4, 1;
+        ///MRP .9, .6;
+        ///SFNT &quot;Helvetica-Nr&quot;;
+        ///TEXT &quot;OVERPRINTING&quot;;
+        ///MRP 0, 5;
+        ///PAT 29; BOX 1, -4; BLK 1, -4, H;
+        ///PAT 39; BOX 1, -3; BLK 1, -3, H;
+        ///PAT 49; BOX 1, -2; BLK 1, -2, H;
+        ///PAT 59; BOX 1, -1; BLK 1, -1, H;
+        ///PAGE;
+        ///EXIT;.
+        /// </summary>
+        internal static string FRPODrawFilledInBlock {
+            get {
+                return ResourceManager.GetString("FRPODrawFilledInBlock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на !R! RES; UNIT C; SIMG 1;
+        ///CMNT Drawing clusters;
+        ///NEWP;
+        ///PMZP 10, 12; PDRP -5.7, -1.75;
+        ///PCRP 0, 0, 0, -3.4, 3.1, -3.6; CLSP; PAT 2; FILL;
+        ///PMZP 10, 12; PDRP -2.6, -5.35;
+        ///PCRP 0, 0, 2.5, -2.5, 4.9, .1; CLSP; PAT 3; FILL;
+        ///PMZP 10, 12; PDRP 5.7, -1.75;
+        ///PCRP 0, 0, 0, -3.5, -3.4, -3.5; CLSP; PAT 4; FILL;
+        ///PMZP 12, 12; PDRP 5.7, -1.75;
+        ///PCRP 0, 0, 1.5, 1.75, 0, 3.5; CLSP; PAT 5; FILL;
+        ///PMZP 10, 12; PDRP -5.7, 1.75;
+        ///PCRP 0, 0, 0, 3.4, 3.1, 3.6; CLSP; PAT 6; FILL;
+        ///PMZP 10, 12; PDRP -2.6, 5.35;
+        ///PCRP 0, 0, 2.5 [остаток строки не уместился]&quot;;.
+        /// </summary>
+        internal static string FRPOFillClosedPath {
+            get {
+                return ResourceManager.GetString("FRPOFillClosedPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на !R! RES; DAM; UNIT C;FSET 1p08V0s0b5T;MCRO PATTERN;FPAT %1, %2, %3, %4, %5, %6, %7, %8;BOX 5, 1; BLK 5, 1; MRP 0, 1.55;TEXT ’FPAT %1, %2, %3, %4, %5, %6, %7, %8;’, L;ENDM;MAP 2, 2; SCP;CALL PATTERN, 3, 3, 0, 0, 0, 0, 0, 0;CALL PATTERN, 255, 0, 0, 0, 0, 0, 0, 0;CALL PATTERN, 1, 1, 1, 1, 1, 1, 1, 255;RPP; MRP 5.5, 0;CALL PATTERN, 0, 0, 24, 60, 60, 24, 0, 0;CALL PATTERN, 1, 2, 4, 8, 16, 32, 64, 128;CALL PATTERN, 8, 8, 8, 8, 8, 8, 8, 8;PAGE;EXIT;.
         /// </summary>
         internal static string FRPOFillPattern {
             get {
                 return ResourceManager.GetString("FRPOFillPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на !R! FLST; EXIT;.
+        /// </summary>
+        internal static string FRPOFontList {
+            get {
+                return ResourceManager.GetString("FRPOFontList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на !R! FRPO INIT; EXIT;.
+        /// </summary>
+        internal static string FRPOInit {
+            get {
+                return ResourceManager.GetString("FRPOInit", resourceCulture);
             }
         }
         

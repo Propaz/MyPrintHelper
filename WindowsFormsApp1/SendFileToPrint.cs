@@ -1,12 +1,12 @@
 ﻿// This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
+using PrinterHelper.Properties;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
-using PrinterHelper.Properties;
 
 namespace PrinterHelper
 {
@@ -31,11 +31,7 @@ namespace PrinterHelper
                 })
                 {
                     OpenFileDialog openFileDialog;
-                    using (openFileDialog = new OpenFileDialog
-                    {
-                        Filter =
-                            Resources.FileFilterForOpenFileDialog
-                    })
+                    using (openFileDialog = new OpenFileDialog { Filter = Resources.FileFilterForOpenFileDialog })
                     {
                         if (openFileDialog.ShowDialog() != DialogResult.OK) return;
 

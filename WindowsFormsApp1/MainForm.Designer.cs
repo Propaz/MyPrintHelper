@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.FindPriners = new System.Windows.Forms.Button();
+            this.FindPrinters = new System.Windows.Forms.Button();
             this.ListOfPrintersListBox = new System.Windows.Forms.ListBox();
             this.contextMenuOfCommands = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.SendTestPage = new System.Windows.Forms.ToolStripMenuItem();
@@ -40,19 +40,19 @@
             this.fRPOToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.PrintBWGrid = new System.Windows.Forms.Button();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
-            this.BWGirdUpDownNumeric = new System.Windows.Forms.NumericUpDown();
+            this.GridTestCopies = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.RinbowUpDownNumeric = new System.Windows.Forms.NumericUpDown();
+            this.RainbowTestPageCopies = new System.Windows.Forms.NumericUpDown();
             this.PrintTheRainbowBtn = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.ListOfColorsForPrint = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.numericUpDownTheSingleColor = new System.Windows.Forms.NumericUpDown();
+            this.SingleColorTestPageCopies = new System.Windows.Forms.NumericUpDown();
             this.PrintTheColor = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.PrintServerProperties = new System.Windows.Forms.Button();
@@ -62,29 +62,29 @@
             this.RestartPrintSpool = new System.Windows.Forms.Button();
             this.StartPrintSpool = new System.Windows.Forms.Button();
             this.contextMenuOfCommands.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BWGirdUpDownNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.GridTestCopies)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.RinbowUpDownNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RainbowTestPageCopies)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTheSingleColor)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SingleColorTestPageCopies)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
-            // FindPriners
+            // FindPrinters
             // 
-            this.FindPriners.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.FindPriners.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.FindPriners.Location = new System.Drawing.Point(498, 314);
-            this.FindPriners.Name = "FindPriners";
-            this.FindPriners.Size = new System.Drawing.Size(173, 62);
-            this.FindPriners.TabIndex = 0;
-            this.FindPriners.Text = "Find Printers (F5)";
-            this.FindPriners.UseVisualStyleBackColor = true;
-            this.FindPriners.Click += new System.EventHandler(this.FindThePrinterBtnClick);
+            this.FindPrinters.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.FindPrinters.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.FindPrinters.Location = new System.Drawing.Point(498, 314);
+            this.FindPrinters.Name = "FindPrinters";
+            this.FindPrinters.Size = new System.Drawing.Size(173, 62);
+            this.FindPrinters.TabIndex = 0;
+            this.FindPrinters.Text = "Find Printers (F5)";
+            this.FindPrinters.UseVisualStyleBackColor = true;
+            this.FindPrinters.Click += new System.EventHandler(this.FindThePrinterBtnClick);
             // 
             // ListOfPrintersListBox
             // 
@@ -97,7 +97,9 @@
             this.ListOfPrintersListBox.Location = new System.Drawing.Point(6, 6);
             this.ListOfPrintersListBox.Name = "ListOfPrintersListBox";
             this.ListOfPrintersListBox.Size = new System.Drawing.Size(486, 370);
+            this.ListOfPrintersListBox.Sorted = true;
             this.ListOfPrintersListBox.TabIndex = 1;
+            this.ListOfPrintersListBox.SelectedIndexChanged += new System.EventHandler(this.ListOfPrintersListBox_SelectedIndexChanged);
             // 
             // contextMenuOfCommands
             // 
@@ -153,6 +155,8 @@
             // 
             // fRPOToolStripMenuItem
             // 
+            this.fRPOToolStripMenuItem.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.fRPOToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.White;
             this.fRPOToolStripMenuItem.Name = "fRPOToolStripMenuItem";
             this.fRPOToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.fRPOToolStripMenuItem.Text = "FRPO";
@@ -168,20 +172,20 @@
             this.PrintBWGrid.UseVisualStyleBackColor = true;
             this.PrintBWGrid.Click += new System.EventHandler(this.PrintTheGridBtnClick);
             // 
-            // BWGirdUpDownNumeric
+            // GridTestCopies
             // 
-            this.BWGirdUpDownNumeric.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.BWGirdUpDownNumeric.Location = new System.Drawing.Point(112, 31);
-            this.BWGirdUpDownNumeric.Minimum = new decimal(new int[] {
+            this.GridTestCopies.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.GridTestCopies.Location = new System.Drawing.Point(112, 31);
+            this.GridTestCopies.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.BWGirdUpDownNumeric.Name = "BWGirdUpDownNumeric";
-            this.BWGirdUpDownNumeric.Size = new System.Drawing.Size(35, 21);
-            this.BWGirdUpDownNumeric.TabIndex = 8;
-            this.BWGirdUpDownNumeric.Tag = "Copies";
-            this.BWGirdUpDownNumeric.Value = new decimal(new int[] {
+            this.GridTestCopies.Name = "GridTestCopies";
+            this.GridTestCopies.Size = new System.Drawing.Size(35, 21);
+            this.GridTestCopies.TabIndex = 8;
+            this.GridTestCopies.Tag = "Copies";
+            this.GridTestCopies.Value = new decimal(new int[] {
             1,
             0,
             0,
@@ -199,7 +203,7 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.PrintBWGrid);
-            this.groupBox1.Controls.Add(this.BWGirdUpDownNumeric);
+            this.groupBox1.Controls.Add(this.GridTestCopies);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(498, 6);
             this.groupBox1.Name = "groupBox1";
@@ -211,7 +215,7 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Controls.Add(this.RinbowUpDownNumeric);
+            this.groupBox2.Controls.Add(this.RainbowTestPageCopies);
             this.groupBox2.Controls.Add(this.PrintTheRainbowBtn);
             this.groupBox2.Location = new System.Drawing.Point(498, 74);
             this.groupBox2.Name = "groupBox2";
@@ -229,19 +233,19 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Copies";
             // 
-            // RinbowUpDownNumeric
+            // RainbowTestPageCopies
             // 
-            this.RinbowUpDownNumeric.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.RinbowUpDownNumeric.Location = new System.Drawing.Point(113, 32);
-            this.RinbowUpDownNumeric.Minimum = new decimal(new int[] {
+            this.RainbowTestPageCopies.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.RainbowTestPageCopies.Location = new System.Drawing.Point(113, 32);
+            this.RainbowTestPageCopies.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.RinbowUpDownNumeric.Name = "RinbowUpDownNumeric";
-            this.RinbowUpDownNumeric.Size = new System.Drawing.Size(35, 21);
-            this.RinbowUpDownNumeric.TabIndex = 1;
-            this.RinbowUpDownNumeric.Value = new decimal(new int[] {
+            this.RainbowTestPageCopies.Name = "RainbowTestPageCopies";
+            this.RainbowTestPageCopies.Size = new System.Drawing.Size(35, 21);
+            this.RainbowTestPageCopies.TabIndex = 1;
+            this.RainbowTestPageCopies.Value = new decimal(new int[] {
             1,
             0,
             0,
@@ -270,7 +274,7 @@
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.groupBox4);
-            this.tabPage1.Controls.Add(this.FindPriners);
+            this.tabPage1.Controls.Add(this.FindPrinters);
             this.tabPage1.Controls.Add(this.groupBox2);
             this.tabPage1.Controls.Add(this.ListOfPrintersListBox);
             this.tabPage1.Controls.Add(this.groupBox1);
@@ -286,7 +290,7 @@
             // 
             this.groupBox4.Controls.Add(this.ListOfColorsForPrint);
             this.groupBox4.Controls.Add(this.label3);
-            this.groupBox4.Controls.Add(this.numericUpDownTheSingleColor);
+            this.groupBox4.Controls.Add(this.SingleColorTestPageCopies);
             this.groupBox4.Controls.Add(this.PrintTheColor);
             this.groupBox4.Location = new System.Drawing.Point(498, 142);
             this.groupBox4.Name = "groupBox4";
@@ -322,18 +326,18 @@
             this.label3.TabIndex = 14;
             this.label3.Text = "Copies";
             // 
-            // numericUpDownTheSingleColor
+            // SingleColorTestPageCopies
             // 
-            this.numericUpDownTheSingleColor.Location = new System.Drawing.Point(111, 33);
-            this.numericUpDownTheSingleColor.Minimum = new decimal(new int[] {
+            this.SingleColorTestPageCopies.Location = new System.Drawing.Point(111, 33);
+            this.SingleColorTestPageCopies.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDownTheSingleColor.Name = "numericUpDownTheSingleColor";
-            this.numericUpDownTheSingleColor.Size = new System.Drawing.Size(35, 20);
-            this.numericUpDownTheSingleColor.TabIndex = 13;
-            this.numericUpDownTheSingleColor.Value = new decimal(new int[] {
+            this.SingleColorTestPageCopies.Name = "SingleColorTestPageCopies";
+            this.SingleColorTestPageCopies.Size = new System.Drawing.Size(35, 20);
+            this.SingleColorTestPageCopies.TabIndex = 13;
+            this.SingleColorTestPageCopies.Value = new decimal(new int[] {
             1,
             0,
             0,
@@ -424,7 +428,7 @@
             this.StartPrintSpool.UseVisualStyleBackColor = true;
             this.StartPrintSpool.Click += new System.EventHandler(this.StartPrintSpool_Click);
             // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -432,20 +436,20 @@
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.Text = "Printer Helper";
             this.contextMenuOfCommands.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.BWGirdUpDownNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.GridTestCopies)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.RinbowUpDownNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RainbowTestPageCopies)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTheSingleColor)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SingleColorTestPageCopies)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -454,7 +458,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button FindPriners;
+        private System.Windows.Forms.Button FindPrinters;
         private System.Windows.Forms.Button PrintBWGrid;
         private System.Drawing.Printing.PrintDocument printDocument1;
         private System.Windows.Forms.ContextMenuStrip contextMenuOfCommands;
@@ -464,13 +468,13 @@
         private System.Windows.Forms.ToolStripMenuItem SendTestPage;
         public System.Windows.Forms.ListBox ListOfPrintersListBox;
         private System.Windows.Forms.ToolStripMenuItem sendFileToPrinter;
-        private System.Windows.Forms.NumericUpDown BWGirdUpDownNumeric;
+        private System.Windows.Forms.NumericUpDown GridTestCopies;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button PrintTheRainbowBtn;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.NumericUpDown RinbowUpDownNumeric;
+        private System.Windows.Forms.NumericUpDown RainbowTestPageCopies;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
@@ -482,7 +486,7 @@
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Button PrintTheColor;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.NumericUpDown numericUpDownTheSingleColor;
+        private System.Windows.Forms.NumericUpDown SingleColorTestPageCopies;
         private System.Windows.Forms.ComboBox ListOfColorsForPrint;
         private System.Windows.Forms.Button PrintServerProperties;
         private System.Windows.Forms.ToolStripMenuItem fRPOToolStripMenuItem;
