@@ -117,8 +117,63 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddNewPrinterKey" xml:space="preserve">
+    <value>/il</value>
+    <comment>Добавить новй принтер</comment>
+  </data>
+  <data name="DeleteSelectedPrinterKey" xml:space="preserve">
+    <value>/dl</value>
+    <comment>Удалить принтер</comment>
+  </data>
+  <data name="FRPODrawArc" xml:space="preserve">
+    <value>!R! RES; UNIT C;MAP 5, 8;PAT 52;ARC 1, 2, -45, 45;MAP 5, 10;PIE 2, 0, 10, 20, 30;ARC 0, 2, 0, 60;PAT 20;ARC 0, 2, 60, 180;PAT 10;ARC 0, 2, 180, 360;PAT 1;NEWP;PMZP 4, 2;PARC 4, 3, 1, 90, 270;PARC 5, 4, 1, 180, 360;PARC 6, 3, 1, 270, 90;PARC 5, 2, 1, 0, 180;STRK;MRP 0.6, 1.1;SFNT "Univers-Md";TEXT "ARC";PAGE; EXIT;</value>
+  </data>
+  <data name="FRPOFillPattern" xml:space="preserve">
+    <value>!R! RES; DAM; UNIT C;FSET 1p08V0s0b5T;MCRO PATTERN;FPAT %1, %2, %3, %4, %5, %6, %7, %8;BOX 5, 1; BLK 5, 1; MRP 0, 1.55;TEXT ’FPAT %1, %2, %3, %4, %5, %6, %7, %8;’, L;ENDM;MAP 2, 2; SCP;CALL PATTERN, 3, 3, 0, 0, 0, 0, 0, 0;CALL PATTERN, 255, 0, 0, 0, 0, 0, 0, 0;CALL PATTERN, 1, 1, 1, 1, 1, 1, 1, 255;RPP; MRP 5.5, 0;CALL PATTERN, 0, 0, 24, 60, 60, 24, 0, 0;CALL PATTERN, 1, 2, 4, 8, 16, 32, 64, 128;CALL PATTERN, 8, 8, 8, 8, 8, 8, 8, 8;PAGE;EXIT;</value>
+  </data>
+  <data name="FRPOMarginTest" xml:space="preserve">
+    <value>!R! MZP 0,0; BOX 30,30; PAGE; EXIT;</value>
+  </data>
+  <data name="FRPOPrintEventLog" xml:space="preserve">
+    <value>!R! ELOG; EXIT;</value>
+  </data>
+  <data name="FRPOPrintStatusPage" xml:space="preserve">
+    <value>!R! STAT; STAT1; EXIT;</value>
+  </data>
+  <data name="GetPrintServerProperties" xml:space="preserve">
+    <value>/s</value>
+    <comment>Вызвать Свойства принт-сервера</comment>
+  </data>
+  <data name="GetPropertiesOfSelectedPrinter" xml:space="preserve">
+    <value>/p</value>
+    <comment>Получение свойств принтера</comment>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="mainicon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\icons8_print_50_wiD_icon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="QueueOfSelectedPrinter" xml:space="preserve">
+    <value>/o</value>
+    <comment>Очередь печати</comment>
+  </data>
+  <data name="RestartSpooler" xml:space="preserve">
+    <value>/c net stop spooler&amp;&amp;DEL /F /S /Q %systemroot%\\System32\\spool\\PRINTERS\\*&amp;&amp;net start spooler&amp;&amp;pause</value>
+  </data>
+  <data name="SendDefaultTestPage" xml:space="preserve">
+    <value>/k</value>
+    <comment>Напечатать стандартную пробную страницу Windows</comment>
+  </data>
+  <data name="SetPrinterAsDefaultKey" xml:space="preserve">
+    <value>/y</value>
+    <comment>Сделать принтер по умолчанию</comment>
+  </data>
+  <data name="StartSpooler" xml:space="preserve">
+    <value>/c net start spooler&amp;&amp;pause</value>
+  </data>
+  <data name="StopSpooler" xml:space="preserve">
+    <value>/c net stop spooler&amp;&amp;pause</value>
+  </data>
+  <data name="FileFilterForOpenFileDialog" xml:space="preserve">
+    <value>TXT Files(*.txt)|*.txt|Office Files|*.doc;*.docx;*.xlsx;*.xls;*.ppt;*.pptx|PDF Files(*.pdf)|*.pdf|Image Files|*.png;*.jpg;*.tiff;*.gif|All Files(*.*)|*.*</value>
   </data>
 </root>

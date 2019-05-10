@@ -93,6 +93,23 @@ namespace PrinterHelper
                 return Color.FromArgb(0, 255 - intValue, 255);
             }
 
+            private static void PrintTheGridDocument(object sender, PrintPageEventArgs e)
+            {
+                //Draw a grid
+                const int w = 1654; //A4 size
+                const int h = 2339;
+                const int widthLines = 20; //cell size
+                const int heightLines = 20;
+                for (int i = 0; i < w; i += widthLines)
+                {
+                    //Width Lines
+                    e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(i + widthLines, 0), new Point(i + widthLines, h));
+                    //Height Lines
+                    e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(0, i + heightLines),
+                        new Point(w, i + heightLines));
+                }
+            }
+
             private static void PrintTheRainbowPage(object sender, PrintPageEventArgs e)
             {
                 const int wid = 600;
@@ -110,23 +127,6 @@ namespace PrinterHelper
                     {
                         e.Graphics.DrawLine(thePen, x, hgt2, x, hgt);
                     }
-                }
-            }
-
-            private static void PrintTheGridDocument(object sender, PrintPageEventArgs e)
-            {
-                //Draw a grid
-                const int w = 1654; //A4 size
-                const int h = 2339;
-                const int widthLines = 20; //cell size
-                const int heightLines = 20;
-                for (int i = 0; i < w; i += widthLines)
-                {
-                    //Width Lines
-                    e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(i + widthLines, 0), new Point(i + widthLines, h));
-                    //Height Lines
-                    e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(0, i + heightLines),
-                        new Point(w, i + heightLines));
                 }
             }
 

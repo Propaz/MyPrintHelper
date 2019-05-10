@@ -61,12 +61,156 @@ namespace PrinterHelper.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на /il.
+        /// </summary>
+        internal static string AddNewPrinterKey {
+            get {
+                return ResourceManager.GetString("AddNewPrinterKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на /dl.
+        /// </summary>
+        internal static string DeleteSelectedPrinterKey {
+            get {
+                return ResourceManager.GetString("DeleteSelectedPrinterKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на TXT Files(*.txt)|*.txt|Office Files|*.doc;*.docx;*.xlsx;*.xls;*.ppt;*.pptx|PDF Files(*.pdf)|*.pdf|Image Files|*.png;*.jpg;*.tiff;*.gif|All Files(*.*)|*.*.
+        /// </summary>
+        internal static string FileFilterForOpenFileDialog {
+            get {
+                return ResourceManager.GetString("FileFilterForOpenFileDialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на !R! RES; UNIT C;MAP 5, 8;PAT 52;ARC 1, 2, -45, 45;MAP 5, 10;PIE 2, 0, 10, 20, 30;ARC 0, 2, 0, 60;PAT 20;ARC 0, 2, 60, 180;PAT 10;ARC 0, 2, 180, 360;PAT 1;NEWP;PMZP 4, 2;PARC 4, 3, 1, 90, 270;PARC 5, 4, 1, 180, 360;PARC 6, 3, 1, 270, 90;PARC 5, 2, 1, 0, 180;STRK;MRP 0.6, 1.1;SFNT &quot;Univers-Md&quot;;TEXT &quot;ARC&quot;;PAGE; EXIT;.
+        /// </summary>
+        internal static string FRPODrawArc {
+            get {
+                return ResourceManager.GetString("FRPODrawArc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на !R! RES; DAM; UNIT C;FSET 1p08V0s0b5T;MCRO PATTERN;FPAT %1, %2, %3, %4, %5, %6, %7, %8;BOX 5, 1; BLK 5, 1; MRP 0, 1.55;TEXT ’FPAT %1, %2, %3, %4, %5, %6, %7, %8;’, L;ENDM;MAP 2, 2; SCP;CALL PATTERN, 3, 3, 0, 0, 0, 0, 0, 0;CALL PATTERN, 255, 0, 0, 0, 0, 0, 0, 0;CALL PATTERN, 1, 1, 1, 1, 1, 1, 1, 255;RPP; MRP 5.5, 0;CALL PATTERN, 0, 0, 24, 60, 60, 24, 0, 0;CALL PATTERN, 1, 2, 4, 8, 16, 32, 64, 128;CALL PATTERN, 8, 8, 8, 8, 8, 8, 8, 8;PAGE;EXIT;.
+        /// </summary>
+        internal static string FRPOFillPattern {
+            get {
+                return ResourceManager.GetString("FRPOFillPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на !R! MZP 0,0; BOX 30,30; PAGE; EXIT;.
+        /// </summary>
+        internal static string FRPOMarginTest {
+            get {
+                return ResourceManager.GetString("FRPOMarginTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на !R! ELOG; EXIT;.
+        /// </summary>
+        internal static string FRPOPrintEventLog {
+            get {
+                return ResourceManager.GetString("FRPOPrintEventLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на !R! STAT; STAT1; EXIT;.
+        /// </summary>
+        internal static string FRPOPrintStatusPage {
+            get {
+                return ResourceManager.GetString("FRPOPrintStatusPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на /s.
+        /// </summary>
+        internal static string GetPrintServerProperties {
+            get {
+                return ResourceManager.GetString("GetPrintServerProperties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на /p.
+        /// </summary>
+        internal static string GetPropertiesOfSelectedPrinter {
+            get {
+                return ResourceManager.GetString("GetPropertiesOfSelectedPrinter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
         /// </summary>
         internal static System.Drawing.Icon mainicon {
             get {
                 object obj = ResourceManager.GetObject("mainicon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на /o.
+        /// </summary>
+        internal static string QueueOfSelectedPrinter {
+            get {
+                return ResourceManager.GetString("QueueOfSelectedPrinter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на /c net stop spooler&amp;&amp;DEL /F /S /Q %systemroot%\\System32\\spool\\PRINTERS\\*&amp;&amp;net start spooler&amp;&amp;pause.
+        /// </summary>
+        internal static string RestartSpooler {
+            get {
+                return ResourceManager.GetString("RestartSpooler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на /k.
+        /// </summary>
+        internal static string SendDefaultTestPage {
+            get {
+                return ResourceManager.GetString("SendDefaultTestPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на /y.
+        /// </summary>
+        internal static string SetPrinterAsDefaultKey {
+            get {
+                return ResourceManager.GetString("SetPrinterAsDefaultKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на /c net start spooler&amp;&amp;pause.
+        /// </summary>
+        internal static string StartSpooler {
+            get {
+                return ResourceManager.GetString("StartSpooler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на /c net stop spooler&amp;&amp;pause.
+        /// </summary>
+        internal static string StopSpooler {
+            get {
+                return ResourceManager.GetString("StopSpooler", resourceCulture);
             }
         }
     }

@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
+using PrinterHelper.Properties;
 
 namespace PrinterHelper
 {
@@ -22,9 +23,6 @@ namespace PrinterHelper
 
             public void SendFileToSelectedPrinter()
             {
-                const string filterOfFileTypes =
-                "TXT Files(*.txt)|*.txt|Office Files|*.doc;*.docx;*.xlsx;*.xls;*.ppt;*.pptx|PDF Files(*.pdf)|*.pdf|Image Files|*.png;*.jpg;*.tiff;*.gif|All Files(*.*)|*.*";
-
                 PrintDialog printDialog;
                 using (printDialog = new PrintDialog
                 {
@@ -36,7 +34,7 @@ namespace PrinterHelper
                     using (openFileDialog = new OpenFileDialog
                     {
                         Filter =
-                            filterOfFileTypes
+                            Resources.FileFilterForOpenFileDialog
                     })
                     {
                         if (openFileDialog.ShowDialog() != DialogResult.OK) return;
