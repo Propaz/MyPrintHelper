@@ -9,15 +9,15 @@ namespace PrinterHelper
 {
     public partial class Frpogui : Form
     {
-        private readonly string SelectedPrinterName;
+        private readonly string _selectedPrinterName;
 
-        public Frpogui(string SelectedPrinterFromMainForm)
+        public Frpogui(string selectedPrinterFromMainForm)
         {
             InitializeComponent();
             Icon = Resources.mainicon;
-            SelectedPrinterName = SelectedPrinterFromMainForm ?? throw new ArgumentNullException(nameof(SelectedPrinterFromMainForm));
+            _selectedPrinterName = selectedPrinterFromMainForm ?? throw new ArgumentNullException(nameof(selectedPrinterFromMainForm));
             Text = "FRPO For Kyocera build at 10/05/2019";
-            Label_SelectedPrinterName.Text = $"Send To: [{SelectedPrinterName}]";
+            Label_SelectedPrinterName.Text = $"Send To: [{_selectedPrinterName}]";
             ComboBoxOfCommands.SelectedIndex = 0;
             TextBoxCustomFRPOCommand.Clear();
             SendCustomFRPOcommand.Enabled = false;
@@ -29,62 +29,74 @@ namespace PrinterHelper
             set => base.Text = value;
         }
 
+        private string CustomFrpoCommand => TextBoxCustomFRPOCommand.Text;
+
         private void SendCommand()
         {
             switch (ComboBoxOfCommands.SelectedItem.ToString())
             {
                 case "Event Log":
-                    _ = SendRawDataToPrinter.SendStringToPrinter(SelectedPrinterName, Resources.FRPOPrintEventLog);
+                    _ = SendRawDataToPrinter.SendStringToPrinter(_selectedPrinterName, Resources.FRPOPrintEventLog);
                     break;
 
                 case "Status Page":
-                    _ = SendRawDataToPrinter.SendStringToPrinter(SelectedPrinterName, Resources.FRPOPrintStatusPage);
+                    _ = SendRawDataToPrinter.SendStringToPrinter(_selectedPrinterName, Resources.FRPOPrintStatusPage);
                     break;
 
                 case "Draw Arc":
-                    _ = SendRawDataToPrinter.SendStringToPrinter(SelectedPrinterName, Resources.FRPODrawArc);
+                    _ = SendRawDataToPrinter.SendStringToPrinter(_selectedPrinterName, Resources.FRPODrawArc);
                     break;
 
                 case "Fill Pattern":
-                    _ = SendRawDataToPrinter.SendStringToPrinter(SelectedPrinterName, Resources.FRPOFillPattern);
+                    _ = SendRawDataToPrinter.SendStringToPrinter(_selectedPrinterName, Resources.FRPOFillPattern);
                     break;
 
                 case "Margin Test":
-                    _ = SendRawDataToPrinter.SendStringToPrinter(SelectedPrinterName, Resources.FRPOMarginTest);
+                    _ = SendRawDataToPrinter.SendStringToPrinter(_selectedPrinterName, Resources.FRPOMarginTest);
                     break;
 
                 case "Draw Filled-in Block":
-                    _ = SendRawDataToPrinter.SendStringToPrinter(SelectedPrinterName, Resources.FRPODrawFilledInBlock);
+                    _ = SendRawDataToPrinter.SendStringToPrinter(_selectedPrinterName, Resources.FRPODrawFilledInBlock);
                     break;
 
                 case "Draw Circle":
-                    _ = SendRawDataToPrinter.SendStringToPrinter(SelectedPrinterName, Resources.FRPODrawCircle);
+                    _ = SendRawDataToPrinter.SendStringToPrinter(_selectedPrinterName, Resources.FRPODrawCircle);
                     break;
 
                 case "Dashed Pattern":
-                    _ = SendRawDataToPrinter.SendStringToPrinter(SelectedPrinterName, Resources.FRPODashedPattern);
+                    _ = SendRawDataToPrinter.SendStringToPrinter(_selectedPrinterName, Resources.FRPODashedPattern);
                     break;
 
                 case "Draw Cube":
-                    _ = SendRawDataToPrinter.SendStringToPrinter(SelectedPrinterName, Resources.FRPODrawCube);
+                    _ = SendRawDataToPrinter.SendStringToPrinter(_selectedPrinterName, Resources.FRPODrawCube);
                     break;
 
                 case "Fill Closed Path":
-                    _ = SendRawDataToPrinter.SendStringToPrinter(SelectedPrinterName, Resources.FRPOFillClosedPath);
+                    _ = SendRawDataToPrinter.SendStringToPrinter(_selectedPrinterName, Resources.FRPOFillClosedPath);
                     break;
 
                 case "Font List":
-                    _ = SendRawDataToPrinter.SendStringToPrinter(SelectedPrinterName, Resources.FRPOFontList);
+                    _ = SendRawDataToPrinter.SendStringToPrinter(_selectedPrinterName, Resources.FRPOFontList);
                     break;
 
                 case "FRPO INIT":
-                    _ = SendRawDataToPrinter.SendStringToPrinter(SelectedPrinterName, Resources.FRPOInit);
+                    _ = SendRawDataToPrinter.SendStringToPrinter(_selectedPrinterName, Resources.FRPOInit);
                     break;
 
                 case "Check Disk":
-                    _ = SendRawDataToPrinter.SendStringToPrinter(SelectedPrinterName, Resources.FRPOCheckDisk);
+                    _ = SendRawDataToPrinter.SendStringToPrinter(_selectedPrinterName, Resources.FRPOCheckDisk);
                     break;
             }
+        }
+
+        private void SendCustomFRPOcommand_Click(object sender, EventArgs e)
+        {
+            _ = SendRawDataToPrinter.SendStringToPrinter(_selectedPrinterName, CustomFrpoCommand);
+        }
+
+        private void SendFRPOCommandFromList_Click(object sender, EventArgs e)
+        {
+            SendCommand();
         }
 
         private void SendScriptToPrinter_Click(object sender, EventArgs e)
@@ -93,33 +105,21 @@ namespace PrinterHelper
             using (openFileDialog = new OpenFileDialog() { Filter = Resources.FileFilterForOpenFileDialog })
             {
                 if (DialogResult.OK != openFileDialog.ShowDialog(this)) return;
-                _ = SendRawDataToPrinter.SendFileToPrinter(SelectedPrinterName, openFileDialog.FileName);
+                _ = SendRawDataToPrinter.SendFileToPrinter(_selectedPrinterName, openFileDialog.FileName);
             }
         }
-
-        private void SendFRPOCommandFromList_Click(object sender, EventArgs e)
-        {
-            SendCommand();
-        }
-
-        private void SendCustomFRPOcommand_Click(object sender, EventArgs e)
-        {
-            _ = SendRawDataToPrinter.SendStringToPrinter(SelectedPrinterName, CustomFRPOCommand);
-        }
-
-        private void TextBoxCustomFRPOCommand_TextChanged(object sender, EventArgs e)
-        {
-            SendCustomFRPOcommand.Enabled = !string.IsNullOrEmpty(CustomFRPOCommand);
-            SendFRPOCommandFromList.Enabled = string.IsNullOrEmpty(CustomFRPOCommand);
-            SendScriptToPrinter.Enabled = string.IsNullOrEmpty(CustomFRPOCommand);
-            ComboBoxOfCommands.Enabled = string.IsNullOrEmpty(CustomFRPOCommand);
-        }
-
-        private string CustomFRPOCommand => TextBoxCustomFRPOCommand.Text;
 
         private void TextBoxClearButton_Click(object sender, EventArgs e)
         {
             TextBoxCustomFRPOCommand.Clear();
+        }
+
+        private void TextBoxCustomFRPOCommand_TextChanged(object sender, EventArgs e)
+        {
+            SendCustomFRPOcommand.Enabled = !string.IsNullOrEmpty(CustomFrpoCommand);
+            SendFRPOCommandFromList.Enabled = string.IsNullOrEmpty(CustomFrpoCommand);
+            SendScriptToPrinter.Enabled = string.IsNullOrEmpty(CustomFrpoCommand);
+            ComboBoxOfCommands.Enabled = string.IsNullOrEmpty(CustomFrpoCommand);
         }
     }
 }
