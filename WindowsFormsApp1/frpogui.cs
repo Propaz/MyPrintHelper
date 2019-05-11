@@ -16,7 +16,7 @@ namespace PrinterHelper
             InitializeComponent();
             Icon = Resources.mainicon;
             _selectedPrinterName = selectedPrinterFromMainForm ?? throw new ArgumentNullException(nameof(selectedPrinterFromMainForm));
-            Text = "FRPO For Kyocera build at 10/05/2019";
+            Text = "FRPO Command For Kyocera build at 11/05/2019";
             Label_SelectedPrinterName.Text = $"Send To: [{_selectedPrinterName}]";
             ComboBoxOfCommands.SelectedIndex = 0;
             TextBoxCustomFRPOCommand.Clear();
@@ -30,6 +30,16 @@ namespace PrinterHelper
         }
 
         private string CustomFrpoCommand => TextBoxCustomFRPOCommand.Text;
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Escape)
+            {
+                Close();
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
 
         private void SendCommand()
         {
@@ -86,18 +96,16 @@ namespace PrinterHelper
                 case "Check Disk":
                     _ = SendRawDataToPrinter.SendStringToPrinter(_selectedPrinterName, Resources.FRPOCheckDisk);
                     break;
+
+                case "Simple Color Palette":
+                    _ = SendRawDataToPrinter.SendStringToPrinter(_selectedPrinterName, Resources.FRPOSimpleColorPalette);
+                    break;
             }
         }
 
-        private void SendCustomFRPOcommand_Click(object sender, EventArgs e)
-        {
-            _ = SendRawDataToPrinter.SendStringToPrinter(_selectedPrinterName, CustomFrpoCommand);
-        }
+        private void SendCustomFRPOcommand_Click(object sender, EventArgs e) => _ = SendRawDataToPrinter.SendStringToPrinter(_selectedPrinterName, CustomFrpoCommand);
 
-        private void SendFRPOCommandFromList_Click(object sender, EventArgs e)
-        {
-            SendCommand();
-        }
+        private void SendFRPOCommandFromList_Click(object sender, EventArgs e) => SendCommand();
 
         private void SendScriptToPrinter_Click(object sender, EventArgs e)
         {
@@ -109,10 +117,7 @@ namespace PrinterHelper
             }
         }
 
-        private void TextBoxClearButton_Click(object sender, EventArgs e)
-        {
-            TextBoxCustomFRPOCommand.Clear();
-        }
+        private void TextBoxClearButton_Click(object sender, EventArgs e) => TextBoxCustomFRPOCommand.Clear();
 
         private void TextBoxCustomFRPOCommand_TextChanged(object sender, EventArgs e)
         {

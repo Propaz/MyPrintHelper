@@ -18,7 +18,7 @@ namespace PrinterHelper
         {
             InitializeComponent();
             Icon = Resources.mainicon;
-            Text = $"Printer Helper {Assembly.GetExecutingAssembly().GetName().Version} build at 10/05/2019";
+            Text = $"Printer Helper {Assembly.GetExecutingAssembly().GetName().Version} build at 11/05/2019";
             ListOfPrintersListBox.MouseDown += ListOfPrintersListBoxMouseDown;
             ListOfColorsForPrint.SelectedIndex = 0;
             ListOfColorsForPrint.Enabled = false;
@@ -144,6 +144,7 @@ namespace PrinterHelper
                 SingleColorTestPageCopies.Value = 1;
                 RainbowTestPageCopies.Value = 1;
                 ListOfColorsForPrint.SelectedIndex = 0;
+                ListOfPrintersListBox.SelectedIndex = 0;
             }
         }
 
@@ -154,6 +155,17 @@ namespace PrinterHelper
         }
 
         private void GetPrintServerProperties(object sender, EventArgs e) => new Cmd(Resources.GetPrintServerProperties).PrinterTasks();
+
+        private void ListOfPrintersListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            PrintBWGrid.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
+            PrintTheRainbowBtn.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
+            PrintTheColor.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
+            ListOfColorsForPrint.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
+            GridTestCopies.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
+            RainbowTestPageCopies.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
+            SingleColorTestPageCopies.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
+        }
 
         private void ListOfPrintersListBoxMouseDown(object sender, MouseEventArgs e) => ListOfPrintersListBox.SelectedIndex = ListOfPrintersListBox.IndexFromPoint(e.X, e.Y);
 
@@ -200,16 +212,5 @@ namespace PrinterHelper
         private void StartPrintSpool_Click(object sender, EventArgs e) => new Cmd(Resources.StartSpooler).PrinterTasks();
 
         private void StopPrintSpool_Click(object sender, EventArgs e) => new Cmd(Resources.StopSpooler).PrinterTasks();
-
-        private void ListOfPrintersListBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            PrintBWGrid.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
-            PrintTheRainbowBtn.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
-            PrintTheColor.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
-            ListOfColorsForPrint.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
-            GridTestCopies.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
-            RainbowTestPageCopies.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
-            SingleColorTestPageCopies.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
-        }
     }
 }

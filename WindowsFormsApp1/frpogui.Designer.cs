@@ -41,7 +41,7 @@
             // 
             // SendCustomFRPOcommand
             // 
-            this.SendCustomFRPOcommand.Location = new System.Drawing.Point(222, 61);
+            this.SendCustomFRPOcommand.Location = new System.Drawing.Point(244, 51);
             this.SendCustomFRPOcommand.Name = "SendCustomFRPOcommand";
             this.SendCustomFRPOcommand.Size = new System.Drawing.Size(144, 40);
             this.SendCustomFRPOcommand.TabIndex = 0;
@@ -78,10 +78,11 @@
             "Font List",
             "FRPO INIT",
             "Margin Test",
+            "Simple Color Palette",
             "Status Page"});
             this.ComboBoxOfCommands.Location = new System.Drawing.Point(12, 152);
             this.ComboBoxOfCommands.Name = "ComboBoxOfCommands";
-            this.ComboBoxOfCommands.Size = new System.Drawing.Size(216, 21);
+            this.ComboBoxOfCommands.Size = new System.Drawing.Size(225, 21);
             this.ComboBoxOfCommands.Sorted = true;
             this.ComboBoxOfCommands.TabIndex = 2;
             // 
@@ -90,7 +91,7 @@
             this.TextBoxCustomFRPOCommand.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.TextBoxCustomFRPOCommand.Location = new System.Drawing.Point(6, 19);
             this.TextBoxCustomFRPOCommand.Name = "TextBoxCustomFRPOCommand";
-            this.TextBoxCustomFRPOCommand.Size = new System.Drawing.Size(324, 26);
+            this.TextBoxCustomFRPOCommand.Size = new System.Drawing.Size(347, 26);
             this.TextBoxCustomFRPOCommand.TabIndex = 3;
             this.TextBoxCustomFRPOCommand.TextChanged += new System.EventHandler(this.TextBoxCustomFRPOCommand_TextChanged);
             // 
@@ -102,14 +103,14 @@
             this.groupBox1.Controls.Add(this.SendCustomFRPOcommand);
             this.groupBox1.Location = new System.Drawing.Point(12, 41);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(372, 105);
+            this.groupBox1.Size = new System.Drawing.Size(394, 105);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Custom FRPO Command";
             // 
             // TextBoxClearButton
             // 
-            this.TextBoxClearButton.Location = new System.Drawing.Point(337, 19);
+            this.TextBoxClearButton.Location = new System.Drawing.Point(359, 19);
             this.TextBoxClearButton.Name = "TextBoxClearButton";
             this.TextBoxClearButton.Size = new System.Drawing.Size(29, 26);
             this.TextBoxClearButton.TabIndex = 4;
@@ -119,7 +120,7 @@
             // 
             // SendScriptToPrinter
             // 
-            this.SendScriptToPrinter.Location = new System.Drawing.Point(6, 61);
+            this.SendScriptToPrinter.Location = new System.Drawing.Point(6, 51);
             this.SendScriptToPrinter.Name = "SendScriptToPrinter";
             this.SendScriptToPrinter.Size = new System.Drawing.Size(144, 40);
             this.SendScriptToPrinter.TabIndex = 5;
@@ -129,7 +130,7 @@
             // 
             // SendFRPOCommandFromList
             // 
-            this.SendFRPOCommandFromList.Location = new System.Drawing.Point(234, 152);
+            this.SendFRPOCommandFromList.Location = new System.Drawing.Point(256, 152);
             this.SendFRPOCommandFromList.Name = "SendFRPOCommandFromList";
             this.SendFRPOCommandFromList.Size = new System.Drawing.Size(144, 40);
             this.SendFRPOCommandFromList.TabIndex = 6;
@@ -141,7 +142,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(396, 208);
+            this.ClientSize = new System.Drawing.Size(418, 208);
             this.Controls.Add(this.SendFRPOCommandFromList);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.Label_SelectedPrinterName);

@@ -279,6 +279,32 @@ namespace PrinterHelper.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на !R! RES; UNIT C; SIMP 3;
+        ///MCRO SIMP;
+        ///NEWP;
+        ///SCOL %2;
+        ///PDRP 2, 0, 0, 2, -2, 0, 0, -2;
+        ///FILL 1;
+        ///PMRP .5, .5;
+        ///ENDM;
+        ///CALL SIMP,0,0;
+        ///CALL SIMP,0,1;
+        ///CALL SIMP,0,2;
+        ///CALL SIMP,0,3;
+        ///CALL SIMP,0,4;
+        ///CALL SIMP,0,5;
+        ///CALL SIMP,0,6;
+        ///CALL SIMP,0,7;
+        ///PAGE;
+        ///EXIT;.
+        /// </summary>
+        internal static string FRPOSimpleColorPalette {
+            get {
+                return ResourceManager.GetString("FRPOSimpleColorPalette", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на /s.
         /// </summary>
         internal static string GetPrintServerProperties {

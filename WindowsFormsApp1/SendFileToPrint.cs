@@ -16,10 +16,7 @@ namespace PrinterHelper
         {
             private readonly string _printerName;
 
-            public SendFileToPrint(string nameofprinter)
-            {
-                _printerName = nameofprinter ?? throw new ArgumentNullException(nameof(nameofprinter));
-            }
+            public SendFileToPrint(string nameofprinter) => _printerName = nameofprinter ?? throw new ArgumentNullException(nameof(nameofprinter));
 
             public void SendFileToSelectedPrinter()
             {
