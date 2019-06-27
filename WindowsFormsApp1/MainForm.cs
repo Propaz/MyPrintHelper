@@ -12,13 +12,13 @@ using System.Windows.Forms;
 
 namespace PrinterHelper
 {
-    public partial class MainForm : Form
+    internal partial class MainForm : Form
     {
         public MainForm()
         {
             InitializeComponent();
             Icon = Resources.mainicon;
-            Text = $"Printer Helper {Assembly.GetExecutingAssembly().GetName().Version} build at 11/05/2019";
+            Text = $"Printer Helper {Assembly.GetExecutingAssembly().GetName().Version} build at 26/06/2019";
             ListOfPrintersListBox.MouseDown += ListOfPrintersListBoxMouseDown;
             ListOfColorsForPrint.SelectedIndex = 0;
             ListOfColorsForPrint.Enabled = false;
@@ -148,11 +148,7 @@ namespace PrinterHelper
             }
         }
 
-        private void FRPOToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var frpogui = new Frpogui(SelectedPrinterName);
-            frpogui.Show();
-        }
+        private void FRPOToolStripMenuItem_Click(object sender, EventArgs e) => new Frpogui(SelectedPrinterName).Show();
 
         private void GetPrintServerProperties(object sender, EventArgs e) => new Cmd(Resources.GetPrintServerProperties).PrinterTasks();
 
@@ -172,26 +168,47 @@ namespace PrinterHelper
         private void PrintTheColor_Click(object sender, EventArgs e)
         {
             int copiesOfSingleColor = Convert.ToInt16(SingleColorTestPageCopies.Value);
-
-            SetSelectedPrinterAsDefault();
-            new PrintTestPage(SelectedPrinterName, "SingleColorTestPage", ColorToPrint, copiesOfSingleColor).SendDocumentToPrinter();
+            try
+            {
+                SetSelectedPrinterAsDefault();
+            }
+            finally
+            {
+                PrintSingleColorTestPage(copiesOfSingleColor);
+            }
         }
+
+        private void PrintSingleColorTestPage(int copiesOfSingleColor) => new PrintTestPage(SelectedPrinterName, "SingleColorTestPage", ColorToPrint, copiesOfSingleColor).SendDocumentToPrinter();
 
         private void PrintTheGridBtnClick(object sender, EventArgs e)
         {
             int copiesOfBwGrid = Convert.ToInt16(GridTestCopies.Value);
-
-            SetSelectedPrinterAsDefault();
-            new PrintTestPage(SelectedPrinterName, "BWGridTestPage", copiesOfBwGrid).SendDocumentToPrinter();
+            try
+            {
+                SetSelectedPrinterAsDefault();
+            }
+            finally
+            {
+                PrintBWGridTestPage(copiesOfBwGrid);
+            }
         }
+
+        private void PrintBWGridTestPage(int copiesOfBwGrid) => new PrintTestPage(SelectedPrinterName, "BWGridTestPage", copiesOfBwGrid).SendDocumentToPrinter();
 
         private void PrintTheRainbowClick(object sender, EventArgs e)
         {
             int copiesOfRainbow = Convert.ToInt16(RainbowTestPageCopies.Value);
-
-            SetSelectedPrinterAsDefault();
-            new PrintTestPage(SelectedPrinterName, "RainbowTestPage", copiesOfRainbow).SendDocumentToPrinter();
+            try
+            {
+                SetSelectedPrinterAsDefault();
+            }
+            finally
+            {
+                PrintRainbowTestPage(copiesOfRainbow);
+            }
         }
+
+        private void PrintRainbowTestPage(int copiesOfRainbow) => new PrintTestPage(SelectedPrinterName, "RainbowTestPage", copiesOfRainbow).SendDocumentToPrinter();
 
         private void PropertiesToolStripMenuItem_Click(object sender, EventArgs e) => new Cmd(Resources.GetPropertiesOfSelectedPrinter, SelectedPrinterName).PrinterTasks();
 
@@ -201,8 +218,14 @@ namespace PrinterHelper
 
         private void SendFileToPrinter(object sender, EventArgs e)
         {
-            SetSelectedPrinterAsDefault();
-            new SendFileToPrint(SelectedPrinterName).SendFileToSelectedPrinter();
+            try
+            {
+                SetSelectedPrinterAsDefault();
+            }
+            finally
+            {
+                new SendFileToPrint(SelectedPrinterName).SendFileToSelectedPrinter();
+            }
         }
 
         private void SendTestPage_Click(object sender, EventArgs e) => new Cmd(Resources.SendDefaultTestPage, SelectedPrinterName).PrinterTasks();

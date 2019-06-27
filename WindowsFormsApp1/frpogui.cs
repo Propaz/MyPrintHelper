@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace PrinterHelper
 {
-    public partial class Frpogui : Form
+    internal partial class Frpogui : Form
     {
         private readonly string _selectedPrinterName;
 

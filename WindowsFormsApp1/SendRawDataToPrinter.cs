@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace PrinterHelper
 {
-    public partial class Frpogui
+    internal partial class Frpogui
     {
         private static class SendRawDataToPrinter
         {

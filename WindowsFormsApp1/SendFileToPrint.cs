@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace PrinterHelper
 {
-    public partial class MainForm
+    internal partial class MainForm
     {
         private class SendFileToPrint
         {

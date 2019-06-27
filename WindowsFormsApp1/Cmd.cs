@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace PrinterHelper
 {
-    public partial class MainForm : Form
+    internal partial class MainForm : Form
     {
         private class Cmd
         {
