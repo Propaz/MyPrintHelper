@@ -18,7 +18,7 @@ namespace PrinterHelper
         {
             InitializeComponent();
             Icon = Resources.mainicon;
-            Text = $"Printer Helper {Assembly.GetExecutingAssembly().GetName().Version} build at 26/06/2019";
+            Text = $"Printer Helper {Assembly.GetExecutingAssembly().GetName().Version} build at 07/07/2019";
             ListOfPrintersListBox.MouseDown += ListOfPrintersListBoxMouseDown;
             ListOfColorsForPrint.SelectedIndex = 0;
             ListOfColorsForPrint.Enabled = false;

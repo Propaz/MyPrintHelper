@@ -111,21 +111,21 @@
             this.DeletePrinter,
             this.fRPOToolStripMenuItem});
             this.contextMenuOfCommands.Name = "contextMenuStrip1";
-            this.contextMenuOfCommands.Size = new System.Drawing.Size(169, 136);
+            this.contextMenuOfCommands.Size = new System.Drawing.Size(176, 136);
             this.contextMenuOfCommands.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuStrip1_Opening);
             // 
             // SendTestPage
             // 
             this.SendTestPage.BackColor = System.Drawing.SystemColors.Menu;
             this.SendTestPage.Name = "SendTestPage";
-            this.SendTestPage.Size = new System.Drawing.Size(168, 22);
+            this.SendTestPage.Size = new System.Drawing.Size(175, 22);
             this.SendTestPage.Text = "Windows Test Page";
             this.SendTestPage.Click += new System.EventHandler(this.SendTestPage_Click);
             // 
             // QueueOfPrinter
             // 
             this.QueueOfPrinter.Name = "QueueOfPrinter";
-            this.QueueOfPrinter.Size = new System.Drawing.Size(168, 22);
+            this.QueueOfPrinter.Size = new System.Drawing.Size(175, 22);
             this.QueueOfPrinter.Text = "Queue of Printer";
             this.QueueOfPrinter.Click += new System.EventHandler(this.QueueOfPrinter_Click);
             // 
@@ -133,7 +133,7 @@
             // 
             this.sendFileToPrinter.BackColor = System.Drawing.SystemColors.Menu;
             this.sendFileToPrinter.Name = "sendFileToPrinter";
-            this.sendFileToPrinter.Size = new System.Drawing.Size(168, 22);
+            this.sendFileToPrinter.Size = new System.Drawing.Size(175, 22);
             this.sendFileToPrinter.Text = "Send File To Printer";
             this.sendFileToPrinter.Click += new System.EventHandler(this.SendFileToPrinter);
             // 
@@ -141,7 +141,7 @@
             // 
             this.PropertiesOfPrinter.BackColor = System.Drawing.SystemColors.Window;
             this.PropertiesOfPrinter.Name = "PropertiesOfPrinter";
-            this.PropertiesOfPrinter.Size = new System.Drawing.Size(168, 22);
+            this.PropertiesOfPrinter.Size = new System.Drawing.Size(175, 22);
             this.PropertiesOfPrinter.Text = "Properties";
             this.PropertiesOfPrinter.Click += new System.EventHandler(this.PropertiesToolStripMenuItem_Click);
             // 
@@ -149,7 +149,7 @@
             // 
             this.DeletePrinter.BackColor = System.Drawing.Color.Tomato;
             this.DeletePrinter.Name = "DeletePrinter";
-            this.DeletePrinter.Size = new System.Drawing.Size(168, 22);
+            this.DeletePrinter.Size = new System.Drawing.Size(175, 22);
             this.DeletePrinter.Text = "Delete the Printer";
             this.DeletePrinter.Click += new System.EventHandler(this.DeleteThePrinterClick);
             // 
@@ -158,7 +158,7 @@
             this.fRPOToolStripMenuItem.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.fRPOToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.White;
             this.fRPOToolStripMenuItem.Name = "fRPOToolStripMenuItem";
-            this.fRPOToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.fRPOToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.fRPOToolStripMenuItem.Text = "FRPO";
             this.fRPOToolStripMenuItem.Click += new System.EventHandler(this.FRPOToolStripMenuItem_Click);
             // 
@@ -166,7 +166,7 @@
             // 
             this.PrintBWGrid.Location = new System.Drawing.Point(6, 18);
             this.PrintBWGrid.Name = "PrintBWGrid";
-            this.PrintBWGrid.Size = new System.Drawing.Size(100, 34);
+            this.PrintBWGrid.Size = new System.Drawing.Size(116, 34);
             this.PrintBWGrid.TabIndex = 7;
             this.PrintBWGrid.Text = "Print";
             this.PrintBWGrid.UseVisualStyleBackColor = true;
@@ -175,7 +175,7 @@
             // GridTestCopies
             // 
             this.GridTestCopies.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.GridTestCopies.Location = new System.Drawing.Point(112, 31);
+            this.GridTestCopies.Location = new System.Drawing.Point(132, 31);
             this.GridTestCopies.Minimum = new decimal(new int[] {
             1,
             0,
@@ -194,7 +194,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(108, 15);
+            this.label1.Location = new System.Drawing.Point(128, 15);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(39, 13);
             this.label1.TabIndex = 9;
@@ -227,7 +227,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(110, 16);
+            this.label2.Location = new System.Drawing.Point(127, 16);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(39, 13);
             this.label2.TabIndex = 2;
@@ -236,7 +236,7 @@
             // RainbowTestPageCopies
             // 
             this.RainbowTestPageCopies.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.RainbowTestPageCopies.Location = new System.Drawing.Point(113, 32);
+            this.RainbowTestPageCopies.Location = new System.Drawing.Point(131, 32);
             this.RainbowTestPageCopies.Minimum = new decimal(new int[] {
             1,
             0,
@@ -255,7 +255,7 @@
             // 
             this.PrintTheRainbowBtn.Location = new System.Drawing.Point(7, 19);
             this.PrintTheRainbowBtn.Name = "PrintTheRainbowBtn";
-            this.PrintTheRainbowBtn.Size = new System.Drawing.Size(100, 34);
+            this.PrintTheRainbowBtn.Size = new System.Drawing.Size(114, 34);
             this.PrintTheRainbowBtn.TabIndex = 0;
             this.PrintTheRainbowBtn.Text = "Print";
             this.PrintTheRainbowBtn.UseVisualStyleBackColor = true;
@@ -297,7 +297,7 @@
             this.groupBox4.Size = new System.Drawing.Size(173, 91);
             this.groupBox4.TabIndex = 13;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "CMYK or RGB";
+            this.groupBox4.Text = "CMYK or RGB Test";
             // 
             // ListOfColorsForPrint
             // 
@@ -314,13 +314,13 @@
             "Blue"});
             this.ListOfColorsForPrint.Location = new System.Drawing.Point(7, 60);
             this.ListOfColorsForPrint.Name = "ListOfColorsForPrint";
-            this.ListOfColorsForPrint.Size = new System.Drawing.Size(139, 21);
+            this.ListOfColorsForPrint.Size = new System.Drawing.Size(158, 21);
             this.ListOfColorsForPrint.TabIndex = 15;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(109, 16);
+            this.label3.Location = new System.Drawing.Point(127, 16);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(39, 13);
             this.label3.TabIndex = 14;
@@ -328,7 +328,7 @@
             // 
             // SingleColorTestPageCopies
             // 
-            this.SingleColorTestPageCopies.Location = new System.Drawing.Point(111, 33);
+            this.SingleColorTestPageCopies.Location = new System.Drawing.Point(130, 32);
             this.SingleColorTestPageCopies.Minimum = new decimal(new int[] {
             1,
             0,
@@ -347,7 +347,7 @@
             // 
             this.PrintTheColor.Location = new System.Drawing.Point(6, 19);
             this.PrintTheColor.Name = "PrintTheColor";
-            this.PrintTheColor.Size = new System.Drawing.Size(100, 34);
+            this.PrintTheColor.Size = new System.Drawing.Size(115, 34);
             this.PrintTheColor.TabIndex = 12;
             this.PrintTheColor.Text = "Print";
             this.PrintTheColor.UseVisualStyleBackColor = true;
