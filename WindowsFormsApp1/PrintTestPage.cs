@@ -161,6 +161,9 @@ namespace PrinterHelper
                     case "Blue":
                         e.Graphics.FillRectangle(Brushes.Blue, 50, 50, 720, 1000);
                         break;
+                    case "White":
+                        e.Graphics.FillRectangle(Brushes.White, 1, 1, 1, 1);
+                        break;
                 }
             }
         }

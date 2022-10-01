@@ -311,7 +311,8 @@
             "Yellow",
             "Red",
             "Green",
-            "Blue"});
+            "Blue",
+            "White"});
             this.ListOfColorsForPrint.Location = new System.Drawing.Point(7, 60);
             this.ListOfColorsForPrint.Name = "ListOfColorsForPrint";
             this.ListOfColorsForPrint.Size = new System.Drawing.Size(158, 21);
