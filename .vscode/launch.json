@@ -1,0 +1,27 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch PrinterHelper (Debug)",
+            "type": "clr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/PrinterHelper/bin/x64/Debug/PrinterHelper.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        {
+            "name": "Launch PrinterHelper (Release)",
+            "type": "clr",
+            "request": "launch",
+            "preLaunchTask": "build-release",
+            "program": "${workspaceFolder}/PrinterHelper/bin/Release/PrinterHelper.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        }
+    ]
+}
