@@ -32,34 +32,32 @@ namespace PrinterHelper
 
             public void SendDocumentToPrinter()
             {
-                using (PrintDocument document = new PrintDocument
-                { PrinterSettings = { PrinterName = _selectedPrinter } })
+                using PrintDocument document = new PrintDocument
+                { PrinterSettings = { PrinterName = _selectedPrinter } };
+                switch (_testPageName)
                 {
-                    switch (_testPageName)
-                    {
-                        case ("BWGridTestPage"):
-                            document.PrintPage += PrintTheGridDocument;
-                            break;
+                    case ("BWGridTestPage"):
+                        document.PrintPage += PrintTheGridDocument;
+                        break;
 
-                        case ("RainbowTestPage"):
-                            document.PrintPage += PrintTheRainbowPage;
-                            break;
+                    case ("RainbowTestPage"):
+                        document.PrintPage += PrintTheRainbowPage;
+                        break;
 
-                        case ("SingleColorTestPage"):
-                            document.PrintPage += PrintTheSingleColor;
-                            break;
-                    }
+                    case ("SingleColorTestPage"):
+                        document.PrintPage += PrintTheSingleColor;
+                        break;
+                }
 
-                    document.PrinterSettings.Copies = Convert.ToInt16(_copiesOfTestPage);
+                document.PrinterSettings.Copies = Convert.ToInt16(_copiesOfTestPage);
 
-                    try
-                    {
-                        document.Print();
-                    }
-                    catch (InvalidPrinterException exc)
-                    {
-                        _ = MessageBox.Show(text: exc.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
-                    }
+                try
+                {
+                    document.Print();
+                }
+                catch (InvalidPrinterException exc)
+                {
+                    _ = MessageBox.Show(text: exc.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
                 }
             }
 
