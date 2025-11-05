@@ -26,11 +26,15 @@ namespace PrinterHelper
             ListOfColorsForPrint.SelectedIndex = 0;
             ListOfColorsForPrint.Enabled = false;
             PrintBWGrid.Enabled = false;
+            PrintHorizonLinesButton.Enabled = false;
+            VerticalLinesPrintButton.Enabled = false;
             PrintTheRainbowBtn.Enabled = false;
             PrintTheColor.Enabled = false;
             GridTestCopies.Enabled = false;
             RainbowTestPageCopies.Enabled = false;
             SingleColorTestPageCopies.Enabled = false;
+            HorizonLinesCopies.Enabled = false;
+            verticalLinesCopies.Enabled = false;
         }
 
         public sealed override string Text
@@ -179,6 +183,10 @@ namespace PrinterHelper
             PrintTheColor.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
             ListOfColorsForPrint.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
             GridTestCopies.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
+            HorizonLinesCopies.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
+            PrintHorizonLinesButton.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
+            VerticalLinesPrintButton.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
+            verticalLinesCopies.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
             RainbowTestPageCopies.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
             SingleColorTestPageCopies.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
         }
@@ -267,5 +275,41 @@ namespace PrinterHelper
         private void StartPrintSpool_Click(object sender, EventArgs e) => Cmd.PrinterTasks(Resources.StartSpooler);
 
         private void StopPrintSpool_Click(object sender, EventArgs e) => Cmd.PrinterTasks(Resources.StopSpooler);
+
+        private void PrintHorizonLines(int copies)
+        {
+            new PrintTestPage(SelectedPrinterName, PageType.HorizonLines, copies).SendDocumentToPrinter();
+        }
+
+        private void PrintHorizonLines_Click(object sender, EventArgs e)
+        {
+            int copies = Convert.ToInt16(HorizonLinesCopies.Value);
+            try
+            {
+                SetSelectedPrinterAsDefault();
+            }
+            finally
+            {
+                PrintHorizonLines(copies);
+            }
+        }
+
+        private void PrintVerticalLines(int copies)
+        {
+            new PrintTestPage(SelectedPrinterName, PageType.VerticalLines, copies).SendDocumentToPrinter();
+        }
+
+        private void VerticalLinesPrintButton_Click(object sender, EventArgs e)
+        {
+            int copies = Convert.ToInt16(verticalLinesCopies.Value);
+            try
+            {
+                SetSelectedPrinterAsDefault();
+            }
+            finally
+            {
+                PrintVerticalLines(copies);
+            }
+        }
     }
 }

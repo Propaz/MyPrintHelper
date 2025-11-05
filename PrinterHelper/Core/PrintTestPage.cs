@@ -15,6 +15,11 @@ namespace PrinterHelper
             private readonly string _singleColorToPrint;
             private readonly PageType _testPageName;
 
+            // A4 size
+            private const int HeightA4 = 2339;
+            private const int WidthA4 = 1654;
+            // A4 size
+
             public PrintTestPage(string nameOfPrinter, PageType nameOfTestPage, string colorToPrint, int copies)
             {
                 _selectedPrinter = nameOfPrinter ?? throw new ArgumentNullException(nameof(nameOfPrinter));
@@ -40,6 +45,8 @@ namespace PrinterHelper
                     PageType.Grid => PrintTheGridDocument,
                     PageType.Rainbow => PrintTheRainbowPage,
                     PageType.SingleColor => PrintTheSingleColor,
+                    PageType.HorizonLines => PrintHorizonLines,
+                    PageType.VerticalLines => PrintVerticalLines,
                     _ => PrintTheGridDocument
                 };
 
@@ -83,19 +90,36 @@ namespace PrinterHelper
 
             private static void PrintTheGridDocument(object sender, PrintPageEventArgs e)
             {
-                //Draw a grid
-                const int w = 1654; //A4 size
-                const int h = 2339;
                 const int widthLines = 20; //cell size
                 const int heightLines = 20;
-                for (var i = 0; i < w; i += widthLines)
+                for (var i = 0; i < WidthA4; i += widthLines)
                 {
                     //Width Lines
                     e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(i + widthLines, 0),
-                        new Point(i + widthLines, h));
+                        new Point(i + widthLines, HeightA4));
                     //Height Lines
                     e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(0, i + heightLines),
-                        new Point(w, i + heightLines));
+                        new Point(WidthA4, i + heightLines));
+                }
+            }
+
+            private static void PrintHorizonLines(object sender, PrintPageEventArgs e)
+            {
+                const int heightLines = 320;
+                for (var i = 0; i < WidthA4; i += heightLines)
+                {
+                    e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(0, i + heightLines),
+                        new Point(WidthA4, i + heightLines));
+                }
+            }
+
+            private static void PrintVerticalLines(object sender, PrintPageEventArgs e)
+            {
+                const int widthLines = 220;
+                for (var i = 0; i < WidthA4; i += widthLines)
+                {
+                    e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(i + widthLines, 0),
+                        new Point(i + widthLines, HeightA4));
                 }
             }
 

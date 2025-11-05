@@ -4,6 +4,8 @@
     {
         Grid,
         Rainbow,
-        SingleColor
+        SingleColor,
+        HorizonLines,
+        VerticalLines
     }
 }
