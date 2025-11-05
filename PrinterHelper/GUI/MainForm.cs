@@ -1,12 +1,14 @@
-using PrinterHelper.Properties;
-using PrinterHelper.CommandLine;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Management;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PrinterHelper.CommandLine;
+using PrinterHelper.Core;
+using PrinterHelper.Properties;
 
 namespace PrinterHelper
 {
@@ -16,7 +18,8 @@ namespace PrinterHelper
         {
             InitializeComponent();
             Icon = Resources.mainicon;
-            Text = $"Printer Helper {Assembly.GetExecutingAssembly().GetName().Version} build at 07/07/2019";
+            Text =
+                $"Printer Helper {Assembly.GetExecutingAssembly().GetName().Version} build at {BuildVersion.GetBuildDate(Assembly.GetExecutingAssembly()):dd/MM/yyyy}";
             ListOfPrintersListBox.MouseDown += ListOfPrintersListBoxMouseDown;
             ListOfColorsForPrint.SelectedIndex = 0;
             ListOfColorsForPrint.Enabled = false;
@@ -48,7 +51,7 @@ namespace PrinterHelper
         }
 
         private static async Task
-                    GetPrinterList(SynchronizationContext sync, IDisposable box)
+            GetPrinterList(SynchronizationContext sync, IDisposable box)
         {
             if (box == null) throw new ArgumentNullException(nameof(box));
 
@@ -56,41 +59,45 @@ namespace PrinterHelper
 
             const string queryString = "SELECT * FROM Win32_Printer";
 
-            ManagementObjectSearcher searcher;
-            using (searcher = new ManagementObjectSearcher(queryString: queryString))
+            // Сначала получаем все необходимые данные в основном потоке.
+            var printerNames = new List<string>();
+            using (var searcher = new ManagementObjectSearcher(queryString))
             {
-                using (ManagementObjectCollection managementObjects = searcher.Get())
+                using (var managementObjects = searcher.Get())
                 {
-                    CancellationToken cancellationToken = new CancellationToken(false);
-                    TaskScheduler taskScheduler = TaskScheduler.Default;
-                    await Task.Factory.StartNew(b =>
+                    foreach (var managementBaseObject in managementObjects)
                     {
-                        if (managementObjects == null) return;
-                        foreach (ManagementBaseObject managementBaseObject in managementObjects)
-                        {
-                            using ManagementObject managementObject = (ManagementObject)managementBaseObject;
-                            string printerNameFromWmi = managementObject["Name"].ToString();
-                            if (string.IsNullOrEmpty(printerNameFromWmi)) continue;
-                            if (managementObject["WorkOffline"].ToString().Equals(value: "false",
-                                comparisonType: StringComparison.OrdinalIgnoreCase)
-                            ) //Only Printer with flag "online"
-                            {
-                                sync.Send(a => (b as ListBox)?.Items.Add(a), printerNameFromWmi);
+                        using var managementObject = (ManagementObject)managementBaseObject;
+                        var printerNameFromWmi = managementObject["Name"]?.ToString();
+                        if (string.IsNullOrEmpty(printerNameFromWmi)) continue;
 
-                            }
+                        //Only Printer with flag "online"
+                        if (managementObject["WorkOffline"]?.ToString()
+                                .Equals("false", StringComparison.OrdinalIgnoreCase) == true)
+                        {
+                            printerNames.Add(printerNameFromWmi);
                         }
-                    }, box, cancellationToken, TaskCreationOptions.LongRunning, taskScheduler).ConfigureAwait(false);
+                    }
                 }
             }
+
+            await Task.Run(() =>
+            {
+                foreach (var printerName in printerNames)
+                {
+                    sync.Send(state => (box as ListBox)?.Items.Add(state), printerName);
+                }
+            }).ConfigureAwait(false);
         }
 
         private void AddNewPrinter_Click(object sender, EventArgs e) => Cmd.PrinterTasks(Resources.AddNewPrinterKey);
 
-        private void ContextMenuStrip1_Opening(object sender, CancelEventArgs e) => contextMenuOfCommands.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
+        private void ContextMenuStrip1_Opening(object sender, CancelEventArgs e) =>
+            contextMenuOfCommands.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
 
         private void DeleteThePrinterClick(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show(
+            var dialogResult = MessageBox.Show(
                 text: $"Are you sure you want to Delete [{SelectedPrinterName}] ?",
                 caption: "Confirmation",
                 buttons: MessageBoxButtons.OKCancel, icon: MessageBoxIcon.Information);
@@ -109,10 +116,19 @@ namespace PrinterHelper
                             icon: MessageBoxIcon.Information);
                         FindThePrinterBtnClick(null, null);
                     }
+
                     break;
 
                 case DialogResult.Cancel:
+                case DialogResult.None:
+                case DialogResult.Abort:
+                case DialogResult.Retry:
+                case DialogResult.Ignore:
+                case DialogResult.Yes:
+                case DialogResult.No:
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -131,7 +147,8 @@ namespace PrinterHelper
             }
             catch (ManagementException ex)
             {
-                _ = MessageBox.Show(text: ex.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
+                _ = MessageBox.Show(text: ex.Message, caption: "Error", buttons: MessageBoxButtons.OK,
+                    icon: MessageBoxIcon.Error);
             }
             finally
             {
@@ -147,7 +164,8 @@ namespace PrinterHelper
 
         private void FRPOToolStripMenuItem_Click(object sender, EventArgs e) => new Frpogui(SelectedPrinterName).Show();
 
-        private void GetPrintServerProperties(object sender, EventArgs e) => Cmd.PrinterTasks(Resources.GetPrintServerProperties);
+        private void GetPrintServerProperties(object sender, EventArgs e) =>
+            Cmd.PrinterTasks(Resources.GetPrintServerProperties);
 
         private void ListOfPrintersListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -160,7 +178,8 @@ namespace PrinterHelper
             SingleColorTestPageCopies.Enabled = ListOfPrintersListBox.SelectedIndex != -1;
         }
 
-        private void ListOfPrintersListBoxMouseDown(object sender, MouseEventArgs e) => ListOfPrintersListBox.SelectedIndex = ListOfPrintersListBox.IndexFromPoint(e.X, e.Y);
+        private void ListOfPrintersListBoxMouseDown(object sender, MouseEventArgs e) =>
+            ListOfPrintersListBox.SelectedIndex = ListOfPrintersListBox.IndexFromPoint(e.X, e.Y);
 
         private void PrintTheColor_Click(object sender, EventArgs e)
         {
@@ -175,7 +194,9 @@ namespace PrinterHelper
             }
         }
 
-        private void PrintSingleColorTestPage(int copiesOfSingleColor) => new PrintTestPage(SelectedPrinterName, "SingleColorTestPage", ColorToPrint, copiesOfSingleColor).SendDocumentToPrinter();
+        private void PrintSingleColorTestPage(int copiesOfSingleColor) =>
+            new PrintTestPage(SelectedPrinterName, "SingleColorTestPage", ColorToPrint, copiesOfSingleColor)
+                .SendDocumentToPrinter();
 
         private void PrintTheGridBtnClick(object sender, EventArgs e)
         {
@@ -190,7 +211,8 @@ namespace PrinterHelper
             }
         }
 
-        private void PrintBWGridTestPage(int copiesOfBwGrid) => new PrintTestPage(SelectedPrinterName, "BWGridTestPage", copiesOfBwGrid).SendDocumentToPrinter();
+        private void PrintBWGridTestPage(int copiesOfBwGrid) =>
+            new PrintTestPage(SelectedPrinterName, "BWGridTestPage", copiesOfBwGrid).SendDocumentToPrinter();
 
         private void PrintTheRainbowClick(object sender, EventArgs e)
         {
@@ -205,11 +227,14 @@ namespace PrinterHelper
             }
         }
 
-        private void PrintRainbowTestPage(int copiesOfRainbow) => new PrintTestPage(SelectedPrinterName, "RainbowTestPage", copiesOfRainbow).SendDocumentToPrinter();
+        private void PrintRainbowTestPage(int copiesOfRainbow) =>
+            new PrintTestPage(SelectedPrinterName, "RainbowTestPage", copiesOfRainbow).SendDocumentToPrinter();
 
-        private void PropertiesToolStripMenuItem_Click(object sender, EventArgs e) => Cmd.PrinterTasks(Resources.GetPropertiesOfSelectedPrinter, SelectedPrinterName);
+        private void PropertiesToolStripMenuItem_Click(object sender, EventArgs e) =>
+            Cmd.PrinterTasks(Resources.GetPropertiesOfSelectedPrinter, SelectedPrinterName);
 
-        private void QueueOfPrinter_Click(object sender, EventArgs e) => Cmd.PrinterTasks(Resources.QueueOfSelectedPrinter, SelectedPrinterName);
+        private void QueueOfPrinter_Click(object sender, EventArgs e) =>
+            Cmd.PrinterTasks(Resources.QueueOfSelectedPrinter, SelectedPrinterName);
 
         private void RestartPrintSpool_Click(object sender, EventArgs e) => Cmd.PrinterTasks(Resources.RestartSpooler);
 
@@ -225,9 +250,11 @@ namespace PrinterHelper
             }
         }
 
-        private void SendTestPage_Click(object sender, EventArgs e) => Cmd.PrinterTasks(Resources.SendDefaultTestPage, SelectedPrinterName);
+        private void SendTestPage_Click(object sender, EventArgs e) =>
+            Cmd.PrinterTasks(Resources.SendDefaultTestPage, SelectedPrinterName);
 
-        private void SetSelectedPrinterAsDefault() => Cmd.PrinterTasks(Resources.SetPrinterAsDefaultKey, SelectedPrinterName);
+        private void SetSelectedPrinterAsDefault() =>
+            Cmd.PrinterTasks(Resources.SetPrinterAsDefaultKey, SelectedPrinterName);
 
         private void StartPrintSpool_Click(object sender, EventArgs e) => Cmd.PrinterTasks(Resources.StartSpooler);
 

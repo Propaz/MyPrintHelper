@@ -14,26 +14,26 @@ namespace PrinterHelper
             private readonly string _singleColorToPrint;
             private readonly string _testPageName;
 
-            public PrintTestPage(string nameOfPrinter, string nameoftestpage, string colortoprint, int copies)
+            public PrintTestPage(string nameOfPrinter, string nameOfTestPage, string colorToPrint, int copies)
             {
                 _selectedPrinter = nameOfPrinter ?? throw new ArgumentNullException(nameof(nameOfPrinter));
-                _testPageName = nameoftestpage ?? throw new ArgumentNullException(nameof(nameoftestpage));
+                _testPageName = nameOfTestPage ?? throw new ArgumentNullException(nameof(nameOfTestPage));
                 _copiesOfTestPage = copies;
-                _singleColorToPrint = colortoprint ?? throw new ArgumentNullException(nameof(colortoprint));
+                _singleColorToPrint = colorToPrint ?? throw new ArgumentNullException(nameof(colorToPrint));
             }
 
-            public PrintTestPage(string nameOfPrinter, string nameoftestpage, int copies)
+            public PrintTestPage(string nameOfPrinter, string nameOfTestPage, int copies)
             {
                 _selectedPrinter = nameOfPrinter ?? throw new ArgumentNullException(nameof(nameOfPrinter));
-                _testPageName = nameoftestpage ?? throw new ArgumentNullException(nameof(nameoftestpage));
+                _testPageName = nameOfTestPage ?? throw new ArgumentNullException(nameof(nameOfTestPage));
                 _copiesOfTestPage = copies;
                 _singleColorToPrint = string.Empty;
             }
 
             public void SendDocumentToPrinter()
             {
-                using PrintDocument document = new PrintDocument
-                { PrinterSettings = { PrinterName = _selectedPrinter } };
+                using var document = new PrintDocument();
+                document.PrinterSettings.PrinterName = _selectedPrinter;
                 switch (_testPageName)
                 {
                     case ("BWGridTestPage"):
@@ -57,35 +57,35 @@ namespace PrinterHelper
                 }
                 catch (InvalidPrinterException exc)
                 {
-                    _ = MessageBox.Show(text: exc.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
+                    _ = MessageBox.Show(text: exc.Message, caption: "Error", buttons: MessageBoxButtons.OK,
+                        icon: MessageBoxIcon.Error);
                 }
             }
 
             private static Color
-                       MapRainbowColor(float value, float redValue, float blueValue)
+                MapRainbowColor(float value, float redValue, float blueValue)
             {
-                int intValue =
-                    (int)(1023 * (value - redValue) / (blueValue - redValue)); // Convert into a value between 0 and 1023.
+                var intValue =
+                    (int)(1023 * (value - redValue) /
+                          (blueValue - redValue)); // Convert into a value between 0 and 1023.
 
-                if (intValue < 256) return Color.FromArgb(255, intValue, 0); // Map different color bands.
-
-                if (intValue < 512)
+                switch (intValue)
                 {
-                    // Yellow to green. (255, 255, 0) to (0, 255, 0).
-                    intValue -= 256;
-                    return Color.FromArgb(255 - intValue, 255, 0);
+                    case < 256:
+                        return Color.FromArgb(255, intValue, 0); // Map different color bands.
+                    case < 512:
+                        // Yellow to green. (255, 255, 0) to (0, 255, 0).
+                        intValue -= 256;
+                        return Color.FromArgb(255 - intValue, 255, 0);
+                    case < 768:
+                        // Green to aqua. (0, 255, 0) to (0, 255, 255).
+                        intValue -= 512;
+                        return Color.FromArgb(0, 255, intValue);
+                    default:
+                        // Aqua to blue. (0, 255, 255) to (0, 0, 255).
+                        intValue -= 768;
+                        return Color.FromArgb(0, 255 - intValue, 255);
                 }
-
-                if (intValue < 768)
-                {
-                    // Green to aqua. (0, 255, 0) to (0, 255, 255).
-                    intValue -= 512;
-                    return Color.FromArgb(0, 255, intValue);
-                }
-
-                // Aqua to blue. (0, 255, 255) to (0, 0, 255).
-                intValue -= 768;
-                return Color.FromArgb(0, 255 - intValue, 255);
             }
 
             private static void PrintTheGridDocument(object sender, PrintPageEventArgs e)
@@ -95,10 +95,11 @@ namespace PrinterHelper
                 const int h = 2339;
                 const int widthLines = 20; //cell size
                 const int heightLines = 20;
-                for (int i = 0; i < w; i += widthLines)
+                for (var i = 0; i < w; i += widthLines)
                 {
                     //Width Lines
-                    e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(i + widthLines, 0), new Point(i + widthLines, h));
+                    e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(i + widthLines, 0),
+                        new Point(i + widthLines, h));
                     //Height Lines
                     e.Graphics.DrawLine(new Pen(Brushes.Black), new Point(0, i + heightLines),
                         new Point(w, i + heightLines));
@@ -110,7 +111,7 @@ namespace PrinterHelper
                 const int wid = 600;
                 const int hgt = 600;
                 const int hgt2 = hgt / 2;
-                for (int x = 20; x < wid; x++)
+                for (var x = 20; x < wid; x++)
                 {
                     Pen thePen;
                     using (thePen = new Pen(MapRainbowColor(x, 0, wid)))

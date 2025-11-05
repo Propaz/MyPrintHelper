@@ -145,6 +145,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Core\NativeMethods.cs" />
+      <Compile Include="Core\BuildVersion.cs"/>
     <EmbeddedResource Include="GUI\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
