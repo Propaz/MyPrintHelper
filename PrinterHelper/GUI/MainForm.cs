@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using PrinterHelper.CommandLine;
 using PrinterHelper.Core;
+using PrinterHelper.Models;
 using PrinterHelper.Properties;
 
 namespace PrinterHelper
@@ -37,8 +38,8 @@ namespace PrinterHelper
             set => base.Text = value;
         }
 
-        private string ColorToPrint => ListOfColorsForPrint.SelectedItem.ToString();
-        private string SelectedPrinterName => ListOfPrintersListBox.SelectedItem.ToString();
+        private string ColorToPrint => ListOfColorsForPrint.SelectedItem as string;
+        private string SelectedPrinterName => ListOfPrintersListBox.SelectedItem as string;
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -97,8 +98,12 @@ namespace PrinterHelper
 
         private void DeleteThePrinterClick(object sender, EventArgs e)
         {
+            var printerName = SelectedPrinterName;
+
+            if (string.IsNullOrEmpty(printerName)) return;
+
             var dialogResult = MessageBox.Show(
-                text: $"Are you sure you want to Delete [{SelectedPrinterName}] ?",
+                text: $"Are you sure you want to Delete [{printerName}] ?",
                 caption: "Confirmation",
                 buttons: MessageBoxButtons.OKCancel, icon: MessageBoxIcon.Information);
             switch (dialogResult)
@@ -106,12 +111,12 @@ namespace PrinterHelper
                 case DialogResult.OK:
                     try
                     {
-                        Cmd.PrinterTasks(Resources.DeleteSelectedPrinterKey, SelectedPrinterName);
+                        Cmd.PrinterTasks(Resources.DeleteSelectedPrinterKey, printerName);
                     }
                     finally
                     {
                         _ = MessageBox.Show(
-                            text: $"The [{SelectedPrinterName}] has been Deleted",
+                            text: $"The [{printerName}] has been Deleted",
                             caption: "Information", buttons: MessageBoxButtons.OK,
                             icon: MessageBoxIcon.Information);
                         FindThePrinterBtnClick(null, null);
@@ -195,7 +200,7 @@ namespace PrinterHelper
         }
 
         private void PrintSingleColorTestPage(int copiesOfSingleColor) =>
-            new PrintTestPage(SelectedPrinterName, "SingleColorTestPage", ColorToPrint, copiesOfSingleColor)
+            new PrintTestPage(SelectedPrinterName, PageType.SingleColor, ColorToPrint, copiesOfSingleColor)
                 .SendDocumentToPrinter();
 
         private void PrintTheGridBtnClick(object sender, EventArgs e)
@@ -211,8 +216,11 @@ namespace PrinterHelper
             }
         }
 
-        private void PrintGridTestPage(int copiesOfBwGrid) =>
-            new PrintTestPage(SelectedPrinterName, "BWGridTestPage", copiesOfBwGrid).SendDocumentToPrinter();
+        private void PrintGridTestPage(int copiesOfBwGrid) => new PrintTestPage(
+            SelectedPrinterName,
+            PageType.Grid,
+            copiesOfBwGrid
+        ).SendDocumentToPrinter();
 
         private void PrintTheRainbowClick(object sender, EventArgs e)
         {
@@ -228,7 +236,7 @@ namespace PrinterHelper
         }
 
         private void PrintRainbowTestPage(int copiesOfRainbow) =>
-            new PrintTestPage(SelectedPrinterName, "RainbowTestPage", copiesOfRainbow).SendDocumentToPrinter();
+            new PrintTestPage(SelectedPrinterName, PageType.Rainbow, copiesOfRainbow).SendDocumentToPrinter();
 
         private void PropertiesToolStripMenuItem_Click(object sender, EventArgs e) =>
             Cmd.PrinterTasks(Resources.GetPropertiesOfSelectedPrinter, SelectedPrinterName);

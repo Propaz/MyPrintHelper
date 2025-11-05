@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Windows.Forms;
+using PrinterHelper.Models;
 
 namespace PrinterHelper
 {
@@ -12,20 +13,20 @@ namespace PrinterHelper
             private readonly int _copiesOfTestPage;
             private readonly string _selectedPrinter;
             private readonly string _singleColorToPrint;
-            private readonly string _testPageName;
+            private readonly PageType _testPageName;
 
-            public PrintTestPage(string nameOfPrinter, string nameOfTestPage, string colorToPrint, int copies)
+            public PrintTestPage(string nameOfPrinter, PageType nameOfTestPage, string colorToPrint, int copies)
             {
                 _selectedPrinter = nameOfPrinter ?? throw new ArgumentNullException(nameof(nameOfPrinter));
-                _testPageName = nameOfTestPage ?? throw new ArgumentNullException(nameof(nameOfTestPage));
+                _testPageName = nameOfTestPage;
                 _copiesOfTestPage = copies;
                 _singleColorToPrint = colorToPrint ?? throw new ArgumentNullException(nameof(colorToPrint));
             }
 
-            public PrintTestPage(string nameOfPrinter, string nameOfTestPage, int copies)
+            public PrintTestPage(string nameOfPrinter, PageType nameOfTestPage, int copies)
             {
                 _selectedPrinter = nameOfPrinter ?? throw new ArgumentNullException(nameof(nameOfPrinter));
-                _testPageName = nameOfTestPage ?? throw new ArgumentNullException(nameof(nameOfTestPage));
+                _testPageName = nameOfTestPage;
                 _copiesOfTestPage = copies;
                 _singleColorToPrint = string.Empty;
             }
@@ -34,20 +35,13 @@ namespace PrinterHelper
             {
                 using var document = new PrintDocument();
                 document.PrinterSettings.PrinterName = _selectedPrinter;
-                switch (_testPageName)
+                document.PrintPage += _testPageName switch
                 {
-                    case ("BWGridTestPage"):
-                        document.PrintPage += PrintTheGridDocument;
-                        break;
-
-                    case ("RainbowTestPage"):
-                        document.PrintPage += PrintTheRainbowPage;
-                        break;
-
-                    case ("SingleColorTestPage"):
-                        document.PrintPage += PrintTheSingleColor;
-                        break;
-                }
+                    PageType.Grid => PrintTheGridDocument,
+                    PageType.Rainbow => PrintTheRainbowPage,
+                    PageType.SingleColor => PrintTheSingleColor,
+                    _ => PrintTheGridDocument
+                };
 
                 document.PrinterSettings.Copies = Convert.ToInt16(_copiesOfTestPage);
 
@@ -128,39 +122,20 @@ namespace PrinterHelper
 
             private void PrintTheSingleColor(object sender, PrintPageEventArgs e)
             {
-                switch (_singleColorToPrint)
+                if (string.IsNullOrWhiteSpace(_singleColorToPrint))
                 {
-                    case "Black":
-                        e.Graphics.FillRectangle(Brushes.Black, 50, 50, 720, 1000);
-                        break;
-
-                    case "Cyan":
-                        e.Graphics.FillRectangle(Brushes.Cyan, 50, 50, 720, 1000);
-                        break;
-
-                    case "Magenta":
-                        e.Graphics.FillRectangle(Brushes.Magenta, 50, 50, 720, 1000);
-                        break;
-
-                    case "Yellow":
-                        e.Graphics.FillRectangle(Brushes.Yellow, 50, 50, 720, 1000);
-                        break;
-
-                    case "Red":
-                        e.Graphics.FillRectangle(Brushes.Red, 50, 50, 720, 1000);
-                        break;
-
-                    case "Green":
-                        e.Graphics.FillRectangle(Brushes.Green, 50, 50, 720, 1000);
-                        break;
-
-                    case "Blue":
-                        e.Graphics.FillRectangle(Brushes.Blue, 50, 50, 720, 1000);
-                        break;
-                    case "White":
-                        e.Graphics.FillRectangle(Brushes.White, 1, 1, 1, 1);
-                        break;
+                    return;
                 }
+
+                if (_singleColorToPrint.Equals("White", StringComparison.OrdinalIgnoreCase))
+                {
+                    e.Graphics.FillRectangle(Brushes.White, 1, 1, 1, 1);
+                    return;
+                }
+
+                var color = (Color)new ColorConverter().ConvertFromString(_singleColorToPrint)!;
+                using var brush = new SolidBrush(color);
+                e.Graphics.FillRectangle(brush, 50, 50, 720, 1000);
             }
         }
     }
