@@ -1,79 +1,53 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Forms;
 
-namespace PrinterHelper
+namespace PrinterHelper.CommandLine
 {
-    internal partial class MainForm : Form
+    internal static class Cmd
     {
-        private class Cmd
+        private const string CmdArgumentForPrinterTasks = "/C rundll32 printui.dll,PrintUIEntry";
+        private const string FileNameToExec = "cmd.exe";
+
+        public static void PrinterTasks(string key, string selectedPrinter = "")
         {
-            private const string CmdArgumentForPrinterTasks = "/C rundll32 printui.dll,PrintUIEntry";
-            private const string FileNameToExec = "cmd.exe";
-            private readonly string _key;
-            private readonly string _selectedPrinter;
-
-            public Cmd(string keyforcmd, string nameofprinter)
+            if (key == null)
             {
-                _key = keyforcmd ?? throw new ArgumentNullException(nameof(keyforcmd));
-                _selectedPrinter = nameofprinter ?? throw new ArgumentNullException(nameof(nameofprinter));
+                throw new ArgumentNullException(nameof(key));
             }
 
-            public Cmd(string keyforcmd)
+            var processStartInfo = new ProcessStartInfo
             {
-                _key = keyforcmd ?? throw new ArgumentNullException(nameof(keyforcmd));
-                _selectedPrinter = string.Empty;
-            }
+                WindowStyle = ProcessWindowStyle.Hidden,
+                FileName = FileNameToExec
+            };
 
-            public void PrinterTasks()
+            if (key.IndexOf("spooler", StringComparison.OrdinalIgnoreCase) != -1)
             {
-                Process process;
-                using (process = new Process())
+                processStartInfo.UseShellExecute = true;
+                processStartInfo.Arguments = key;
+                processStartInfo.Verb = "runas";
+            }
+            else
+            {
+                var arguments = $"{CmdArgumentForPrinterTasks} {key}";
+                if (!string.IsNullOrEmpty(selectedPrinter))
                 {
-                    process.StartInfo = string.IsNullOrEmpty(_selectedPrinter)
-                        ? new ProcessStartInfo
-                        {
-                            WindowStyle = ProcessWindowStyle.Hidden,
-                            FileName = FileNameToExec,
-                            Arguments =
-                                $"{CmdArgumentForPrinterTasks} {_key}"
-                        }
-                        : new ProcessStartInfo
-                        {
-                            WindowStyle = ProcessWindowStyle.Hidden,
-                            FileName = FileNameToExec,
-                            Arguments =
-                               $"{CmdArgumentForPrinterTasks} {_key} /n \"{_selectedPrinter}\""
-                        };
-
-                    if (_key.IndexOf("spooler", StringComparison.OrdinalIgnoreCase) != -1)
-                    {
-                        process.StartInfo = new ProcessStartInfo
-                        {
-                            UseShellExecute = true,
-                            FileName = FileNameToExec,
-                            Arguments = _key,
-                            Verb = "runas"
-                        };
-                    }
-                    try
-                    {
-                        _ = process.Start();
-                    }
-                    catch (ObjectDisposedException exd)
-                    {
-                        _ = MessageBox.Show(text: exd.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
-                    }
-                    catch (InvalidOperationException exc)
-                    {
-                        _ = MessageBox.Show(text: exc.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
-                    }
-                    catch (Win32Exception ex)
-                    {
-                        _ = MessageBox.Show(text: ex.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
-                    }
+                    arguments += $" /n \"{selectedPrinter}\" ";
                 }
+                processStartInfo.Arguments = arguments;
+            }
+
+            try
+            {
+                using var process = Process.Start(processStartInfo);
+                // Process started, no need to wait for it to exit.
+
+            }
+            catch (Exception ex) when (ex is Win32Exception || ex is ObjectDisposedException || ex is InvalidOperationException)
+            {
+                _ = MessageBox.Show(text: ex.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
             }
         }
     }
