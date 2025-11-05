@@ -207,11 +207,11 @@ namespace PrinterHelper
             }
             finally
             {
-                PrintBWGridTestPage(copiesOfBwGrid);
+                PrintGridTestPage(copiesOfBwGrid);
             }
         }
 
-        private void PrintBWGridTestPage(int copiesOfBwGrid) =>
+        private void PrintGridTestPage(int copiesOfBwGrid) =>
             new PrintTestPage(SelectedPrinterName, "BWGridTestPage", copiesOfBwGrid).SendDocumentToPrinter();
 
         private void PrintTheRainbowClick(object sender, EventArgs e)
