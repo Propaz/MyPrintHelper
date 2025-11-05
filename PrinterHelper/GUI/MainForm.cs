@@ -162,7 +162,7 @@ namespace PrinterHelper
             }
         }
 
-        private void FRPOToolStripMenuItem_Click(object sender, EventArgs e) => new Frpogui(SelectedPrinterName).Show();
+        private void FRPOToolStripMenuItem_Click(object sender, EventArgs e) => new FRPOGui(SelectedPrinterName).Show();
 
         private void GetPrintServerProperties(object sender, EventArgs e) =>
             Cmd.PrinterTasks(Resources.GetPrintServerProperties);

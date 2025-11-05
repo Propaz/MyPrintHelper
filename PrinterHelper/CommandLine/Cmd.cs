@@ -36,6 +36,7 @@ namespace PrinterHelper.CommandLine
                 {
                     arguments += $" /n \"{selectedPrinter}\" ";
                 }
+
                 processStartInfo.Arguments = arguments;
             }
 
@@ -43,11 +44,11 @@ namespace PrinterHelper.CommandLine
             {
                 using var process = Process.Start(processStartInfo);
                 // Process started, no need to wait for it to exit.
-
             }
-            catch (Exception ex) when (ex is Win32Exception || ex is ObjectDisposedException || ex is InvalidOperationException)
+            catch (Exception ex) when (ex is Win32Exception or ObjectDisposedException or InvalidOperationException)
             {
-                _ = MessageBox.Show(text: ex.Message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
+                _ = MessageBox.Show(text: ex.Message, caption: "Error", buttons: MessageBoxButtons.OK,
+                    icon: MessageBoxIcon.Error);
             }
         }
     }

@@ -6,11 +6,11 @@ using PrinterHelper.Properties;
 
 namespace PrinterHelper
 {
-    internal partial class Frpogui : Form
+    internal partial class FRPOGui : Form
     {
         private readonly string _selectedPrinterName;
 
-        public Frpogui(string selectedPrinterFromMainForm)
+        public FRPOGui(string selectedPrinterFromMainForm)
         {
             InitializeComponent();
             Icon = Resources.mainicon;
