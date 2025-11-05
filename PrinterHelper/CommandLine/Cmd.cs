@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Windows.Forms;
+using PrinterHelper.Helpers;
 
 namespace PrinterHelper.CommandLine
 {
@@ -19,7 +19,6 @@ namespace PrinterHelper.CommandLine
 
             var processStartInfo = new ProcessStartInfo
             {
-                WindowStyle = ProcessWindowStyle.Hidden,
                 FileName = FileNameToExec
             };
 
@@ -37,18 +36,17 @@ namespace PrinterHelper.CommandLine
                     arguments += $" /n \"{selectedPrinter}\" ";
                 }
 
+                processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 processStartInfo.Arguments = arguments;
             }
 
             try
             {
                 using var process = Process.Start(processStartInfo);
-                // Process started, no need to wait for it to exit.
             }
             catch (Exception ex) when (ex is Win32Exception or ObjectDisposedException or InvalidOperationException)
             {
-                _ = MessageBox.Show(text: ex.Message, caption: "Error", buttons: MessageBoxButtons.OK,
-                    icon: MessageBoxIcon.Error);
+                UIHelper.ShowError(ex.Message);
             }
         }
     }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using PrinterHelper.CommandLine;
 using PrinterHelper.Core;
+using PrinterHelper.Helpers;
 using PrinterHelper.Models;
 using PrinterHelper.Properties;
 
@@ -152,8 +153,7 @@ namespace PrinterHelper
             }
             catch (ManagementException ex)
             {
-                _ = MessageBox.Show(text: ex.Message, caption: "Error", buttons: MessageBoxButtons.OK,
-                    icon: MessageBoxIcon.Error);
+                UIHelper.ShowError(ex.Message);
             }
             finally
             {

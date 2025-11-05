@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Printing;
-using System.Windows.Forms;
+using PrinterHelper.Helpers;
 using PrinterHelper.Models;
 
 namespace PrinterHelper
@@ -51,8 +51,7 @@ namespace PrinterHelper
                 }
                 catch (InvalidPrinterException exc)
                 {
-                    _ = MessageBox.Show(text: exc.Message, caption: "Error", buttons: MessageBoxButtons.OK,
-                        icon: MessageBoxIcon.Error);
+                    UIHelper.ShowError(exc.Message);
                 }
             }
 
