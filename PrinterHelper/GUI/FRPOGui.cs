@@ -1,22 +1,23 @@
-﻿// This is an open source non-commercial project. Dear PVS-Studio, please check it.
-// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
-
-using PrinterHelper.Properties;
-using System;
+﻿using System;
+using System.Reflection;
 using System.Windows.Forms;
+using PrinterHelper.Core;
+using PrinterHelper.Properties;
 
 namespace PrinterHelper
 {
-    internal partial class Frpogui : Form
+    internal partial class FRPOGui : Form
     {
         private readonly string _selectedPrinterName;
 
-        public Frpogui(string selectedPrinterFromMainForm)
+        public FRPOGui(string selectedPrinterFromMainForm)
         {
             InitializeComponent();
             Icon = Resources.mainicon;
-            _selectedPrinterName = selectedPrinterFromMainForm ?? throw new ArgumentNullException(nameof(selectedPrinterFromMainForm));
-            Text = "FRPO Command For Kyocera build at 11/05/2019";
+            _selectedPrinterName = selectedPrinterFromMainForm ??
+                                   throw new ArgumentNullException(nameof(selectedPrinterFromMainForm));
+            Text =
+                $"FRPO Command For Kyocera build at {BuildVersion.GetBuildDate(Assembly.GetExecutingAssembly()):dd/MM/yyyy}";
             Label_SelectedPrinterName.Text = $"Send To: [{_selectedPrinterName}]";
             ComboBoxOfCommands.SelectedIndex = 0;
             TextBoxCustomFRPOCommand.Clear();
@@ -98,12 +99,14 @@ namespace PrinterHelper
                     break;
 
                 case "Simple Color Palette":
-                    _ = SendRawDataToPrinter.SendStringToPrinter(_selectedPrinterName, Resources.FRPOSimpleColorPalette);
+                    _ = SendRawDataToPrinter.SendStringToPrinter(_selectedPrinterName,
+                        Resources.FRPOSimpleColorPalette);
                     break;
             }
         }
 
-        private void SendCustomFRPOcommand_Click(object sender, EventArgs e) => _ = SendRawDataToPrinter.SendStringToPrinter(_selectedPrinterName, CustomFrpoCommand);
+        private void SendCustomFRPOcommand_Click(object sender, EventArgs e) =>
+            _ = SendRawDataToPrinter.SendStringToPrinter(_selectedPrinterName, CustomFrpoCommand);
 
         private void SendFRPOCommandFromList_Click(object sender, EventArgs e) => SendCommand();
 

@@ -23,8 +23,8 @@
         #region Код, автоматически созданный конструктором форм Windows
 
         /// <summary>
-        /// Требуемый метод для поддержки конструктора — не изменяйте 
-        /// содержимое этого метода с помощью редактора кода.
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
@@ -39,7 +39,6 @@
             this.DeletePrinter = new System.Windows.Forms.ToolStripMenuItem();
             this.fRPOToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.PrintBWGrid = new System.Windows.Forms.Button();
-            this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.GridTestCopies = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -49,6 +48,14 @@
             this.PrintTheRainbowBtn = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.VerticalLinesPrintButton = new System.Windows.Forms.Button();
+            this.verticalLinesCopies = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.PrintHorizonLinesButton = new System.Windows.Forms.Button();
+            this.HorizonLinesCopies = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.ListOfColorsForPrint = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -68,6 +75,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.RainbowTestPageCopies)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.verticalLinesCopies)).BeginInit();
+            this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.HorizonLinesCopies)).BeginInit();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SingleColorTestPageCopies)).BeginInit();
             this.tabPage2.SuspendLayout();
@@ -78,7 +89,7 @@
             // 
             this.FindPrinters.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.FindPrinters.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.FindPrinters.Location = new System.Drawing.Point(498, 314);
+            this.FindPrinters.Location = new System.Drawing.Point(499, 458);
             this.FindPrinters.Name = "FindPrinters";
             this.FindPrinters.Size = new System.Drawing.Size(173, 62);
             this.FindPrinters.TabIndex = 0;
@@ -96,36 +107,30 @@
             this.ListOfPrintersListBox.ItemHeight = 16;
             this.ListOfPrintersListBox.Location = new System.Drawing.Point(6, 6);
             this.ListOfPrintersListBox.Name = "ListOfPrintersListBox";
-            this.ListOfPrintersListBox.Size = new System.Drawing.Size(486, 370);
+            this.ListOfPrintersListBox.Size = new System.Drawing.Size(486, 514);
             this.ListOfPrintersListBox.Sorted = true;
             this.ListOfPrintersListBox.TabIndex = 1;
             this.ListOfPrintersListBox.SelectedIndexChanged += new System.EventHandler(this.ListOfPrintersListBox_SelectedIndexChanged);
             // 
             // contextMenuOfCommands
             // 
-            this.contextMenuOfCommands.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.SendTestPage,
-            this.QueueOfPrinter,
-            this.sendFileToPrinter,
-            this.PropertiesOfPrinter,
-            this.DeletePrinter,
-            this.fRPOToolStripMenuItem});
+            this.contextMenuOfCommands.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.SendTestPage, this.QueueOfPrinter, this.sendFileToPrinter, this.PropertiesOfPrinter, this.DeletePrinter, this.fRPOToolStripMenuItem });
             this.contextMenuOfCommands.Name = "contextMenuStrip1";
-            this.contextMenuOfCommands.Size = new System.Drawing.Size(176, 136);
+            this.contextMenuOfCommands.Size = new System.Drawing.Size(177, 136);
             this.contextMenuOfCommands.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuStrip1_Opening);
             // 
             // SendTestPage
             // 
             this.SendTestPage.BackColor = System.Drawing.SystemColors.Menu;
             this.SendTestPage.Name = "SendTestPage";
-            this.SendTestPage.Size = new System.Drawing.Size(175, 22);
+            this.SendTestPage.Size = new System.Drawing.Size(176, 22);
             this.SendTestPage.Text = "Windows Test Page";
             this.SendTestPage.Click += new System.EventHandler(this.SendTestPage_Click);
             // 
             // QueueOfPrinter
             // 
             this.QueueOfPrinter.Name = "QueueOfPrinter";
-            this.QueueOfPrinter.Size = new System.Drawing.Size(175, 22);
+            this.QueueOfPrinter.Size = new System.Drawing.Size(176, 22);
             this.QueueOfPrinter.Text = "Queue of Printer";
             this.QueueOfPrinter.Click += new System.EventHandler(this.QueueOfPrinter_Click);
             // 
@@ -133,7 +138,7 @@
             // 
             this.sendFileToPrinter.BackColor = System.Drawing.SystemColors.Menu;
             this.sendFileToPrinter.Name = "sendFileToPrinter";
-            this.sendFileToPrinter.Size = new System.Drawing.Size(175, 22);
+            this.sendFileToPrinter.Size = new System.Drawing.Size(176, 22);
             this.sendFileToPrinter.Text = "Send File To Printer";
             this.sendFileToPrinter.Click += new System.EventHandler(this.SendFileToPrinter);
             // 
@@ -141,7 +146,7 @@
             // 
             this.PropertiesOfPrinter.BackColor = System.Drawing.SystemColors.Window;
             this.PropertiesOfPrinter.Name = "PropertiesOfPrinter";
-            this.PropertiesOfPrinter.Size = new System.Drawing.Size(175, 22);
+            this.PropertiesOfPrinter.Size = new System.Drawing.Size(176, 22);
             this.PropertiesOfPrinter.Text = "Properties";
             this.PropertiesOfPrinter.Click += new System.EventHandler(this.PropertiesToolStripMenuItem_Click);
             // 
@@ -149,7 +154,7 @@
             // 
             this.DeletePrinter.BackColor = System.Drawing.Color.Tomato;
             this.DeletePrinter.Name = "DeletePrinter";
-            this.DeletePrinter.Size = new System.Drawing.Size(175, 22);
+            this.DeletePrinter.Size = new System.Drawing.Size(176, 22);
             this.DeletePrinter.Text = "Delete the Printer";
             this.DeletePrinter.Click += new System.EventHandler(this.DeleteThePrinterClick);
             // 
@@ -158,7 +163,7 @@
             this.fRPOToolStripMenuItem.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.fRPOToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.White;
             this.fRPOToolStripMenuItem.Name = "fRPOToolStripMenuItem";
-            this.fRPOToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.fRPOToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.fRPOToolStripMenuItem.Text = "FRPO";
             this.fRPOToolStripMenuItem.Click += new System.EventHandler(this.FRPOToolStripMenuItem_Click);
             // 
@@ -176,20 +181,12 @@
             // 
             this.GridTestCopies.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.GridTestCopies.Location = new System.Drawing.Point(132, 31);
-            this.GridTestCopies.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            this.GridTestCopies.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             this.GridTestCopies.Name = "GridTestCopies";
             this.GridTestCopies.Size = new System.Drawing.Size(35, 21);
             this.GridTestCopies.TabIndex = 8;
             this.GridTestCopies.Tag = "Copies";
-            this.GridTestCopies.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            this.GridTestCopies.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // label1
             // 
@@ -237,19 +234,11 @@
             // 
             this.RainbowTestPageCopies.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.RainbowTestPageCopies.Location = new System.Drawing.Point(131, 32);
-            this.RainbowTestPageCopies.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            this.RainbowTestPageCopies.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             this.RainbowTestPageCopies.Name = "RainbowTestPageCopies";
             this.RainbowTestPageCopies.Size = new System.Drawing.Size(35, 21);
             this.RainbowTestPageCopies.TabIndex = 1;
-            this.RainbowTestPageCopies.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            this.RainbowTestPageCopies.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // PrintTheRainbowBtn
             // 
@@ -268,11 +257,13 @@
             this.tabControl1.Location = new System.Drawing.Point(4, 11);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(685, 413);
+            this.tabControl1.Size = new System.Drawing.Size(685, 556);
             this.tabControl1.TabIndex = 12;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.groupBox6);
+            this.tabPage1.Controls.Add(this.groupBox5);
             this.tabPage1.Controls.Add(this.groupBox4);
             this.tabPage1.Controls.Add(this.FindPrinters);
             this.tabPage1.Controls.Add(this.groupBox2);
@@ -281,10 +272,94 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(677, 387);
+            this.tabPage1.Size = new System.Drawing.Size(677, 530);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Main";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.VerticalLinesPrintButton);
+            this.groupBox6.Controls.Add(this.verticalLinesCopies);
+            this.groupBox6.Controls.Add(this.label5);
+            this.groupBox6.Location = new System.Drawing.Point(501, 210);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(173, 62);
+            this.groupBox6.TabIndex = 15;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Print Vertical Lines";
+            // 
+            // VerticalLinesPrintButton
+            // 
+            this.VerticalLinesPrintButton.Location = new System.Drawing.Point(6, 18);
+            this.VerticalLinesPrintButton.Name = "VerticalLinesPrintButton";
+            this.VerticalLinesPrintButton.Size = new System.Drawing.Size(116, 34);
+            this.VerticalLinesPrintButton.TabIndex = 7;
+            this.VerticalLinesPrintButton.Text = "Print";
+            this.VerticalLinesPrintButton.UseVisualStyleBackColor = true;
+            this.VerticalLinesPrintButton.Click += new System.EventHandler(this.VerticalLinesPrintButton_Click);
+            // 
+            // verticalLinesCopies
+            // 
+            this.verticalLinesCopies.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.verticalLinesCopies.Location = new System.Drawing.Point(132, 31);
+            this.verticalLinesCopies.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            this.verticalLinesCopies.Name = "verticalLinesCopies";
+            this.verticalLinesCopies.Size = new System.Drawing.Size(35, 21);
+            this.verticalLinesCopies.TabIndex = 8;
+            this.verticalLinesCopies.Tag = "Copies";
+            this.verticalLinesCopies.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(128, 12);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(39, 13);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "Copies";
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.PrintHorizonLinesButton);
+            this.groupBox5.Controls.Add(this.HorizonLinesCopies);
+            this.groupBox5.Controls.Add(this.label4);
+            this.groupBox5.Location = new System.Drawing.Point(498, 142);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(173, 62);
+            this.groupBox5.TabIndex = 14;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Print Horizon Lines";
+            // 
+            // PrintHorizonLinesButton
+            // 
+            this.PrintHorizonLinesButton.Location = new System.Drawing.Point(6, 18);
+            this.PrintHorizonLinesButton.Name = "PrintHorizonLinesButton";
+            this.PrintHorizonLinesButton.Size = new System.Drawing.Size(116, 34);
+            this.PrintHorizonLinesButton.TabIndex = 7;
+            this.PrintHorizonLinesButton.Text = "Print";
+            this.PrintHorizonLinesButton.UseVisualStyleBackColor = true;
+            this.PrintHorizonLinesButton.Click += new System.EventHandler(this.PrintHorizonLines_Click);
+            // 
+            // HorizonLinesCopies
+            // 
+            this.HorizonLinesCopies.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.HorizonLinesCopies.Location = new System.Drawing.Point(132, 31);
+            this.HorizonLinesCopies.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            this.HorizonLinesCopies.Name = "HorizonLinesCopies";
+            this.HorizonLinesCopies.Size = new System.Drawing.Size(35, 21);
+            this.HorizonLinesCopies.TabIndex = 8;
+            this.HorizonLinesCopies.Tag = "Copies";
+            this.HorizonLinesCopies.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(128, 12);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(39, 13);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "Copies";
             // 
             // groupBox4
             // 
@@ -292,7 +367,7 @@
             this.groupBox4.Controls.Add(this.label3);
             this.groupBox4.Controls.Add(this.SingleColorTestPageCopies);
             this.groupBox4.Controls.Add(this.PrintTheColor);
-            this.groupBox4.Location = new System.Drawing.Point(498, 142);
+            this.groupBox4.Location = new System.Drawing.Point(501, 361);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(173, 91);
             this.groupBox4.TabIndex = 13;
@@ -304,15 +379,7 @@
             this.ListOfColorsForPrint.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ListOfColorsForPrint.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.ListOfColorsForPrint.FormattingEnabled = true;
-            this.ListOfColorsForPrint.Items.AddRange(new object[] {
-            "Black",
-            "Cyan",
-            "Magenta",
-            "Yellow",
-            "Red",
-            "Green",
-            "Blue",
-            "White"});
+            this.ListOfColorsForPrint.Items.AddRange(new object[] { "Black", "Cyan", "Magenta", "Yellow", "Red", "Green", "Blue", "White" });
             this.ListOfColorsForPrint.Location = new System.Drawing.Point(7, 60);
             this.ListOfColorsForPrint.Name = "ListOfColorsForPrint";
             this.ListOfColorsForPrint.Size = new System.Drawing.Size(158, 21);
@@ -330,19 +397,11 @@
             // SingleColorTestPageCopies
             // 
             this.SingleColorTestPageCopies.Location = new System.Drawing.Point(130, 32);
-            this.SingleColorTestPageCopies.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            this.SingleColorTestPageCopies.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             this.SingleColorTestPageCopies.Name = "SingleColorTestPageCopies";
             this.SingleColorTestPageCopies.Size = new System.Drawing.Size(35, 20);
             this.SingleColorTestPageCopies.TabIndex = 13;
-            this.SingleColorTestPageCopies.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            this.SingleColorTestPageCopies.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // PrintTheColor
             // 
@@ -362,7 +421,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(677, 387);
+            this.tabPage2.Size = new System.Drawing.Size(677, 530);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Print Spool";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -425,7 +484,7 @@
             this.StartPrintSpool.Name = "StartPrintSpool";
             this.StartPrintSpool.Size = new System.Drawing.Size(120, 35);
             this.StartPrintSpool.TabIndex = 3;
-            this.StartPrintSpool.Text = "Start Print Spool ";
+            this.StartPrintSpool.Text = "Start Print Spool";
             this.StartPrintSpool.UseVisualStyleBackColor = true;
             this.StartPrintSpool.Click += new System.EventHandler(this.StartPrintSpool_Click);
             // 
@@ -433,7 +492,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(692, 430);
+            this.ClientSize = new System.Drawing.Size(691, 572);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
@@ -448,20 +507,34 @@
             ((System.ComponentModel.ISupportInitialize)(this.RainbowTestPageCopies)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.verticalLinesCopies)).EndInit();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.HorizonLinesCopies)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SingleColorTestPageCopies)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
-
         }
+
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.Button VerticalLinesPrintButton;
+        private System.Windows.Forms.NumericUpDown verticalLinesCopies;
+        private System.Windows.Forms.Label label5;
+
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Button PrintHorizonLinesButton;
+        private System.Windows.Forms.NumericUpDown HorizonLinesCopies;
+        private System.Windows.Forms.Label label4;
 
         #endregion
 
         private System.Windows.Forms.Button FindPrinters;
         private System.Windows.Forms.Button PrintBWGrid;
-        private System.Drawing.Printing.PrintDocument printDocument1;
         private System.Windows.Forms.ContextMenuStrip contextMenuOfCommands;
         private System.Windows.Forms.ToolStripMenuItem DeletePrinter;
         private System.Windows.Forms.ToolStripMenuItem QueueOfPrinter;

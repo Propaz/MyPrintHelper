@@ -1,6 +1,6 @@
 ﻿namespace PrinterHelper
 {
-    partial class Frpogui
+    partial class FRPOGui
     {
         /// <summary>
         /// Required designer variable.
@@ -138,7 +138,7 @@
             this.SendFRPOCommandFromList.UseVisualStyleBackColor = true;
             this.SendFRPOCommandFromList.Click += new System.EventHandler(this.SendFRPOCommandFromList_Click);
             // 
-            // Frpogui
+            // FRPOGui
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -149,7 +149,7 @@
             this.Controls.Add(this.ComboBoxOfCommands);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
-            this.Name = "Frpogui";
+            this.Name = "FRPOGui";
             this.Text = "frpogui";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
