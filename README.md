@@ -1,23 +1,35 @@
 # MyPrintHelper
-A simple program for working with monochrome or color printers. 
 
-For work in the service center.
+A simple utility for testing and interacting with monochrome and color printers, designed for use in a service center environment.
 
-1. Button "Find Printers" Displays a list of devices in the system (Only devices online, except for FAX and XPS devices.)
-(Some printers HP even after the shutdown remain in the system with the flags Local = True, WorkOffline = true, so they fall into the list (yet).)
+## Screenshots
 
-2. The 'Print the B/W Grid' button allows you to print an A4 page that is completely filled with a grid.
+| Main Interface                               | FRPO Command GUI                             |
+| -------------------------------------------- | -------------------------------------------- |
+| ![Main GUI](assets/gui.png)                  | ![FRPO GUI](assets/gui2.png)                 |
+| **Printer List & Test Pages**                | **Send Commands**                            |
+| ![Printers](assets/gui3.png)                 | ![FRPO Commands](assets/gui4.png)            |
+| **Test Grids**                               | **Test Rainbow**                             |
+| ![B/W Grid](assets/bwgrid.PNG)               | ![Rainbow](assets/rainbow_test.PNG)          |
 
-3. The 'Print the Rainbow' button allows you to print a Rainbow (600x600) gradient on Page.
+## Features
 
-4. You can send rectangle 720x1000 (almost full a4 page) (choose CMYK or RGB test)
+*   **Find Printers:** Discovers and lists all online printers connected to the system (ignores FAX and XPS devices).
+*   **Print B/W Grid:** Prints a full A4 page with a black and white grid pattern to test toner/ink coverage and alignment.
+*   **Print Rainbow:** Prints a 600x600 rainbow gradient to test color printing capabilities.
+*   **Print Test Rectangle:** Send a 720x1000 pixel rectangle (CMYK or RGB) to the printer, covering almost a full A4 page.
+*   **FRPO/PJL Commands:** A dedicated GUI allows sending `Prescribe` (FRPO) commands to compatible printers (e.g., Kyocera). You can send custom commands, load commands from a script file, or choose from a list of integrated commands. (PJL script support is theoretical and not yet tested).
 
-5. If your printer (ex. Kyocera) support Prescribe (FRPO) command, you can send command via FRPO gui (custom command, script file or choose from integrated command). (Theoretically it will works with PJL scripts, not tested yet...)
+## How It Works
 
-Some Screenshots:<br/> 
-<img align="left" src="https://github.com/Propaz/MyPrintHelper/blob/master/gui.png" />
-<img align="left" src="https://github.com/Propaz/MyPrintHelper/blob/master/gui2.png" />
-<img align="left" src="https://github.com/Propaz/MyPrintHelper/blob/master/gui3.png" />
-<img align="left" src="https://github.com/Propaz/MyPrintHelper/blob/master/gui4.png" />
-<img align="left" src="https://github.com/Propaz/MyPrintHelper/blob/master/bwgrid.PNG" />
-<img align="left" src="https://github.com/Propaz/MyPrintHelper/blob/master/rainbow_test.PNG" />
+*   The application uses standard Windows printing APIs to communicate with printers.
+*   It filters out virtual devices like "Microsoft XPS Document Writer" and "Microsoft Print to PDF" to show only physical printers.
+*   The test page generation is done programmatically to create the specific patterns.
+
+## Known Issues
+
+*   Some HP printers may still appear in the list even when powered off, as they remain in the system with `Local = True` and `WorkOffline = true` flags.
+
+## Building from Source
+
+This is a C# .NET Framework project. You can open the `PrinterHelper.sln` file in Visual Studio and build the solution.
